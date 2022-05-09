@@ -1,4 +1,4 @@
-package st.project.studyWithUs.service;
+package st.project.studyWithUs.service.studyingService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +10,11 @@ import st.project.studyWithUs.repository.UserTeamRepository;
 public class StudyingServiceImpl implements StudyingService{
 
     private final UserTeamRepository userTeamRepository;
+
+    @Override
+    public void resetRealTime(){
+        userTeamRepository.resetRealTime();
+    }
 
     @Override
     public void save(UserTeam ut) {
