@@ -4,11 +4,11 @@ let model, webcam, webcamContainer, maxPredictions;
 webcamContainer = document.querySelector("#webcam-container")
 
 
-let hour=0,minute=0,second=0,active=false,timeoutId,totalTime,realTime=0;
+let hour=0,minute=0,second=0,active=false,timeoutId,totalTime,realTime;
 // Load the image model and setup the webcam
 $.ajax({
     type: "POST",
-    url: "updateTotalTime",
+    url: "getTotalTime",
     success: function (data) {
         console.log("total" + data)
         totalTime=data*100;
@@ -17,7 +17,17 @@ $.ajax({
         console.log(error);
     }
 });
-
+$.ajax({
+    type: "POST",
+    url: "getRealTime",
+    success: function (data) {
+        console.log("realTime" + data)
+        realTime=data*100;
+    },
+    error: function (error) {
+        console.log(error);
+    }
+});
 async function init() {
     document.querySelector("#start").setAttribute("hidden","true")
     const modelURL = URL + "model.json";
@@ -89,7 +99,7 @@ async function predict() {
             data=false;
             $.ajax({
                 type: "POST",
-                url: "updateExist",
+                url: "updateUserTeam",
                 data: {data: data, realTime:realTime,totalTime:totalTime},
                 success: function (data) {     },
                 error: function (error) {
@@ -107,7 +117,7 @@ async function predict() {
             data=true;
             $.ajax({
                 type: "POST",
-                url: "updateExist",
+                url: "updateUserTeam",
                 data: {data: data,realTime:realTime,totalTime:totalTime},
                 success: function (data) {
                 },

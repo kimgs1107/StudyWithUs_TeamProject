@@ -9,11 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.domain.UserTeam;
-import st.project.studyWithUs.interceptor.SessionConst;
-import st.project.studyWithUs.service.StudyingService;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import st.project.studyWithUs.service.studyingService.StudyingService;
 
 
 @Controller
@@ -27,9 +23,9 @@ public class StudyingController {
         return "studying";
     }
 
-    @PostMapping("/updateExist")
+    @PostMapping("/updateUserTeam")
     @ResponseBody
-    public void updateExist(HttpServletRequest request,@RequestParam("data") boolean data, @RequestParam("realTime") int realTime, @RequestParam("totalTime") int totalTime, @Login User user) {
+    public void updateUserTeam(@RequestParam("data") boolean data, @RequestParam("realTime") int realTime, @RequestParam("totalTime") int totalTime, @Login User user) {
 
         Long tID = 1l;
 
@@ -40,14 +36,26 @@ public class StudyingController {
         studyingService.save(ut);
     }
 
-    @PostMapping("/updateTotalTime")
+    @PostMapping("/getTotalTime")
     @ResponseBody
-    public int updateTotalTime(@Login User user) {
+    public int getTotalTime(@Login User user) {
 
         Long tID = 1l;
 
         UserTeam ut = studyingService.findUserTeam(user.getUID(),tID);
         return ut.getTotalTime().intValue();
     }
+
+    @PostMapping("/getRealTime")
+    @ResponseBody
+    public int getRealTime(@Login User user) {
+
+        Long tID = 1l;
+
+        UserTeam ut = studyingService.findUserTeam(user.getUID(),tID);
+        return ut.getRealTime().intValue();
+    }
+
+
 
 }
