@@ -1,15 +1,10 @@
 package st.project.studyWithUs.vo;
 
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import st.project.studyWithUs.domain.UserTeam;
 
-import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter

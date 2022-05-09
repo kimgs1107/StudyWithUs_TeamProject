@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.domain.PointInfo;
 import st.project.studyWithUs.domain.RefundUserAccount;
 import st.project.studyWithUs.domain.Team;
@@ -147,12 +148,13 @@ public class AdministratorController {
     public String refundsCheck(@RequestParam String name,
                                @RequestParam String account,
                                @RequestParam String bank,
-                               @RequestParam Long point){
+                               @RequestParam Long point,
+                               @Login User user){
 
         //계좌번호 존재하는지 일치여부
 
         //환급받은 포인트 만큼 자신의 포인트 삭감
-        if(userService.checkPoint(point, 1L)==false){
+        if(userService.checkPoint(point, user.getUID())==false){
             return "포인트가 부족합니다.";
         }
         //관리자 페이지에서 환급 리스트 모아놓기
@@ -161,7 +163,8 @@ public class AdministratorController {
         refundUserAccount.setPoint(point);
         refundUserAccount.setUserName(name);
         refundUserAccount.setAccount(account);
-        refundUserAccount.setUser(userService.find(1L));
+        refundUserAccount.setUser(user);
+        refundUserAccount.setRequestDate(LocalDate.now());
         pointInfoService.addRefundUserAccount(refundUserAccount);
         return "환급요청이 완료되었습니다.";
     }
@@ -191,4 +194,9 @@ public class AdministratorController {
     }
 
 
+    @PostMapping("/currentPoint")
+    @ResponseBody
+    public Long currentPoint(@Login User user){
+        return user.getPoint();
+    }
 }

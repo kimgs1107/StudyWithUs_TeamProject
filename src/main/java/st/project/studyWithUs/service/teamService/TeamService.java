@@ -28,4 +28,8 @@ public interface TeamService {
     List<TeamVO> findAllTeams(User user);
 
     List<TeamVO> findSearchTeam(String teamID);
+
+    void saveTeam(Team team);
+
+    Team findByTeamName(String teamName);
 }

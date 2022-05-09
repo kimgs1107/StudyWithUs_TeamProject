@@ -27,29 +27,49 @@
                     $("#pointCheck").attr('color', 'red');
                 }
                 else{
+                    alert(data)
                     window.location.href = "/";
                 }
             },
         });
     }
+    function currentPoint(){
+        $.ajax({
+            url: "/currentPoint",
+            type: "POST",
+            success: function(data){
+                $("#currentPoint").html(data);
+            },
+        });
+    }
 </script>
-<body>
 
+<body>
+<script>
+    currentPoint();
+</script>
+<h1>나의 포인트 정보</h1>
+<h1>현재 포인트</h1>
+
+<span id="currentPoint">currentPoint();</span>
 <div style="text-align: center; margin-top: 100px; ">
 
-        <input type="text" id="name"  class="form-control"
-               placeholder="성함" style="margin-top: 10px;" ><br>
-        <input type="text" id="bank"  class="form-control"
-               placeholder="은행" style="margin-top: 10px;" ><br>
-        <input type="text" id="account"  class="form-control"
-               placeholder="계좌번호" style="margin-top: 10px;" ><br>
-        <input type="text" id="point"  class="form-control"
-               placeholder="환급 받으실 포인트 금액" style="margin-top: 10px;" ><br>
-         <font id = "pointCheck" size="2"> </font>
-        <div style="margin-top: 10px;">
-            <button id = "refunds_btn" type="submit" > 환급받기</button>
-        </div>
+    <input type="text" id="name"  class="form-control"
+           placeholder="성함" style="margin-top: 10px;" ><br>
+    <input type="text" id="bank"  class="form-control"
+           placeholder="은행" style="margin-top: 10px;" ><br>
+    <input type="text" id="account"  class="form-control"
+           placeholder="계좌번호" style="margin-top: 10px;" ><br>
+    <input type="number" id="point" min="5000" step="1000" class="form-control"
+           placeholder="환급 받으실 포인트 금액" style="margin-top: 10px;" ><br>
+    <span id = "pointCheck" size="2"> </span>
+    <div style="margin-top: 10px;">
+        <button id = "refunds_btn" type="submit" > 환급받기</button>
+    </div>
+</div>
 
+<div>
+    <h1>환급 신청 현황</h1>
 </div>
 
 

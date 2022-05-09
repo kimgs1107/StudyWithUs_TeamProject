@@ -19,4 +19,6 @@ public interface TeamRepository extends JpaRepository<Team, Long>{
 
     @Query ("select t from Team t where t.currentCount <> t.headCount")
     List<Team> findTeams();
+
+    Team findByTeamName(String teamName);
 }
