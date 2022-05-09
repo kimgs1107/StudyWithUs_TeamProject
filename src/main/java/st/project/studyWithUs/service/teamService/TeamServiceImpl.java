@@ -164,6 +164,10 @@ public class TeamServiceImpl implements TeamService {
         tVO.setTeamImage(t.getTeamImage());
         return tVO;
     }
+
+    public void saveTeam(Team team) { teamRepository.save(team);}
+
+    public Team findByTeamName(String teamName) { return teamRepository.findByTeamName(teamName);}
 }
 
 //https://swexpertacademy.com/main/sst/intro.do
