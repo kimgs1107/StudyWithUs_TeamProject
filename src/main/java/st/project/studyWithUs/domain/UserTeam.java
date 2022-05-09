@@ -16,7 +16,7 @@ public class UserTeam {
     private Long utID;
 
     @NotNull
-    private boolean exist;
+    private Boolean exist;
 
     private Long realTime;
 
