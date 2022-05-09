@@ -48,14 +48,20 @@
             포인트 환급
         </button>
     </div>
+    <hr>
+
+    <div id="completeMembers">
+    </div>
+    <hr>
+
+    <div id="totalTime">
+    </div>
+    <hr>
 
 
     <h2 style="text-align: center">마이 스터디 </h2>
-    <hr>
     <div id="myTeams">
-
     </div>
-
 
 
     <script>
@@ -118,7 +124,7 @@
                         teamButton2.setAttribute("id", team.tId);
                         teamButton2.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
                         teamButton2.addEventListener("click", ()=>{
-
+                            location.href='/studying';
                             $.ajax({
 
                                 //화상 채팅

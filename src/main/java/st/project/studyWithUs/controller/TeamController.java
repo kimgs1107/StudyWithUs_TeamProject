@@ -1,4 +1,4 @@
-package st.project.studyWithUs.Controller;
+package st.project.studyWithUs.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.domain.Team;
 import st.project.studyWithUs.domain.User;
-import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.form.TeamForm;
 import st.project.studyWithUs.service.teamService.TeamService;
 import st.project.studyWithUs.service.userTeamService.UserTeamService;
@@ -21,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j

@@ -9,11 +9,17 @@
 </head>
 
 <body>
+
 <button type="button" onclick="init()" id="start">시작</button>
 <div id="webcam-container">
+    <button type="button" onclick="stop()" id="stop">중단</button>
+    <button type="button" onclick="restart()" id="restart">재시작</button>
+
     <div id="time">00:00:00</div>
     <canvas width="200" height="200" hidden></canvas>
     <img src="/adminImage/noseat.png" id="img" style="width: 200px; height: 200px" hidden/>
+
+    <div id="members"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>

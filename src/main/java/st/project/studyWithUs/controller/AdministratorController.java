@@ -1,9 +1,8 @@
-package st.project.studyWithUs.Controller;
+package st.project.studyWithUs.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +16,6 @@ import st.project.studyWithUs.service.pointInfo.PointInfoService;
 import st.project.studyWithUs.service.refundUserAccountService.RefundUserAccountService;
 import st.project.studyWithUs.service.teamService.TeamService;
 import st.project.studyWithUs.service.userService.UserService;
-import st.project.studyWithUs.service.userTeamService.UserTeamService;
 import st.project.studyWithUs.vo.AccountVO;
 import st.project.studyWithUs.vo.TeamVO;
 import st.project.studyWithUs.vo.UserVO;
