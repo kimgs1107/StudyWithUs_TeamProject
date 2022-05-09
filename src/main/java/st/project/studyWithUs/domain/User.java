@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 public class User {
-    //test
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uID;
