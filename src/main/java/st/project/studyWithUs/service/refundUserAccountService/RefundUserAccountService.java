@@ -12,4 +12,7 @@ public interface RefundUserAccountService {
     List<RefundUserAccount> findRefundAccount();
 
 
+    void changeFlag(Long rID);
+
+    boolean deleteCompleteAccounts();
 }

@@ -3,8 +3,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.domain.Team;
+import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.service.teamService.TeamService;
 import st.project.studyWithUs.service.userTeamService.UserTeamService;
@@ -24,38 +27,10 @@ public class TeamController {
 
     @ResponseBody
     @GetMapping("/findAllTeams")
-    public List<TeamVO> teams (){
-
-        List<Team> teams = teamService.findAll();
-        List<UserTeam> userStudyTeams = userTeamService.findAll();
-        List<TeamVO> teamVO =  new ArrayList<>();
-
-        for(Team t : teams){
-            boolean check =true;
-            for(UserTeam ut : userStudyTeams){
-                if(ut.getTeam().getTID()==t.getTID()||t.getCurrentCount()==t.getHeadCount()){
-                    //로그인 유저가 속해있거나, 스터디 인원이 꽉 차있으면.
-                    check=false;
-                    break;
-                }
-            }
-
-
-            if(check==true){
-                TeamVO tVO = new TeamVO();
-                //   tVO.setTID(t.getTId());
-                tVO.setTtID(t.getTID());
-                tVO.setTeamName(t.getTeamName());
-                tVO.setTeamDesc(t.getTeamDesc());
-                tVO.setDepositPoint(t.getDepositPoint());
-                tVO.setHeadCount(t.getHeadCount());
-                tVO.setCurrentCount(t.getCurrentCount());
-                teamVO.add(tVO);
-            }
-        }
-
-        return teamVO;
+    public List<TeamVO> teams (@RequestParam int check, @RequestParam String teamName, @Login User loginUser){
+        // 검색해서 나오는 스터디 리스트
+        if(check==1) return teamService.searchTeam(teamName, loginUser);
+        // 비로그인/로그인에서 볼 수 있는 모든 스터디 리스트
+        else return teamService.findAllTeams(loginUser);
     }
-
-
 }

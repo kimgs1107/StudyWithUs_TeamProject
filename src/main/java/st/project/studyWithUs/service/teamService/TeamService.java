@@ -3,6 +3,8 @@ package st.project.studyWithUs.service.teamService;
 
 import org.springframework.stereotype.Service;
 import st.project.studyWithUs.domain.Team;
+import st.project.studyWithUs.domain.User;
+import st.project.studyWithUs.vo.TeamVO;
 
 import java.util.List;
 
@@ -18,4 +20,12 @@ public interface TeamService {
     void decreaseCurrentCount(Long tId);
 
     Team findBytID(Long tId);
+
+    void deleteTeam(Long tID);
+
+    List<TeamVO> searchTeam(String teamName, User user);
+
+    List<TeamVO> findAllTeams(User user);
+
+    List<TeamVO> findSearchTeam(String teamID);
 }

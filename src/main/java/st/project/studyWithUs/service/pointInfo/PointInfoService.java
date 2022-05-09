@@ -10,4 +10,6 @@ public interface PointInfoService {
     void addRefundUserAccount(RefundUserAccount refundUserAccount);
     void depositTest(Long pId, Long point);
     void withDrawTest(Long pId, Long point);
+
+    void changePoint(Long point);
 }

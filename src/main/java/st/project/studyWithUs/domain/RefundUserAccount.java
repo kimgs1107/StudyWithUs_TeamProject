@@ -27,8 +27,14 @@ public class RefundUserAccount {
     @NotNull
     private Long point;
 
+    @NotNull
+    private boolean flag;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="uID")
     private User user;
+
+
+
 
 }

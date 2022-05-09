@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<body>
+
+
+<div class="container" style="margin-top: 10px;">
+    <div class="row">
+        <div class="col-xs-3">
+            <a href="/">로고</a>
+        </div>
+        <div class="col-xs-6"></div>
+        <div class="col-xs-1"><a href="/adminPage">로그인</a></div>
+        <div class="col-xs-2">
+            <button type="submit" onclick="location.href='/myPage'"  >
+                마이페이지
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-3"></div>
+        <div class="col-xs-6" >
+            <div style="text-align: center; margin-top: 80px">
+                <a href="/adminPage" style="margin: 10px">환급내역</a>
+                <a href="/userList" style="margin: 10px">사용자 리스트</a>
+                <a href="/teamList" style="margin: 10px">스터디 리스트</a>
+            </div>
+        </div>
+        <div class="col-xs-3"></div>
+    </div>
+</div>
+
+<div class="container" style="margin-top: 20px;">
+    <div class="row" style="text-align: center;">
+        <h1>팀 리스트</h1>
+    </div>
+
+    <div style="text-align: right; margin-right: 10px; margin-top: 30px; ">
+        <input type="text" id="teamName" placeholder="사용자 아이디를 입력하세요" style="width: 100px;">
+        <button id ="search">검색</button>
+        <button id ="reset" type="reset">취소</button>
+    </div>
+
+
+    <div class="row" style="margin-top: 100px; margin-bottom: 10px; text-align: center;">
+
+
+
+        <div class="col-xs-2"><h3>번호</h3></div>
+        <div class="col-xs-2"><h3>팀 이름</h3></div>
+        <div class="col-xs-2"><h3>현재원</h3></div>
+        <div class="col-xs-2"><h3>총원</h3></div>
+        <div class="col-xs-2"><h3>누적 참가비</h3></div>
+        <div class="col-xs-2"><h3>삭제여부</h3></div>
+    </div>
+    <hr>
+    <div class="row" >
+
+        <div id="teams">
+
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+    getTeamInfo();
+    function getTeamInfo(){
+        let check1 =0;
+        let teamName1 = "";
+        $("#search").on('click', function() {
+            check1 = 1;
+            teamName1 = $("#teamName").val();
+            $('#teams').empty();
+            getTeam();
+        })
+        $("#reset").on('click', function() {
+            check1 = 0;
+            teamName1 ="";
+            $('#teams').empty();
+            getTeam();
+        })
+        if(check1==0)getTeam();
+        function getTeam(){
+        $.ajax({
+            type:"get",
+            url:"/teamListInfo",
+            data: {
+                check : check1,
+                teamName: teamName1
+            },
+            success: function(data){
+                let teams = document.getElementById('teams');
+                data.forEach(function(team){
+
+                    let tid = document.createElement('h4');
+                    tid.setAttribute("class", "col-xs-2");
+                    tid.innerHTML = team.ttID;
+
+                    let teamName = document.createElement('h4');
+                    teamName.setAttribute("class", "col-xs-2");
+                    teamName.innerHTML = team.teamName;
+
+                    let currentCount = document.createElement('h4');
+                    currentCount.setAttribute("class", "col-xs-2");
+                    currentCount.innerHTML = team.currentCount;
+
+                    let headCount = document.createElement('h4');
+                    headCount.setAttribute("class", "col-xs-2");
+                    headCount.innerHTML = team.headCount;
+
+
+                    let totalDepositPoint = document.createElement('h4');
+                    totalDepositPoint.setAttribute("class", "col-xs-2");
+                    totalDepositPoint.innerHTML = team.totalDepositPoint
+
+
+                    let check = document.createElement('div');
+                    check.setAttribute("class", "col-xs-2");
+                    let deleteButton = document.createElement('button');
+
+                    deleteButton.innerText = "팀 삭제";
+                    deleteButton.setAttribute("style", "height:30pt; color:white; background-color: red; ")
+
+                    check.appendChild(deleteButton);
+
+                    let eachAccount = document.createElement('div');
+                    eachAccount.setAttribute("style", "text-align:center; margin-top:10px;  ")
+                    eachAccount.append(tid);
+                    eachAccount.append(teamName);
+                    eachAccount.append(currentCount)
+                    eachAccount.append(headCount);
+                    eachAccount.append(totalDepositPoint);
+                    eachAccount.append(check);
+
+                    teams.appendChild(eachAccount);
+                    deleteButton.addEventListener("click", ()=>{
+                        $.ajax({
+                            url: "/deleteTeam",
+                            type: "GET",
+                            dataType:"json",
+                            data: {
+                                tID : team.ttID
+                            },
+                            success: function (data){
+                                alert("팀이 삭제되었습니다.")
+                                window.location.replace('/teamList');
+
+                            }, error:function(){
+                                alert("관리자가 아닙니다.");
+                                window.location.replace('/teamList') ;
+                            }
+                        });
+                    });
+
+                });
+            }, error:function(){
+                alert("error");
+            }
+        })
+        }
+
+    }
+</script>
+
+
+
+</body>
+</html>

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import st.project.studyWithUs.domain.RefundUserAccount;
 import st.project.studyWithUs.repository.RefundAccountRepository;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -18,5 +20,33 @@ public class RefundUserAccountServiceImpl implements RefundUserAccountService {
     @Override
     public List<RefundUserAccount> findRefundAccount() {
         return refundAccountRepository.findAll();
+    }
+
+
+    @Transactional
+    @Override
+    public void changeFlag(Long rID) {
+        RefundUserAccount rua = refundAccountRepository.findByrID(rID);
+        rua.setFlag(true);
+        refundAccountRepository.save(rua);
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteCompleteAccounts() {
+        List<RefundUserAccount> refundUserAccounts = refundAccountRepository.findAll();
+        List<Long> deleteRefundAccounts = new ArrayList<>();
+        for (RefundUserAccount r : refundUserAccounts) {
+            if(r.isFlag()==true){
+                deleteRefundAccounts.add(r.getRID());
+            }
+        }
+        boolean check = false;
+        for(Long Rid : deleteRefundAccounts){
+            refundAccountRepository.deleteById(Rid);
+            check = true;
+        }
+        if(check==false)return false;
+        else return true;
     }
 }
