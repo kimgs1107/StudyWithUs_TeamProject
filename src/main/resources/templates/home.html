@@ -30,82 +30,234 @@
             </div>
         </div>
     </div>
+    <div class="container" style="margin-top: 100px;">
 
+        <div class="row" >
+            <h3 style="text-align: center">내 스터디 목록</h3>
+            <hr>
+            <div id="myTeams">
+            </div>
+        </div>
 
-    <hr>
+    </div>
+    <div class="container">
+        <div class="row">
+            <hr>
+            <div class="col-xs-4" style="margin: 20px; text-align: center;">
+                <h3>나에게 맞는 스터디 검색하기</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4" style="margin: 20px; text-align: center;">
+                <input type="text" id="teamName" placeholder="찾고자 하는 스터디를 입력해주세요." style="width: 250px;">
+                <button id ="search">검색</button>
+                <button id ="reset" type="reset" placeholder="찾고자 하는 스터디를 입력해주세요.">취소</button>
+            </div>
 
-
-    <div id="Teams" style="margin-top: 30px; ">
+        </div>
+        <div class="row">
+            <div id="Teams" style="margin-top: 30px; ">
+            </div>
+        </div>
     </div>
     <script>
+        getMyTeams();
         getTeams();
         function getTeams(){
+            let check1 =0;
+            let teamName1 = "";
+            $("#search").on('click', function() {
+                check1 = 1;
+                teamName1 = $("#teamName").val();
+                $('#Teams').empty();
+                getTeam();
+            })
+            $("#reset").on('click', function() {
+                check1 = 0;
+                teamName1 ="";
+                $('#Teams').empty();
+                getTeam();
+            })
+            if(check1==0)getTeam();
+            function getTeam(){
+                $.ajax({
+                    type:"get",
+                    url:"/findAllTeams",
+                    data: {
+                        check : check1,
+                        teamName: teamName1
+                    },
+                    success: function(data){
+                        var teams = document.getElementById('Teams');
+                        data.forEach(function(team){
+
+                            let image = document.createElement('img');
+                            image.setAttribute("src", "../images/study2.jpg");
+                            image.setAttribute("style", "height:200px; width:200px");
+
+                            let teamName = document.createElement('h3');
+                            teamName.innerHTML = team.teamName;
+
+                            let teamContent = document.createElement('div');
+                            teamContent.innerHTML = team.teamDesc;
+
+                            let currentCount = document.createElement('div');
+                            currentCount.innerHTML = "현재인원 : " + team.currentCount+'/'+team.headCount;
+
+                            let date = document.createElement('div');
+                            date.innerHTML= team.startDate + " ~ " +team.endDate;
+
+                            let teamDeposit = document.createElement('div');
+                            teamDeposit.innerHTML = "참가비 : " + team.depositPoint + "포인트";
+
+                            let teamButton = document.createElement('button');
+                            teamButton.innerText = "스터디 참가하기";
+
+
+                            teamButton.addEventListener("click", ()=>{
+                                $.ajax({
+                                    url: "/studyDeposit",
+                                    type: "GET",
+                                    dataType:"json",
+                                    data: {
+                                        tId : team.ttID,
+                                        point : team.depositPoint
+                                    },
+                                    success: function (data){
+                                        if (data==true){
+                                            alert("입금이 완료 되었습니다. 스터디 참가가 가능합니다. ")
+                                            window.location.replace('/myPage');
+                                        }
+                                        else if(data==false){
+                                            alert("잔액이 부족합니다. 포인트를 충전해주세요 ")
+                                            window.location.replace('/chargePoint') ;
+                                        }
+                                    }, error:function(){
+                                        alert("로그인 후 이용해주세요.");
+                                        window.location.replace('/login') ;
+                                    }
+                                });
+                            });
+                            let eachTeam = document.createElement('div');
+                            eachTeam.append(image);
+                            eachTeam.append(teamName);
+                            eachTeam.append(teamContent);
+                            eachTeam.append(currentCount);
+                            eachTeam.append(teamDeposit);
+                            eachTeam.append(date);
+                            eachTeam.append(teamButton);
+                            eachTeam.setAttribute("class", "col-xs-4");
+                            eachTeam.setAttribute("style", "text-align: center; margin-top: 20px");
+                            teams.appendChild(eachTeam);
+                        });
+                    }, error:function(){
+                        alert("error");
+                    }
+                })
+            }
+        }
+        function getMyTeams(){
             $.ajax({
                 type:"get",
-                url:"/findAllTeams",
+                url:"/findMyTeams",
+                datatype:'json',
                 success: function(data){
-                    var teams = document.getElementById('Teams');
+
+                    var teams = document.getElementById('myTeams');
+
+
                     data.forEach(function(team){
+
+                        // <img src="12" onError=this.src="../images/study.jpg" style="height: 30px; width: 30px">
+
+                        let image = document.createElement('img');
+                        image.setAttribute("src", "../images/study.jpg");
+                        image.setAttribute("style", "height:200px; width:200px");
 
 
                         let teamName = document.createElement('h3');
                         teamName.innerHTML = team.teamName;
-                        teamName.setAttribute("style", "text-align:center; margin-top:10px;");
 
                         let teamContent = document.createElement('div');
                         teamContent.innerHTML = team.teamDesc;
-                        teamContent.setAttribute("style","text-align:center; " );
 
-                        let teamDeposit = document.createElement('div');
-                        teamDeposit.innerHTML = "스터디 참가비 : " + team.depositPoint + "포인트";
-                        teamDeposit.setAttribute("style", "text-align:center; margin-top:3px;");
 
                         let currentCount = document.createElement('div');
-                        currentCount.innerHTML = "현재인원 : " + team.currentCount+'/'+team.headCount;
-                        currentCount.setAttribute("style", "text-align:center; margin-top:3px;");
+                        currentCount.innerHTML = "현재 참여 인원 : " + team.currentCount+'/'+team.headCount;
 
-                        let teamButton = document.createElement('button');
-                        teamButton.innerText = "스터디 참가하기";
-                        teamButton.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
+                        let date = document.createElement('div');
+                        date.innerHTML= team.startDate + " ~ " +team.endDate;
 
-                        teamButton.addEventListener("click", ()=>{
+                        let teamButton1 = document.createElement('button');
+                        teamButton1.innerText = "대화하기";
+
+                        teamButton1.setAttribute("id", team.tId);
+                        teamButton1.setAttribute("style", " margin:3px;");
+                        teamButton1.addEventListener("click", ()=>{
+
                             $.ajax({
-                                url: "/studyDeposit",
+
+                                //단체 채팅
+
+                            });
+                        });
+
+                        let teamButton2 = document.createElement('button');
+                        teamButton2.innerText = "화상채팅";
+                        teamButton2.setAttribute("id", team.tId);
+                        teamButton2.setAttribute("style", " margin:3px;");
+                        teamButton2.addEventListener("click", ()=>{
+
+                            $.ajax({
+
+                                //화상 채팅
+
+                            });
+                        });
+
+                        let teamButton3 = document.createElement('button');
+                        teamButton3.innerText = "팀 탈퇴";
+                        teamButton3.setAttribute("style", " margin:3px;");
+                        teamButton3.addEventListener("click", ()=>{
+
+                            $.ajax({
+                                url: "/dropStudyTeam",
                                 type: "GET",
                                 dataType:"json",
                                 data: {
-                                    tId : team.ttID,
-                                    point : team.depositPoint
+                                    tId : team.ttID
                                 },
                                 success: function (data){
-                                    if (data==true){
-                                        alert("입금이 완료 되었습니다. 스터디 참가가 가능합니다. ")
-                                        window.location.replace('/myPage');
-                                    }
-                                    else if(data==false){
-                                        alert("잔액이 부족합니다. 포인트를 충전해주세요 ")
-                                        window.location.replace('/chargePoint') ;
-                                    }
+                                    alert("팀이 탈퇴 되었습니다. ")
+                                    window.location.replace('/myPage');
+
                                 }, error:function(){
-                                    alert("로그인 후 이용해주세요.");
-                                    window.location.replace('/login') ;
+                                    alert("error");
                                 }
+
                             });
                         });
+
                         let eachTeam = document.createElement('div');
+                        eachTeam.append(image);
                         eachTeam.append(teamName);
                         eachTeam.append(teamContent);
-                        eachTeam.append(teamDeposit)
                         eachTeam.append(currentCount);
-                        eachTeam.append(teamButton);
-                        eachTeam.setAttribute("style", "text-align:center; margin-top:10px;")
+                        eachTeam.append(date);
+                        eachTeam.append(teamButton1);
+                        eachTeam.append(teamButton2);
+                        eachTeam.append(teamButton3);
+                        eachTeam.setAttribute("class", "col-xs-4");
+                        eachTeam.setAttribute("style", "text-align: center; margin-top:20px");
                         teams.appendChild(eachTeam);
+
                     });
                 }, error:function(){
-                    alert("error");
+
                 }
             })
         }
+
     </script>
 </body>
 </html>

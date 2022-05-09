@@ -24,16 +24,16 @@
     </div>
 </div>
 
+
+
+
     <div style="margin-top: 100px; text-align: center; ">
 
-        <h1>
-            <p><span th:text="${loginUser.userID}" ></span>님</p>
-        </h1>
 
-        <h1>
-
-            <p> <span th:text="${loginUser.point}"></span>포인트</p>
-        </h1>
+        <div style="text-align: center">
+            <div id="name"></div>
+            <div id="point"></div>
+        </div>
 
 
         <button  onclick="location.href='/'"  >
@@ -47,9 +47,8 @@
         <button  onclick="location.href='/refunds'"  >
             포인트 환급
         </button>
-
-
     </div>
+
 
     <h2 style="text-align: center">마이 스터디 </h2>
     <hr>
@@ -61,7 +60,24 @@
 
     <script>
 
+        getUser();
         getTeams();
+
+        function  getUser(){
+            $.ajax({
+                type:"get",
+                url:"/findUser",
+                datatype:'json',
+                success: function(data){
+                    let name = document.getElementById('name');
+                    name.innerHTML = data.userName;
+
+                    let point = document.getElementById('point');
+                    point.innerHTML = data.point;
+                }
+            })
+        }
+
         function getTeams(){
             $.ajax({
                 type:"get",
@@ -145,7 +161,7 @@
 
                     });
                 }, error:function(){
-                    alert("error");
+
                 }
             })
         }

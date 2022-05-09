@@ -5,8 +5,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import st.project.studyWithUs.domain.User;
+import st.project.studyWithUs.vo.UserVO;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 @Transactional
@@ -25,4 +27,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query ("update User u set u.point = :p where u.uID = :uid")
     void updatePoint(@Param("p") Long point, @Param("uid") Long uId);
 
+    @Query ("select u from User u where u.userID = :userID")
+    List<User> searchUserInfo(@Param("userID") String userID);
 }

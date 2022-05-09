@@ -5,9 +5,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import st.project.studyWithUs.domain.Team;
+import st.project.studyWithUs.domain.User;
+import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.repository.TeamRepository;
+import st.project.studyWithUs.repository.UserTeamRepository;
+import st.project.studyWithUs.vo.TeamVO;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -16,6 +21,7 @@ import java.util.List;
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
+    private final UserTeamRepository userTeamRepository;
 
 
     @Override
@@ -51,4 +57,115 @@ public class TeamServiceImpl implements TeamService {
     public Team findBytID(Long tId) {
         return teamRepository.findBytID(tId);
     }
+
+    @Override
+    public void deleteTeam(Long tID) {
+        teamRepository.deleteById(tID);
+    }
+
+    @Override
+    public List<TeamVO> searchTeam(String teamName, User user) {
+        //비회원일 때 검색
+        if(user==null){
+            List <Team> teams = teamRepository.findAll();
+            List <TeamVO> serachTeamList = new ArrayList<>();
+            for(Team t : teams){
+                if(t.getTeamName().contains(teamName)&&t.getHeadCount()!=t.getCurrentCount()){
+                    serachTeamList.add(create(t));
+                }
+            }
+            return serachTeamList;
+        }
+        //회원일 때 검색
+        else{
+            List<Team> te;
+            te = userTeamRepository.findUserTeam(user.getUID());
+            List <Team> teams = teamRepository.findAll();
+            List <TeamVO> serachTeamList = new ArrayList<>();
+
+            for(Team t : teams){
+                boolean check1 =true;
+                if(t.getCurrentCount()==t.getHeadCount())continue;
+                for(Team ut : te){
+                    if(ut.getTID()==t.getTID()){
+                        //현재 속한 스터디거나, 스터디 인원이 꽉 차있으면.
+                        check1=false;
+                        break;
+                    }
+                }
+                if(check1==true){
+                    if(t.getTeamName().contains(teamName)){
+                        serachTeamList.add(create(t));
+                    }
+                }
+            }
+            return serachTeamList;
+        }
+    }
+
+    @Override
+    public List<TeamVO> findAllTeams(User user) {
+        //비회원일때
+        if(user ==null){
+            List<Team> findTeams = teamRepository.findTeams();
+            List<TeamVO> teamVO =  new ArrayList<>();
+            for(Team t : findTeams){
+                teamVO.add(create(t));
+            }
+            return teamVO;
+        }
+        //회원일 때
+        else{
+            List<Team> teams = teamRepository.findAll();
+            List<Team> te;
+            te = userTeamRepository.findUserTeam(user.getUID());
+            List<TeamVO> teamVO =  new ArrayList<>();
+            for(Team t : teams){
+                boolean check1 =true;
+                if(t.getCurrentCount()==t.getHeadCount())continue;
+                for(Team ut : te){
+                    if(ut.getTID()==t.getTID()){
+                        //현재 속한 스터디거나, 스터디 인원이 꽉 차있으면.
+                        check1=false;
+                        break;
+                    }
+                }
+                if(check1==true){
+                    teamVO.add(create(t));
+                }
+            }
+            return teamVO;
+        }
+    }
+
+    @Override
+    public List<TeamVO> findSearchTeam(String teamName) {
+        List <Team> teams = teamRepository.findAll();
+        List <TeamVO> searchTeamList = new ArrayList<>();
+        for(Team t : teams){
+            if(t.getTeamName().contains(teamName)){
+                searchTeamList.add(create(t));
+            }
+        }
+        return searchTeamList;
+    }
+
+    public TeamVO create(Team t){
+        TeamVO tVO = new TeamVO();
+        tVO.setTtID(t.getTID());
+        tVO.setTeamName(t.getTeamName());
+        tVO.setTeamDesc(t.getTeamDesc());
+        tVO.setDepositPoint(t.getDepositPoint());
+        tVO.setTotalDepositPoint(t.getTotalDepositPoint());
+        tVO.setHeadCount(t.getHeadCount());
+        tVO.setCurrentCount(t.getCurrentCount());
+        tVO.setEndDate(t.getEndDate());
+        tVO.setStartDate(t.getStartDate());
+        tVO.setTeamImage(t.getTeamImage());
+        return tVO;
+    }
 }
+
+//https://swexpertacademy.com/main/sst/intro.do
+//https://hyundai-autoever.recruiter.co.kr/app/jobnotice/view?systemKindCode=MRS2&jobnoticeSn=96551
+//https://hyundai-autoever.recruiter.co.kr/app/jobnotice/view?systemKindCode=MRS2&jobnoticeSn=95862

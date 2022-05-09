@@ -1,6 +1,9 @@
 package st.project.studyWithUs.service.userService;
 import org.springframework.stereotype.Service;
 import st.project.studyWithUs.domain.User;
+import st.project.studyWithUs.vo.UserVO;
+
+import java.util.List;
 
 
 @Service
@@ -15,4 +18,10 @@ public interface UserService {
     User login(String id, String pw);
 
     User getNameEmail(String nickname, String email);
+
+    List<User> findAll();
+
+    void deleteUser(Long uID);
+
+    List<UserVO> searchUserInfo(String userID);
 }
