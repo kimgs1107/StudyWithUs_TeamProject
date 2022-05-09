@@ -3,8 +3,21 @@ const URL = "/my_model/";
 let model, webcam, webcamContainer, maxPredictions;
 webcamContainer = document.querySelector("#webcam-container")
 
-let hour=0,minute=0,second=0,active=false,timeoutId;
+
+let hour=0,minute=0,second=0,active=false,timeoutId,totalTime,realTime=0;
 // Load the image model and setup the webcam
+$.ajax({
+    type: "POST",
+    url: "updateTotalTime",
+    success: function (data) {
+        console.log("total" + data)
+        totalTime=data*100;
+    },
+    error: function (error) {
+        console.log(error);
+    }
+});
+
 async function init() {
     document.querySelector("#start").setAttribute("hidden","true")
     const modelURL = URL + "model.json";
@@ -57,7 +70,6 @@ async function loop() {
 
 let cnt=0;
 let data;
-let realTime=0;
 
 async function predict() {
     const prediction = await model.predict(webcam.canvas);
@@ -67,6 +79,7 @@ async function predict() {
             cnt++;
             if(cnt<=1000){
                 realTime++;
+                totalTime++
             }
         }
 
@@ -77,7 +90,7 @@ async function predict() {
             $.ajax({
                 type: "POST",
                 url: "updateExist",
-                data: {data: data, realTime:realTime},
+                data: {data: data, realTime:realTime,totalTime:totalTime},
                 success: function (data) {     },
                 error: function (error) {
                     console.log(error);
@@ -89,12 +102,13 @@ async function predict() {
 
         if(prediction[1].probability.toFixed(2) > 0.8){ // 자리있음
             realTime++;
+            totalTime++;
             cnt=0;
             data=true;
             $.ajax({
                 type: "POST",
                 url: "updateExist",
-                data: {data: data},
+                data: {data: data,realTime:realTime,totalTime:totalTime},
                 success: function (data) {
                 },
                 error: function (error) {
