@@ -57,12 +57,17 @@ async function loop() {
 
 let cnt=0;
 let data;
+let realTime=0;
+
 async function predict() {
     const prediction = await model.predict(webcam.canvas);
     for (let i = 0; i < maxPredictions; i++) {
 
         if(prediction[1].probability.toFixed(2) < 0.2){ // 자리이탈
             cnt++;
+            if(cnt<=1000){
+                realTime++;
+            }
         }
 
         if(cnt==1000){ // 100 = 1초  // 30000=300초=5분 // 테스트는 10초로
@@ -72,7 +77,7 @@ async function predict() {
             $.ajax({
                 type: "POST",
                 url: "updateExist",
-                data: {data: data},
+                data: {data: data, realTime:realTime},
                 success: function (data) {     },
                 error: function (error) {
                     console.log(error);
@@ -83,6 +88,7 @@ async function predict() {
         }
 
         if(prediction[1].probability.toFixed(2) > 0.8){ // 자리있음
+            realTime++;
             cnt=0;
             data=true;
             $.ajax({
@@ -127,3 +133,14 @@ async function predict() {
 
     }
 }
+/*
+//임의로 만든 time()함수 함수명 바꾼다면 실행할 함수명도 같이 바꿔줘야지 작동합니
+function time(seconds) {
+    //3항 연산자를 이용하여 10보다 작을 경우 0을 붙이도록 처리 하였다.
+    var hour = parseInt(seconds/3600) < 10 ? '0'+ parseInt(seconds/3600) : parseInt(seconds/3600);
+    var min = parseInt((seconds%3600)/60) < 10 ? '0'+ parseInt((seconds%3600)/60) : parseInt((seconds%3600)/60);
+    var sec = seconds % 60 < 10 ? '0'+seconds % 60 : seconds % 60;
+    //연산한 값을 화면에 뿌려주는 코드
+    // document.getElementById("time").innerHTML = hour+":"+min+":" + sec;
+    return hour+":"+min+":" + sec;
+}*/
