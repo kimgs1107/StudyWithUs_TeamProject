@@ -11,6 +11,6 @@ public interface RefundAccountRepository extends JpaRepository<RefundUserAccount
 
 
 
-
+    RefundUserAccount findByrID (Long rID);
 
 }

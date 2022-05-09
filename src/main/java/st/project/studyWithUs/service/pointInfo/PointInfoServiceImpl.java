@@ -33,11 +33,25 @@ public class PointInfoServiceImpl implements PointInfoService{
         return pointInfoRepository.getById(aId);
     }
 
+
+
     //환급 요청 추가
     @Transactional
     public void addRefundUserAccount(RefundUserAccount refundUserAccount){
         refundAccountRepository.save(refundUserAccount);
     }
+
+    //포인 환급 후 blance 감소
+    @Transactional
+    @Override
+    public void changePoint(Long point) {
+        PointInfo pointInfo = pointInfoRepository.findBypID(1L);
+        pointInfo.setBalance(pointInfo.getBalance()- point);
+        pointInfoRepository.save(pointInfo);
+    }
+
+
+
 
     //테스트용
     @Transactional
@@ -77,5 +91,7 @@ public class PointInfoServiceImpl implements PointInfoService{
         System.out.println("감소 thread = " + Thread.currentThread().getName() + ", " + "currBalance = " + (currBalance - point));
         pointInfoRepository.save(pointInfo);
     }
+
+
 
 }

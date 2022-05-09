@@ -3,10 +3,17 @@ package st.project.studyWithUs.service.userService;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.repository.UserRepository;
+import st.project.studyWithUs.vo.UserVO;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -44,4 +51,30 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long uID) {
+        userRepository.deleteById(uID);
+    }
+
+
+    //user ID로 회원 찾기
+    @Override
+    public List<UserVO> searchUserInfo(String userID) {
+        List<User> u = userRepository.searchUserInfo(userID);
+        List<UserVO> user = new ArrayList<>();
+        UserVO uvo = new UserVO();
+        uvo.setUuID(u.get(0).getUID());
+        uvo.setUserID(u.get(0).getUserID());
+        uvo.setUserName(u.get(0).getUserName());
+        uvo.setPw(u.get(0).getPassword());
+        uvo.setPoint(u.get(0).getPoint());
+        user.add(uvo);
+        return user;
+    }
 }

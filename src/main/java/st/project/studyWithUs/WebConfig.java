@@ -22,7 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**") //하위 전부 허용하되,
                 .excludePathPatterns("/","/css/**", "/*.ico", "/error", "/signUp", "/login",
                         "/users/findId","/users/findPw" , "/kakaoLogin" ,"/logout", "/images/*.jpg","/images/*.png",
-                        "/users/findPw", "/loginCheck", "/explain", "/validateMem", "/loginUser", "/findAllTeams"
+                        "/users/findPw", "/loginCheck", "/explain", "/validateMem", "/loginUser", "/findAllTeams",
+                        "../images/*.jpg"
 
                         ); // url 에는 인터셉트 먹이지마.
     }
