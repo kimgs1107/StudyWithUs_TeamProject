@@ -34,8 +34,8 @@ public class UserController {
     }
 
     @GetMapping("/myPage")
-    public String myPage(Model model){
-        User user = userService.find(1L);
+    public String myPage(Model model, @Login User loginUser){
+        User user = userService.find(loginUser.getUID());
         model.addAttribute("loginUser", user);
         return "myPage";
     }
@@ -48,8 +48,8 @@ public class UserController {
 
     @ResponseBody
     @GetMapping("/deposit")
-    public void deposit(Long point){
-        userService.updatePoint(point, 1L);
+    public void deposit(Long point, @Login User loginUser){
+        userService.updatePoint(point, loginUser.getUID());
         pointInfoService.deposit(point, 1L );
     }
 
