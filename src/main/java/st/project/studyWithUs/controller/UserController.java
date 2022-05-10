@@ -6,16 +6,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.domain.UserTeam;
+import st.project.studyWithUs.interceptor.SessionConst;
 import st.project.studyWithUs.service.pointInfo.PointInfoService;
 import st.project.studyWithUs.service.teamService.TeamService;
 import st.project.studyWithUs.service.userService.UserService;
 import st.project.studyWithUs.service.userTeamService.UserTeamService;
 import st.project.studyWithUs.vo.UserVO;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 @Slf4j
@@ -53,6 +58,44 @@ public class UserController {
         pointInfoService.deposit(point, 1L );
     }
 
+    @GetMapping("/editUser")
+    public String editUser(){
+        return "editUser";
+    }
+
+    @ResponseBody
+    @PostMapping("/saveEditUser")
+    public boolean saveEditUser(@RequestParam String photo,
+                                @RequestParam String name,
+                                @RequestParam String id,
+                                @RequestParam String pw,
+                                @RequestParam String email,
+                                @Login User loginUser,
+                                HttpServletRequest request){
+
+
+        userService.saveEditUser(loginUser.getUID(), photo, name, id, pw, email);
+        loginUser = userService.findByuID(loginUser.getUID());
+
+        HttpSession session = request.getSession();
+        // 세션에 LOGIN_USER라는 이름(SessionConst.class에 LOGIN_USER값을 "loginUser")을 가진 상자에 loginUser 객체를 담음.
+        // 즉, 로그인 회원 정보를 세션에 담아놓는다.
+        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
+        return true;
+
+    }
+
+    @ResponseBody
+    @GetMapping("/getUserInfo")
+    public UserVO getUserInfo(@Login User loginUser){
+        UserVO userVO = new UserVO();
+        userVO.setUserID(loginUser.getUserID());
+        userVO.setUserName(loginUser.getUserName());
+        userVO.setPw(loginUser.getPassword());
+        userVO.setEmail(loginUser.getEmail());
+        userVO.setUserImage(loginUser.getUserImage());
+        return userVO;
+    }
 
     //포인트 충전 로직
     @ResponseBody

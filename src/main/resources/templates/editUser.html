@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<body>
+
+<div class="container" style="margin-top: 10px;">
+    <div class="row">
+        <div class="col-xs-3">
+            <a href="/">로고</a>
+        </div>
+        <div class="col-xs-7"></div>
+        <div class="col-xs-2">
+            <button type="submit" onclick="location.href='/myPage'"  >
+                마이페이지
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" style="margin-top: 20px;">
+    <div class="row" style="text-align: center;">
+        <h1>개인정보 수정</h1>
+    </div>
+
+    <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
+        <div class="col-xs-2">프로필 사진</div>
+        <div class="col-xs-10" id="photo">
+        </div>
+    </div>
+    <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
+        <div class="col-xs-2">이름</div>
+        <div class="col-xs-10" id="name">
+
+        </div>
+    </div>
+    <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
+        <div class="col-xs-2">아이디</div>
+        <div class="col-xs-10" id="id">
+
+        </div>
+
+    </div>
+    <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
+        <div class="col-xs-2">비밀번호</div>
+        <div class="col-xs-10" id="pw">
+
+        </div>
+
+    </div>
+    <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
+
+        <div class="col-xs-2">이메일</div>
+        <div class="col-xs-10" id="email">
+
+        </div>
+    </div>
+    <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
+        <button id="btn">저장하기</button>
+    </div>
+
+
+</div>
+
+
+
+<script>
+    getUser();
+    function getUser(){
+        $.ajax({
+            url: "/getUserInfo",
+            type: "GET",
+            dataType:"json",
+            success: function (user){
+                let photo = document.getElementById('photo');
+                let name = document.getElementById('name');
+                let id = document.getElementById('id');
+                let pw = document.getElementById('pw');
+                let email = document.getElementById('email');
+
+
+                let div1 = document.createElement('input')
+                div1.setAttribute('type', 'text');
+                div1.setAttribute('id', 'photo1');
+                div1.setAttribute('value', user.userImage);
+                photo.appendChild(div1);
+                let div2 = document.createElement('input')
+                div2.setAttribute('type', 'text');
+                div2.setAttribute('id', 'name1');
+                div2.setAttribute('value', user.userName);
+                name.appendChild(div2);
+                let div3 = document.createElement('input')
+                div3.setAttribute('type', 'text');
+                div3.setAttribute('id', 'id1');
+                div3.setAttribute('value', user.userID);
+                id.appendChild(div3);
+                let div4 = document.createElement('input')
+                div4.setAttribute('type', 'text');
+                div4.setAttribute('id', 'pw1');
+                div4.setAttribute('value', user.pw);
+                pw.appendChild(div4);
+                let div5 = document.createElement('input')
+                div5.setAttribute('type', 'text');
+                div5.setAttribute('id', 'email1');
+                div5.setAttribute('value', user.email);
+                email.appendChild(div5);
+
+
+                $("#btn").on('click', function() {
+
+                    $.ajax({
+                        url: "/saveEditUser",
+                        type: "POST",
+                        data: {
+                            photo:$("#photo1").val(),
+                            name:$("#name1").val(),
+                            id:$("#id1").val(),
+                            pw:$("#pw1").val(),
+                            email:$("#email1").val()
+                        },
+                        success: function(data){
+                            alert("개인정보 수정이 완료되었습니다. ")
+                            window.location.href = "/myPage";
+                        },error:function(){
+                            alert("error");
+                            window.location.replace('/myPage');
+                        }
+                    });
+
+                })
+
+            }, error:function(){
+                alert("관리자가 아닙니다.");
+                window.location.replace('/userList') ;
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

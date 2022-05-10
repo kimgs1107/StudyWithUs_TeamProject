@@ -78,6 +78,22 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public void saveEditUser(Long uid, String photo, String name, String id, String pw, String email) {
+        User user = userRepository.findByuID(uid);
+        user.setUserImage(photo);
+        user.setUserID(id);
+        user.setPassword(pw);
+        user.setUserName(name);
+        user.setEmail(email);
+        userRepository.save(user);
+    }
+
+    @Override
+    public User findByuID(Long uid) {
+        return userRepository.findByuID(uid);
+    }
+
     // 회원가입
     @Override
     public void save(User user){
