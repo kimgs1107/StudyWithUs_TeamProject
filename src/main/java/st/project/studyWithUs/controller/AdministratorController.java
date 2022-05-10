@@ -215,7 +215,6 @@ public class AdministratorController {
             vo.setPoint(li.getPoint());
             voList.add(vo);
         }
-        refundUserAccountService.findAllByuID(user.getUID());
         return voList;
     }
 }
