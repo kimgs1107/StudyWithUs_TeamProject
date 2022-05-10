@@ -7,11 +7,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
-<!-- 부가적인 테마 -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
         $("#refunds_btn").on('click', function() {
@@ -31,29 +26,25 @@
                 let info = document.getElementById('info')
 
                 data.forEach(function(list){
-                    let date = document.createElement('h4');
+                    let date = document.createElement('div');
                     date.setAttribute('class','col-xs-4');
                     date.innerHTML = list.requestDate;
 
-                    let point = document.createElement('h4')
+                    let point = document.createElement('div')
                     point.setAttribute('class','col-xs-4')
                     point.innerHTML = list.point;
 
                     let check = document.createElement('div');
-                    check.setAttribute("class", "col-xs-4");
-                    let teamButton = document.createElement('button');
+                    check.setAttribute('class', 'col-xs-4');
 
                     if(list.flag==true) {
-                        teamButton.setAttribute("disabled", "disabled");
-                        teamButton.innerText = "환급완료";
-                        teamButton.setAttribute("style", "height:30pt;")
+                        check.innerText = "환급완료";
+                        check.setAttribute("readonly","true");
                     }
                     else  {
-                        teamButton.innerText = "환급요청";
-                        teamButton.setAttribute("style", "height:30pt; color:white; background-color: blue; ")
+                        check.innerText = "환급요청";
+                        check.setAttribute("readonly","true");
                     }
-
-                    check.appendChild(teamButton);
 
                     let eachAccount = document.createElement('div');
                     eachAccount.setAttribute("style", "text-align:center; margin-top:10px;  ")
@@ -122,8 +113,8 @@
 </div>
 
 <div class="row" style="margin-top: 30px; margin-bottom: 10px; text-align: center;">
-    <div class="col-xs-2"><h3>요청 날짜</h3></div>
-    <div class="col-xs-2"><h3>포인트</h3></div>
+    <div class="col-xs-4"><h3>요청 날짜</h3></div>
+    <div class="col-xs-4"><h3>포인트</h3></div>
     <div class="col-xs-4"><h3>진행상황</h3></div>
 </div>
 <div class="row" >
