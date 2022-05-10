@@ -44,7 +44,13 @@ public class ExistWebSocketHandler extends TextWebSocketHandler {
             else{
                 message = new TextMessage(userTeam.getUser().getUID() + " on");
             }
-            sess.sendMessage(message);
+            try{
+                synchronized (sess){
+                    sess.sendMessage(message);
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         }
     }
 
