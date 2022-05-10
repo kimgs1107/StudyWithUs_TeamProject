@@ -1,4 +1,4 @@
-package st.project.studyWithUs.Controller;
+package st.project.studyWithUs.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.domain.Team;
 import st.project.studyWithUs.domain.User;
-import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.service.teamService.TeamService;
 import st.project.studyWithUs.service.userTeamService.UserTeamService;
 import st.project.studyWithUs.vo.TeamVO;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -10,6 +10,10 @@ import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.service.studyingService.StudyingService;
+import st.project.studyWithUs.websocketHandler.ExistWebSocketHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -17,6 +21,7 @@ import st.project.studyWithUs.service.studyingService.StudyingService;
 public class StudyingController {
 
     private final StudyingService studyingService;
+    private final ExistWebSocketHandler handler;
 
     @GetMapping("/studying")
     public String studying(){
@@ -25,7 +30,7 @@ public class StudyingController {
 
     @PostMapping("/updateUserTeam")
     @ResponseBody
-    public void updateUserTeam(@RequestParam("data") boolean data, @RequestParam("realTime") int realTime, @RequestParam("totalTime") int totalTime, @Login User user) {
+    public void updateUserTeam(@RequestParam("data") boolean data, @RequestParam("realTime") int realTime, @RequestParam("totalTime") int totalTime, @Login User user) throws Exception{
 
         Long tID = 1l;
 
@@ -34,6 +39,7 @@ public class StudyingController {
         ut.setRealTime(((long)realTime)/100);
         ut.setTotalTime(((long)totalTime)/100);
         studyingService.save(ut);
+        handler.noticeExist(ut);
     }
 
     @PostMapping("/getTotalTime")
@@ -56,6 +62,24 @@ public class StudyingController {
         return ut.getRealTime().intValue();
     }
 
+    @PostMapping("/members")
+    @ResponseBody
+    public List<Long> members(@RequestParam("tID") String tID){
+        List<UserTeam> userTeams = studyingService.findUserTeamByTID(Long.parseLong(tID));
+        List<Long> membersID = new ArrayList<>();
 
+        for(UserTeam ut : userTeams){
+            membersID.add(ut.getUser().getUID());
+        }
+
+        return membersID;
+    }
+
+    @PostMapping("/getLoginUser")
+    @ResponseBody
+    public Long getLoginUser(@Login User loginUser){
+        Long uID = loginUser.getUID();
+        return uID;
+    }
 
 }

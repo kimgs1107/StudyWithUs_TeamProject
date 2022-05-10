@@ -1,4 +1,4 @@
-package st.project.studyWithUs.Controller;
+package st.project.studyWithUs.controller;
 
 
 import lombok.RequiredArgsConstructor;
