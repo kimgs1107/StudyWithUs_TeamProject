@@ -5,11 +5,63 @@
     <title>Title</title>
 </head>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
 <script>
     $(document).ready(function () {
         $("#refunds_btn").on('click', function() {
             refundsChk();
         })
+        $.ajax({
+            url: "/currentPoint",
+            type: "POST",
+            success: function(data){
+                $("#currentPoint").html(data);
+            },
+        });
+        $.ajax({
+            url: "refundList",
+            type:"POST",
+            success: function(data){
+                let info = document.getElementById('info')
+
+                data.forEach(function(list){
+                    let date = document.createElement('div');
+                    date.setAttribute('class','col-xs-4');
+                    date.innerHTML = list.requestDate;
+
+                    let point = document.createElement('div')
+                    point.setAttribute('class','col-xs-4')
+                    point.innerHTML = list.point;
+
+                    let check = document.createElement('div');
+                    check.setAttribute('class', 'col-xs-4');
+
+                    if(list.flag==true) {
+                        check.innerText = "환급완료";
+                        check.setAttribute("readonly","true");
+                    }
+                    else  {
+                        check.innerText = "환급요청";
+                        check.setAttribute("readonly","true");
+                    }
+
+                    let eachAccount = document.createElement('div');
+                    eachAccount.setAttribute("style", "text-align:center; margin-top:10px;  ")
+                    eachAccount.append(date)
+                    eachAccount.append(point);
+                    eachAccount.append(check);
+
+
+                    info.appendChild(eachAccount);
+                })
+            },
+            error: function (error){
+                console.log(error)
+                console.log("뭐고")
+            }
+        });
+
     });
     function refundsChk() {
         $.ajax({
@@ -33,25 +85,13 @@
             },
         });
     }
-    function currentPoint(){
-        $.ajax({
-            url: "/currentPoint",
-            type: "POST",
-            success: function(data){
-                $("#currentPoint").html(data);
-            },
-        });
-    }
 </script>
 
 <body>
-<script>
-    currentPoint();
-</script>
 <h1>나의 포인트 정보</h1>
 <h1>현재 포인트</h1>
 
-<span id="currentPoint">currentPoint();</span>
+<span id="currentPoint"></span>
 <div style="text-align: center; margin-top: 100px; ">
 
     <input type="text" id="name"  class="form-control"
@@ -72,7 +112,14 @@
     <h1>환급 신청 현황</h1>
 </div>
 
-
+<div class="row" style="margin-top: 30px; margin-bottom: 10px; text-align: center;">
+    <div class="col-xs-4"><h3>요청 날짜</h3></div>
+    <div class="col-xs-4"><h3>포인트</h3></div>
+    <div class="col-xs-4"><h3>진행상황</h3></div>
+</div>
+<div class="row" >
+    <div id="info"></div>
+</div>
 
 </body>
 </html>

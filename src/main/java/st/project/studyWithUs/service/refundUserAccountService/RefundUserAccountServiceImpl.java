@@ -23,6 +23,9 @@ public class RefundUserAccountServiceImpl implements RefundUserAccountService {
     }
 
 
+    public List<RefundUserAccount> findAllByuID(Long uID){ return refundAccountRepository.findAllByuID(uID);}
+
+
     @Transactional
     @Override
     public void changeFlag(Long rID) {

@@ -11,6 +11,7 @@ public interface RefundUserAccountService {
 
     List<RefundUserAccount> findRefundAccount();
 
+    List<RefundUserAccount> findAllByuID(Long uID);
 
     void changeFlag(Long rID);
 

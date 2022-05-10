@@ -163,6 +163,7 @@ public class AdministratorController {
         refundUserAccount.setAccount(account);
         refundUserAccount.setUser(user);
         refundUserAccount.setRequestDate(LocalDate.now());
+        refundUserAccount.setFlag(false);
         pointInfoService.addRefundUserAccount(refundUserAccount);
         return "환급요청이 완료되었습니다.";
     }
@@ -196,5 +197,24 @@ public class AdministratorController {
     @ResponseBody
     public Long currentPoint(@Login User user){
         return user.getPoint();
+    }
+
+    @ResponseBody
+    @PostMapping("/refundList")
+    public  List<AccountVO> refundList(@Login User user){
+
+        List<RefundUserAccount> list = refundUserAccountService.findAllByuID(user.getUID());
+        List<AccountVO> voList = new ArrayList<>();
+        for(RefundUserAccount li : list){
+            AccountVO vo = new AccountVO();
+            vo.setUserName(li.getUserName());
+            vo.setBankName(li.getBankName());
+            vo.setAccount(li.getAccount());
+            vo.setRequestDate(li.getRequestDate());
+            vo.setFlag(li.isFlag());
+            vo.setPoint(li.getPoint());
+            voList.add(vo);
+        }
+        return voList;
     }
 }
