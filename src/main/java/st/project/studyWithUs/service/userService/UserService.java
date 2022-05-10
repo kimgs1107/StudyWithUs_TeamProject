@@ -9,6 +9,10 @@ import java.util.List;
 @Service
 public interface UserService {
 
+    void save(User user);
+
+    List<User> findByUserID(String userID);
+
     User find(Long uid); //유저 찾기
 
     void updatePoint(Long point, Long uId); //포인트 업데이트
