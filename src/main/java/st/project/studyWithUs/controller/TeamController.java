@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import st.project.studyWithUs.argumentresolver.Login;
+import st.project.studyWithUs.chatroom.repository.ChatRoomRepository;
 import st.project.studyWithUs.domain.Team;
 import st.project.studyWithUs.domain.User;
+import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.form.TeamForm;
 import st.project.studyWithUs.service.teamService.TeamService;
 import st.project.studyWithUs.service.userTeamService.UserTeamService;
@@ -29,6 +31,7 @@ public class TeamController {
 
     private final TeamService teamService;
     private final UserTeamService userTeamService;
+    private final ChatRoomRepository chatRoomRepository;
 
     @ResponseBody
     @GetMapping("/findAllTeams")
@@ -106,7 +109,7 @@ public class TeamController {
 
     @ResponseBody
     @PostMapping(value = "/createStudy")
-    public void  CreateTeamForm(TeamForm studyForm) {
+    public void  CreateTeamForm(TeamForm studyForm, @Login User loginUser) {
 
         // 전달받은 데이터를 Team 테이블에 저장
         Team team = new Team();
@@ -115,10 +118,20 @@ public class TeamController {
         team.setStartDate(LocalDate.parse(studyForm.getStartDate()));
         team.setEndDate(LocalDate.parse(studyForm.getEndDate()));
         team.setHeadCount(studyForm.getHeadCount());
+        team.setCurrentCount(1);
         team.setDepositPoint((long)studyForm.getDepositPoint());
         team.setTargetTime((long)studyForm.getTargetTime()*60); // 분으로 저장
 
         teamService.saveTeam(team);
 
+        UserTeam userTeam = new UserTeam();
+        userTeam.setTeam(team);
+        userTeam.setUser(loginUser);
+        userTeam.setExist(false);
+        userTeam.setTotalTime(1000L);
+        userTeam.setRealTime(10L);
+        userTeamService.save(userTeam);
+
+        chatRoomRepository.add(team.getTID(), team.getTeamName());
     }
 }

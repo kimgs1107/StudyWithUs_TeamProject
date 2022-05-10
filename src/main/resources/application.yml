@@ -1,4 +1,9 @@
 spring:
+  mustache:
+    suffix: .html
+  profiles:
+    active: stomp
+
   datasource:
     url: jdbc:h2:tcp://localhost/~/study
 
@@ -24,7 +29,13 @@ spring:
     properties:
       hibernate:
         # show_sql: true
-        format_sql: true
+        format_sql: false
+
+viewname:
+  chatroom:
+    list: /chat2/rooms
+    detail: /chat2/room-detail
+
 
 #  mail:
 #    host: smtp.gmail.com

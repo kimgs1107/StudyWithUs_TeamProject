@@ -22,6 +22,7 @@
                 <a href="/">로고</a>
             </div>
             <div class="col-xs-4"></div>
+            <div class="col-xs-2"><a href="/createStudy">스터디 생성하기</a></div>
             <div class="col-xs-2"><a href="/board">자유게시판</a></div>
             <div class="col-xs-1"><a href="/login">로그인</a></div>
             <div class="col-xs-2">
@@ -197,9 +198,17 @@
                         teamButton1.addEventListener("click", ()=>{
 
                             $.ajax({
+                                url: "/chat/rooms/"+team.ttID,
+                                type: "GET",
+                                dataType:"json",
+                                success: function (data){
+                                    if(data==true){
+                                        window.location.replace('/chat/room/enter/'+team.ttID) ;
+                                    }
+                                }, error:function(){
 
-                                //단체 채팅
-
+                                    window.location.replace('/login') ;
+                                }
                             });
                         });
 
