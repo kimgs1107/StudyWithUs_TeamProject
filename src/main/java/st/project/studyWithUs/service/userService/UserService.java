@@ -9,7 +9,11 @@ import java.util.List;
 @Service
 public interface UserService {
 
+    User findByNameAndEmail(String name,String email);
+
     void save(User user);
+
+    List<User> findByUserEmail(String email);
 
     List<User> findByUserID(String userID);
 

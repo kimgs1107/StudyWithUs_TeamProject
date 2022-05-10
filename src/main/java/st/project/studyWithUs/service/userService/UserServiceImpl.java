@@ -88,4 +88,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.searchUserInfo(userID);
     }
 
+    public List<User> findByUserEmail(String email){
+        return userRepository.findByUserEmail(email);
+    }
+
+    @Override
+    public User findByNameAndEmail(String name,String email){
+        return userRepository.findByNameAndEmail(name,email);
+    }
+
 }

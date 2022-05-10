@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .order(1) //첫번째 인터셉트
                 .addPathPatterns("/**") //하위 전부 허용하되,
                 .excludePathPatterns("/","/css/**", "/*.ico", "/error", "/signUp", "/login",
-                        "/users/findId","/users/findPw" , "/kakaoLogin" ,"/logout", "/images/*.jpg","/images/*.png",
+                        "/findID","/findPw" , "/kakaoLogin" ,"/logout", "/images/*.jpg","/images/*.png",
                         "/users/findPw", "/loginCheck", "/explain", "/validateMem", "/loginUser", "/findAllTeams",
                         "../images/*.jpg","/updateUserTeam"
 
