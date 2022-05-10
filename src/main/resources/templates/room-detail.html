@@ -17,13 +17,37 @@
     <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
+
+    <style>
+        .chat_wrap {
+            border: 1px solid #999;
+            width: 300px;
+            padding: 5px;
+            font-size: 13px;
+            color: #333;
+
+        }
+
+        .chat_wrap .inner {
+            background-color: #acc2d2;
+            border-radius: 5px;
+            padding: 10px;
+            overflow-y: scroll;
+            height: 400px;
+        }
+    </style>
 </head>
 <body>
 
 <h1 id="title"></h1>
 <div class="content" data-room-id="{{room.id}}" data-member="{{member}}">
-    <ul class="chat_box">
-    </ul>
+    <div class="chat_wrap">
+        <div class="inner">
+            <ul class="chat_box" style="text-align: left;">
+            </ul>
+
+        </div>
+    </div>
     <input name="message" id="alpreah_input">
     <button class="send">보내기</button>
 </div>
@@ -84,7 +108,7 @@
                 // chatBox.append('<li>' + content.message + '(' + content.writer + ')</li>')
                 if(name==content.writer){
 
-                    chatBox.append('<h4 style="color: mediumblue">'+ content.writer+ ' : ' + content.message +'</h4>')
+                    chatBox.append('<h4 style="color: black">'+ content.writer+ ' : ' + content.message +'</h4>')
                 }
                 else{
                     chatBox.append('<h4>'+ content.writer+ ' : ' + content.message +'</h4>')
@@ -94,18 +118,33 @@
         });
 
         sendBtn.click(function () {
-            var message = messageInput.val();
-            client.send('/publish/chat/message', {}, JSON.stringify({chatRoomId: tId, type: 'CHAT', message: message, writer: member}));
-            messageInput.val('');
+            if(messageInput.val()!="") {
+                var message = messageInput.val();
+                client.send('/publish/chat/message', {}, JSON.stringify({
+                    chatRoomId: tId,
+                    type: 'CHAT',
+                    message: message,
+                    writer: member
+                }));
+                messageInput.val('');
+            }
         });
+
 
         $(document).ready(function() {
             $("#alpreah_input").keydown(function(key) {
                 if (key.keyCode == 13) {
                     // alert("엔터키를 눌렀습니다.");
-                    var message = messageInput.val();
-                    client.send('/publish/chat/message', {}, JSON.stringify({chatRoomId: tId, type: 'CHAT', message: message, writer: member}));
-                    messageInput.val('');
+                    if(messageInput.val()!="") {
+                        var message = messageInput.val();
+                        client.send('/publish/chat/message', {}, JSON.stringify({
+                            chatRoomId: tId,
+                            type: 'CHAT',
+                            message: message,
+                            writer: member
+                        }));
+                        messageInput.val('');
+                    }
                 }
             });
         });
