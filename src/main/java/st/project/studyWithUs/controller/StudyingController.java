@@ -30,14 +30,14 @@ public class StudyingController {
 
     @PostMapping("/updateUserTeam")
     @ResponseBody
-    public void updateUserTeam(@RequestParam("data") boolean data, @RequestParam("realTime") int realTime, @RequestParam("totalTime") int totalTime, @Login User user) throws Exception{
+    public void updateUserTeam(@RequestParam("data") boolean data, @RequestParam("realTime") String realTime, @RequestParam("totalTime") String totalTime, @Login User user) throws Exception{
 
         Long tID = 1l;
 
         UserTeam ut = studyingService.findUserTeam(user.getUID(), tID);
         ut.setExist(data);
-        ut.setRealTime(((long)realTime)/100);
-        ut.setTotalTime(((long)totalTime)/100);
+        ut.setRealTime(Long.parseLong(realTime)/100);
+        ut.setTotalTime(Long.parseLong(totalTime)/100);
         studyingService.save(ut);
         handler.noticeExist(ut);
     }

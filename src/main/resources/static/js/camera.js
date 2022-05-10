@@ -12,6 +12,7 @@ $.ajax({
     url: "getTotalTime",
     success: function (data) {
         console.log("total" + data)
+        totalTime+=0
         totalTime=data*100;
     },
     error: function (error) {
@@ -23,6 +24,7 @@ $.ajax({
     url: "getRealTime",
     success: function (data) {
         console.log("realTime" + data)
+        realTime+=0
         realTime=data*100;
     },
     error: function (error) {
@@ -121,7 +123,19 @@ async function init() {
 var camOFF = false;
 async function loop() {
     if(camOFF) {
+        clearInterval(timeoutId);
         window.cancelAnimationFrame(loop);
+        $.ajax({
+            type: "POST",
+            url: "/updateUserTeam",
+            data: {data: false, realTime:realTime,totalTime:totalTime},
+            success: function (data) {     },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+        document.querySelector('canvas').setAttribute("hidden","true");
+        document.querySelector('img').removeAttribute("hidden");
         return;
     }
     webcam.update(); // update the webcam frame
@@ -131,20 +145,19 @@ async function loop() {
 
 let cnt=0;
 let data;
-
 async function predict() {
     const prediction = await model.predict(webcam.canvas);
     for (let i = 0; i < maxPredictions; i++) {
 
         if(prediction[1].probability.toFixed(2) < 0.2){ // 자리이탈
             cnt++;
-            if(cnt<=1000){
+            if(cnt<=500){
                 realTime++;
                 totalTime++
             }
         }
 
-        if(cnt==500){ // 100 = 1초  // 30000=300초=5분 // 테스트는 10초로
+        if(cnt>500){ // 100 = 1초  // 30000=300초=5분 // 테스트는 10초로
             clearInterval(timeoutId);
             active = false;
             data=false;
@@ -166,6 +179,7 @@ async function predict() {
             totalTime++;
             cnt=0;
             data=true;
+
             $.ajax({
                 type: "POST",
                 url: "updateUserTeam",
@@ -176,6 +190,7 @@ async function predict() {
                     console.log(error);
                 }
             });
+
             document.querySelector('img').setAttribute("hidden","true");
             document.querySelector('canvas').removeAttribute("hidden");
             // 타이머 이어서
@@ -212,21 +227,6 @@ async function predict() {
 document.querySelector("#stop").setAttribute("hidden", "true");
 document.querySelector("#restart").setAttribute("hidden", "true");
 function stop(){
-    document.querySelector('canvas').setAttribute("hidden","true");
-    document.querySelector('img').removeAttribute("hidden");
-    clearInterval(timeoutId);
-
-    active = false;
-    data=false;
-    $.ajax({
-        type: "POST",
-        url: "/updateUserTeam",
-        data: {data: data, realTime:realTime,totalTime:totalTime},
-        success: function (data) {     },
-        error: function (error) {
-            console.log(error);
-        }
-    });
 
     camOFF = true;
 }
@@ -234,6 +234,30 @@ function stop(){
 async function restart(){
     camOFF = false;
     window.requestAnimationFrame(loop);
+    active=false;
+    if (active == false) {
+        active = true;
+        timeoutId = setInterval(function () {
+            second++;
+            if (second > 59) {
+                second = 0;
+                minute++;
+                if (minute > 59) {
+                    minute = 0;
+                    hour++;
+                    if (hour > 59) {
+                        hour = 0;
+                    }
+                }
+            }
+            document.getElementById("time").innerText =
+                (hour < 10 ? "0" + hour : hour) +
+                ":" +
+                (minute < 10 ? "0" + minute : minute) +
+                ":" +
+                (second < 10 ? "0" + second : second);
+        }, 1000);
+    }
 }
 /*
 //임의로 만든 time()함수 함수명 바꾼다면 실행할 함수명도 같이 바꿔줘야지 작동합니
