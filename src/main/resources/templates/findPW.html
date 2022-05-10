@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <style>
+        * {
+            font-family: "Poppins", sans-serif;
+        }
+
+        .container {
+            max-width: 560px;
+        }
+        .signup_form {
+
+            border: 1px solid white;
+            width: 400px;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .signup_form button {
+
+            display: block;
+            box-sizing: border-box;
+            margin: auto;
+            width: 50%;
+            padding: 1rem;
+            font-size: 1rem;
+            background-color: #333333;
+            border: 1px solid #b1b1b1;
+            color: #fff;
+            border-radius: 0.3rem;
+            margin-top: 2rem;
+        }
+
+        .signup_form fieldset {
+
+            margin-top: 4em;
+            margin-bottom: 5em;
+            border: 2px solid #e2e2e2;
+            padding: 1.8rem 2rem 1.8rem;
+        }
+
+    </style>
+    <script type="text/javascript">
+        $('document').ready(function(){
+            let btn = document.querySelector('button[id="find"]');
+            btn.addEventListener('click', function(evt){
+                evt.preventDefault()
+                let name = $('#name').val();
+                let id = $('#id').val();
+                let email = $('#email').val()
+
+
+                if(!name){
+                    $('#name').focus();
+                    return
+                }
+                if(!id){
+                    $('#id').focus();
+                    return
+                }
+                if(!email){
+                    $('#email').focus();
+                    return
+                }
+                $.ajax({
+                    type: "post",
+                    url: "/findPW",
+                    data: {name: name, email: email, id:id},
+                    success: function (data) {
+                        console.log(data)
+                        if(data=="no"){
+                            alert("존재하지 않는 회원정보입니다.");
+                        }else{
+                            alert("회원님 메일로 임시 비밀번호가 발송되었습니다. \n회원님의 임시 비밀번호는 "+ data+"입니다.")
+                            location.href="/login";
+                        }
+                    },error: function(error){
+                        console.log(error);
+                    }
+                });
+            })
+        })
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="signup_form" style="margin-top: 150px;">
+        <fieldset>
+            <div style="text-align: center; margin-top: 8px; margin-bottom: 50px; ">
+                <img src="../images/headerimage.png" style="width : 70%;">
+            </div>
+
+            <form id="form">
+                <div>
+                    <input type="text" id="name" name="name" class="form-control"
+                           placeholder="성명" style="margin-top: 10px; ">
+                </div>
+
+                <div>
+                    <input type="text" id="id" name="id" class="form-control"
+                           placeholder="아이디" style="margin-top: 10px; ">
+                </div>
+                <div>
+
+                    <input type="text" id="email" name="email" class="form-control"
+                           placeholder="E-mail" style="margin-top: 10px; ">
+                </div>
+                <br>
+                <hr class="my-4">
+                <div class="row">
+                    <div class="col">
+                        <button class="w-100 btn btn-success btn-lg" type="submit" id="find">
+                            비밀번호 찾기
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button class="w-100 btn btn-warning btn-lg" onclick="location.href='/login'"
+                                type="button">돌아가기
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </fieldset>
+    </div>
+</div>
+</body>
+</html>
