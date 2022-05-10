@@ -77,4 +77,24 @@ public class UserServiceImpl implements UserService {
         user.add(uvo);
         return user;
     }
+
+    // 회원가입
+    @Override
+    public void save(User user){
+        userRepository.save(user);
+    }
+    @Override
+    public List<User> findByUserID(String userID){
+        return userRepository.searchUserInfo(userID);
+    }
+
+    public List<User> findByUserEmail(String email){
+        return userRepository.findByUserEmail(email);
+    }
+
+    @Override
+    public User findByNameAndEmail(String name,String email){
+        return userRepository.findByNameAndEmail(name,email);
+    }
+
 }
