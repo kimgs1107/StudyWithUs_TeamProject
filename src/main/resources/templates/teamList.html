@@ -100,82 +100,82 @@
         })
         if(check1==0)getTeam();
         function getTeam(){
-        $.ajax({
-            type:"get",
-            url:"/teamListInfo",
-            data: {
-                check : check1,
-                teamName: teamName1
-            },
-            success: function(data){
-                let teams = document.getElementById('teams');
-                data.forEach(function(team){
+            $.ajax({
+                type:"get",
+                url:"/teamListInfo",
+                data: {
+                    check : check1,
+                    teamName: teamName1
+                },
+                success: function(data){
+                    let teams = document.getElementById('teams');
+                    data.forEach(function(team){
 
-                    let tid = document.createElement('h4');
-                    tid.setAttribute("class", "col-xs-2");
-                    tid.innerHTML = team.ttID;
+                        let tid = document.createElement('h4');
+                        tid.setAttribute("class", "col-xs-2");
+                        tid.innerHTML = team.ttID;
 
-                    let teamName = document.createElement('h4');
-                    teamName.setAttribute("class", "col-xs-2");
-                    teamName.innerHTML = team.teamName;
+                        let teamName = document.createElement('h4');
+                        teamName.setAttribute("class", "col-xs-2");
+                        teamName.innerHTML = team.teamName;
 
-                    let currentCount = document.createElement('h4');
-                    currentCount.setAttribute("class", "col-xs-2");
-                    currentCount.innerHTML = team.currentCount;
+                        let currentCount = document.createElement('h4');
+                        currentCount.setAttribute("class", "col-xs-2");
+                        currentCount.innerHTML = team.currentCount;
 
-                    let headCount = document.createElement('h4');
-                    headCount.setAttribute("class", "col-xs-2");
-                    headCount.innerHTML = team.headCount;
-
-
-                    let totalDepositPoint = document.createElement('h4');
-                    totalDepositPoint.setAttribute("class", "col-xs-2");
-                    totalDepositPoint.innerHTML = team.totalDepositPoint
+                        let headCount = document.createElement('h4');
+                        headCount.setAttribute("class", "col-xs-2");
+                        headCount.innerHTML = team.headCount;
 
 
-                    let check = document.createElement('div');
-                    check.setAttribute("class", "col-xs-2");
-                    let deleteButton = document.createElement('button');
+                        let totalDepositPoint = document.createElement('h4');
+                        totalDepositPoint.setAttribute("class", "col-xs-2");
+                        totalDepositPoint.innerHTML = team.totalDepositPoint
 
-                    deleteButton.innerText = "팀 삭제";
-                    deleteButton.setAttribute("style", "height:30pt; color:white; background-color: red; ")
 
-                    check.appendChild(deleteButton);
+                        let check = document.createElement('div');
+                        check.setAttribute("class", "col-xs-2");
+                        let deleteButton = document.createElement('button');
 
-                    let eachAccount = document.createElement('div');
-                    eachAccount.setAttribute("style", "text-align:center; margin-top:10px;  ")
-                    eachAccount.append(tid);
-                    eachAccount.append(teamName);
-                    eachAccount.append(currentCount)
-                    eachAccount.append(headCount);
-                    eachAccount.append(totalDepositPoint);
-                    eachAccount.append(check);
+                        deleteButton.innerText = "팀 삭제";
+                        deleteButton.setAttribute("style", "height:30pt; color:white; background-color: red; ")
 
-                    teams.appendChild(eachAccount);
-                    deleteButton.addEventListener("click", ()=>{
-                        $.ajax({
-                            url: "/deleteTeam",
-                            type: "GET",
-                            dataType:"json",
-                            data: {
-                                tID : team.ttID
-                            },
-                            success: function (data){
-                                alert("팀이 삭제되었습니다.")
-                                window.location.replace('/teamList');
+                        check.appendChild(deleteButton);
 
-                            }, error:function(){
-                                alert("관리자가 아닙니다.");
-                                window.location.replace('/teamList') ;
-                            }
+                        let eachAccount = document.createElement('div');
+                        eachAccount.setAttribute("style", "text-align:center; margin-top:10px;  ")
+                        eachAccount.append(tid);
+                        eachAccount.append(teamName);
+                        eachAccount.append(currentCount)
+                        eachAccount.append(headCount);
+                        eachAccount.append(totalDepositPoint);
+                        eachAccount.append(check);
+
+                        teams.appendChild(eachAccount);
+                        deleteButton.addEventListener("click", ()=>{
+                            $.ajax({
+                                url: "/deleteTeam",
+                                type: "GET",
+                                dataType:"json",
+                                data: {
+                                    tID : team.ttID
+                                },
+                                success: function (data){
+                                    alert("팀이 삭제되었습니다.")
+                                    window.location.replace('/teamList');
+
+                                }, error:function(){
+                                    alert("관리자가 아닙니다.");
+                                    window.location.replace('/teamList') ;
+                                }
+                            });
                         });
-                    });
 
-                });
-            }, error:function(){
-                alert("error");
-            }
-        })
+                    });
+                }, error:function(){
+                    alert("error");
+                }
+            })
         }
 
     }

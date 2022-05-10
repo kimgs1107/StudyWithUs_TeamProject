@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Setter
 public class Comment {
 
+    // 커밋 테스트 중입니다~!!!
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cmID;
@@ -18,8 +19,12 @@ public class Comment {
     @NotNull
     private Long writerUID;
 
+    @NotNull
+    private String commentContent;
+
+    //eunji
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="cID")
-    private Contents contents;
+    @JoinColumn(name="bID")
+    private Board board;
 }
 
