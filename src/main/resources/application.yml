@@ -31,12 +31,6 @@ spring:
         # show_sql: true
         format_sql: false
 
-viewname:
-  chatroom:
-    list: /chat2/rooms
-    detail: /chat2/room-detail
-
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -46,6 +40,10 @@ viewname:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
 
+viewname:
+  chatroom:
+    list: /chat2/rooms
+    detail: /chat2/room-detail
 
 logging.level:
   org.hibernate.SQL: debug
