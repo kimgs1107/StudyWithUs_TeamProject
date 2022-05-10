@@ -47,6 +47,13 @@ dependencies {
 	implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 	//coolsms
 
+
+	implementation 'org.webjars.bower:jquery:3.3.1'
+	implementation 'org.webjars:sockjs-client:1.1.2'
+	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+	implementation 'org.webjars:webjars-locator:0.30'
+
+
 }
 
 tasks.named('test') {

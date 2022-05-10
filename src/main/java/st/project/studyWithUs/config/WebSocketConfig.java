@@ -1,11 +1,14 @@
 package st.project.studyWithUs.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.SmartLifecycle;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.web.socket.SubProtocolCapable;
+import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.config.annotation.*;
 import st.project.studyWithUs.websocketHandler.ExistWebSocketHandler;
+
+import javax.websocket.MessageHandler;
 
 @RequiredArgsConstructor
 @Configuration
@@ -18,4 +21,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry){
         registry.addHandler(webSocketHandler, "/exist").setAllowedOrigins("*");
     }
+
+
 }

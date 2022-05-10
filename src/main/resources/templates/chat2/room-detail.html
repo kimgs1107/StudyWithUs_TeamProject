@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{room.name}}</title>
+
+    <script src="/webjars/jquery/dist/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<h1 id="title"></h1>
+<div class="content" data-room-id="{{room.id}}" data-member="{{member}}">
+    <ul class="chat_box">
+    </ul>
+    <input name="message">
+    <button class="send">보내기</button>
+</div>
+<script>
+
+    let curURL = window.location.href;
+    let urlArr = curURL.split("/");
+    let tId = urlArr[urlArr.length-1];
+    let name="hihi";
+    $(document).ready(function () {
+
+        findStudyUser();
+        start();
+    });
+    function findStudyUser(){
+        $.ajax({
+            url: "/chat/findStudyUser",
+            type: "GET",
+            async: false,
+            success: function(data){
+                name = data;
+            },error: function(error){
+                console.log(error);
+            }
+        });
+        $.ajax({
+            url: "/chat/findTitle",
+            type: "GET",
+            async: false,
+            data :{
+                tID:tId
+            },
+            success: function(data){
+                let title = document.getElementById('title');
+                title.innerText = data;
+            },error: function(error){
+                console.log(error);
+            }
+        });
+    }
+
+    function start(){
+        var chatBox = $('.chat_box');
+        var messageInput = $('input[name="message"]');
+        var sendBtn = $('.send');
+        var roomId = $('.content').data('room-id');
+        var member = name;
+        //var member = $('.content').data('member');
+        var sock = new SockJS("/stomp-chat");
+        var client = Stomp.over(sock);
+        client.debug = function (e) {
+        };
+
+        client.connect({}, function () {
+            client.send('/publish/chat/join', {}, JSON.stringify({chatRoomId: tId, type: 'JOIN', writer: member}));
+            client.subscribe('/subscribe/chat/room/' + tId, function (chat) {
+                var content = JSON.parse(chat.body);
+                // chatBox.append('<li>' + content.message + '(' + content.writer + ')</li>')
+                if(name==content.writer){
+
+                    chatBox.append('<h4 style="color: mediumblue">'+ content.writer+ ' : ' + content.message +'</h4>')
+                }
+                else{
+                    chatBox.append('<h4>'+ content.writer+ ' : ' + content.message +'</h4>')
+                }
+
+            });
+        });
+
+        sendBtn.click(function () {
+            var message = messageInput.val();
+            client.send('/publish/chat/message', {}, JSON.stringify({chatRoomId: tId, type: 'CHAT', message: message, writer: member}));
+            messageInput.val('');
+        });
+    }
+
+/*
+    $(function () {
+
+    });*/
+</script>
+</body>
+</html>
