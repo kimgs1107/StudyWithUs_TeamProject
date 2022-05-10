@@ -1,11 +1,9 @@
 package st.project.studyWithUs.vo;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import st.project.studyWithUs.domain.User;
 
-import javax.persistence.*;
+import java.time.LocalDate;
 
 
 @Setter
@@ -18,6 +16,7 @@ public class AccountVO {
     private String account;
     private Long point;
     private boolean flag;
+    private LocalDate requestDate;
 
 
 }
