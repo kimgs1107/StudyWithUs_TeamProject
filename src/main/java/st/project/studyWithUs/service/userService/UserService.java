@@ -32,4 +32,8 @@ public interface UserService {
     void deleteUser(Long uID);
 
     List<UserVO> searchUserInfo(String userID);
+
+    void saveEditUser(Long uid, String photo, String name, String id, String pw, String email);
+
+    User findByuID(Long uid);
 }
