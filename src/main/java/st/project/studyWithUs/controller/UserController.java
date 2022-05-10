@@ -120,9 +120,10 @@ public class UserController {
     @ResponseBody
     @GetMapping("/findUser")
     public UserVO findUser(@Login User loginUser){
+        User user = userService.find(loginUser.getUID());
         UserVO uservo = new UserVO();
-        uservo.setUserName(loginUser.getUserName());
-        uservo.setPoint(loginUser.getPoint());
+        uservo.setUserName(user.getUserName());
+        uservo.setPoint(user.getPoint());
         return uservo;
     }
 }

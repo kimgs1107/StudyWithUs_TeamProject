@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.service.userService.UserService;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -29,13 +28,36 @@ public class FindController {
     @PostMapping(value="/findID")
     public String findIdRes(@RequestParam("name") String name, @RequestParam("email") String email) {
 
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!" + userService.findByNameAndEmail(name, email));
-
         User user = userService.findByNameAndEmail(name, email);
         if( user == null){
             return "no";
         }else{
             return user.getUserID();
+        }
+    }
+
+    @GetMapping(value="/findPW")
+    public String findPW() {
+        return "findPW";
+    }
+
+    @ResponseBody
+    @PostMapping("/findPW")
+    public String findPw2(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("id") String id) {
+
+        User user = userService.findByNameAndEmail(name,email);
+
+        List<User> userInfo = userService.findByUserEmail(email);
+        if(userInfo.size() !=0){
+            userInfo.get(0).getPassword();
+            String tempPW = userService.getTempPW();
+            user.setPassword(tempPW);
+            userService.save(user); // 임시번호 DB변경
+
+            userService.mailToPW(name, email, tempPW); // 메일발송
+            return tempPW;
+        }else{
+            return "no";
         }
     }
 

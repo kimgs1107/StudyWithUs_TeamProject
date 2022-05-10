@@ -196,7 +196,7 @@ public class AdministratorController {
     @PostMapping("/currentPoint")
     @ResponseBody
     public Long currentPoint(@Login User user){
-        return user.getPoint();
+        return userService.find(user.getUID()).getPoint();
     }
 
     @ResponseBody
