@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ChatRoomController {
 
     private final ChatRoomRepository repository;
-    private final String listViewName;
+
     private final String detailViewName;
     private final AtomicInteger seq = new AtomicInteger(0);
 
@@ -33,18 +33,11 @@ public class ChatRoomController {
     }
 
     @Autowired
-    public ChatRoomController(ChatRoomRepository repository, @Value("${viewname.chatroom.list}") String listViewName, @Value("${viewname.chatroom.detail}") String detailViewName) {
+    public ChatRoomController(ChatRoomRepository repository ,@Value("${viewname.chatroom.detail}") String detailViewName) {
         this.repository = repository;
-        this.listViewName = listViewName;
         this.detailViewName = detailViewName;
     }
 
-  /*  @GetMapping("/rooms")
-    public String rooms(Model model) {
-
-        return listViewName;
-    }
-*/
 
     @ResponseBody
     @GetMapping("/rooms/{id}")
