@@ -196,7 +196,7 @@ public class AdministratorController {
     @PostMapping("/currentPoint")
     @ResponseBody
     public Long currentPoint(@Login User user){
-        return user.getPoint();
+        return userService.find(user.getUID()).getPoint();
     }
 
     @ResponseBody
@@ -215,6 +215,7 @@ public class AdministratorController {
             vo.setPoint(li.getPoint());
             voList.add(vo);
         }
+        refundUserAccountService.findAllByuID(user.getUID());
         return voList;
     }
 }
