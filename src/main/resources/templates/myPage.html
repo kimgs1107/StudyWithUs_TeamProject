@@ -7,7 +7,14 @@
 </head>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <body>
 
 <div class="container" style="margin-top: 10px;">
@@ -24,154 +31,271 @@
     </div>
 </div>
 
+<div class="container" style="margin-top: 100px; text-align: center; ">
+
+    <div style="text-align: center">
+        <div id="name"></div>
+        <div id="point"></div>
+    </div>
+
+    <button  onclick="location.href='/'"  >
+        홈
+    </button>
+
+    <button  onclick="location.href='/chargePoint'"  >
+        포인트 충전
+    </button>
+
+    <button  onclick="location.href='/refunds'"  >
+        포인트 환급
+    </button>
+</div>
+<hr>
+
+<div id="completeMembers">
+</div>
+
+<div id="myStudyTime">
+</div>
+<hr>
 
 
-
-    <div style="margin-top: 100px; text-align: center; ">
-
-
-        <div style="text-align: center">
-            <div id="name"></div>
-            <div id="point"></div>
+<div class="container">
+    <div class="row">
+        <h3 style="text-align: center">마이 스터디</h3>
+        <div id="myTeams">
         </div>
-
-
-        <button  onclick="location.href='/'"  >
-            홈
-        </button>
-
-        <button  onclick="location.href='/chargePoint'"  >
-            포인트 충전
-        </button>
-
-        <button  onclick="location.href='/refunds'"  >
-            포인트 환급
-        </button>
     </div>
-    <hr>
-
-    <div id="completeMembers">
-    </div>
-    <hr>
-
-    <div id="totalTime">
-    </div>
-    <hr>
+</div>
 
 
-    <h2 style="text-align: center">마이 스터디 </h2>
-    <div id="myTeams">
-    </div>
+<script>
 
+    getUser();
+    completeMembers();
+    myStudyTime();
+    getTeams();
 
-    <script>
+    function getUser(){
+        $.ajax({
+            type:"get",
+            url:"/findUser",
+            datatype:'json',
+            success: function(data){
+                let name = document.getElementById('name');
+                name.innerHTML = data.userName+"님의 페이지";
+                name.setAttribute("style", "font-size:24pt; margin:5px");
 
-        getUser();
-        getTeams();
+                let point = document.getElementById('point');
+                point.innerHTML = "현재 잔여 포인트 : "+data.point;
+                point.setAttribute("style", "font-size:16pt");
+            },
+            error:function(error){
+                console.log(error);
+            }
+        })
+    }
 
-        function  getUser(){
-            $.ajax({
-                type:"get",
-                url:"/findUser",
-                datatype:'json',
-                success: function(data){
-                    let name = document.getElementById('name');
-                    name.innerHTML = data.userName;
+    function completeMembers(){
+        let compMemberBox = document.getElementById("completeMembers");
+        compMemberBox.setAttribute("style", "text-align:center; display:inline-block; width: 450px;");
+        let title = document.createElement("h3");
+        title.innerHTML = "오늘의 목표를 달성한 사람들";
+        title.setAttribute("style", "text-align: center;");
+        compMemberBox.append(title);
 
-                    let point = document.getElementById('point');
-                    point.innerHTML = data.point;
-                }
-            })
-        }
+        $.ajax({
+            type: "get",
+            url: "/findMyTeams",
+            datatype: 'json',
+            success: function (teams) {
+                teams.forEach(function(team){
+                    let teamBox = document.createElement("div");
+                    let teamLabel = document.createElement("h4");
+                    teamLabel.innerText = team.teamName;
+                    teamBox.append(teamLabel);
 
-        function getTeams(){
-            $.ajax({
-                type:"get",
-                url:"/findMyTeams",
-                datatype:'json',
-                success: function(data){
-
-                    var teams = document.getElementById('myTeams');
-
-                    data.forEach(function(team){
-                        let teamName = document.createElement('h3');
-                        teamName.innerHTML = team.teamName;
-                        teamName.setAttribute("style", "text-align:center; margin-top:10px;");
-
-                        let teamContent = document.createElement('div');
-                        teamContent.innerHTML = team.teamDesc;
-                        teamContent.setAttribute("style","text-align:center; " );
-
-                        let currentCount = document.createElement('div');
-                        currentCount.innerHTML = "현재 참여 인원 : " + team.currentCount+'/'+team.headCount;
-                        currentCount.setAttribute("style", "text-align:center; margin-top:3px;");
-
-                        let teamButton1 = document.createElement('button');
-                        teamButton1.innerText = "대화하기";
-                        teamButton1.setAttribute("id", team.tId);
-                        teamButton1.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
-                        teamButton1.addEventListener("click", ()=>{
-
-                            $.ajax({
-
-                               //단체 채팅
-
-                            });
-                        });
-
-                        let teamButton2 = document.createElement('button');
-                        teamButton2.innerText = "화상채팅";
-                        teamButton2.setAttribute("id", team.tId);
-                        teamButton2.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
-                        teamButton2.addEventListener("click", ()=>{
-                            location.href='/studying';
-                            $.ajax({
-
-                                //화상 채팅
-
-                            });
-                        });
-
-                        let teamButton3 = document.createElement('button');
-                        teamButton3.innerText = "팀 탈퇴";
-                        teamButton3.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
-                        teamButton3.addEventListener("click", ()=>{
-
-                            $.ajax({
-                                url: "/dropStudyTeam",
-                                type: "GET",
-                                dataType:"json",
-                                data: {
-                                    tId : team.ttID
-                                },
-                                success: function (data){
-                                    alert("팀이 탈퇴 되었습니다. ")
-                                    window.location.replace('/myPage');
-
-                                }, error:function(){
-                                    alert("error");
+                    $.ajax({
+                        type: "get",
+                        url: "/completeMembers",
+                        data:{
+                            tID: team.ttID
+                        },
+                        datatype: 'json',
+                        success: function (users) {
+                            users.forEach(function (user) {
+                                let userBox = document.createElement("div");
+                                userBox.setAttribute("style", "display:inline-block;");
+                                let userImg = document.createElement("img");
+                                if(user.userImage == null){
+                                    userImg.setAttribute("src", "/adminImage/userIcon.png");
+                                }else {
+                                    userImg.setAttribute("src", user.userImage);
                                 }
-
+                                userImg.setAttribute("style", "width:50px; height:50px; border-radius:50%; margin: 10px;");
+                                let userName = document.createElement("div");
+                                userName.innerHTML = user.userName;
+                                userBox.append(userImg);
+                                userBox.append(userName);
+                                teamBox.append(userBox);
                             });
-                        });
-
-                        let eachTeam = document.createElement('div');
-                        eachTeam.append(teamName);
-                        eachTeam.append(teamContent);
-                        eachTeam.append(currentCount);
-                        eachTeam.append(teamButton1);
-                        eachTeam.append(teamButton2);
-                        eachTeam.append(teamButton3);
-                        eachTeam.setAttribute("style", "text-align:center; margin-top:10px;")
-                        teams.appendChild(eachTeam);
-
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
                     });
-                }, error:function(){
+                    compMemberBox.append(teamBox);
+                });
+            }
+        });
+    }
 
-                }
-            })
-        }
+    function myStudyTime(){
+        let studyTimeBox = document.getElementById("myStudyTime");
+        studyTimeBox.setAttribute("style", "text-align:center; display:inline-block; width: 450px;");
+        let title = document.createElement("h3");
+        title.innerHTML = "나의 목표 달성률";
+        title.setAttribute("style", "text-align: center;");
+        studyTimeBox.append(title);
 
-    </script>
+        $.ajax({
+            type: "get",
+            url: "/studyTime",
+            datatype: 'json',
+            success: function (teams) {
+                teams.forEach(function(team) {
+                    let timeBox = document.createElement("div");
+                    let teamName = document.createElement("div");
+                    teamName.innerHTML = team.teamName;
+                    teamName.setAttribute("style", "display:inline-block; font-size: 14pt; margin-right: 3px;");
+                    let time = document.createElement("div");
+                    if(team.totalTime/(team.targetTime*team.period) >=1){
+                        time.innerHTML = "100%";
+                    }
+                    else {
+                        time.innerHTML = Math.round(team.totalTime/(team.targetTime*team.period)*100)+"%";
+                    }
+                    time.setAttribute("style", "display:inline-block; font-size: 14pt");
+
+                    timeBox.append(teamName);
+                    timeBox.append(time);
+                    studyTimeBox.append(timeBox);
+                });
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    }
+
+    function getTeams(){
+        $.ajax({
+            type:"get",
+            url:"/findMyTeams",
+            datatype:'json',
+            success: function(data){
+
+                var teams = document.getElementById('myTeams');
+
+                data.forEach(function(team){
+                    let image = document.createElement('img');
+                    if(team.teamImage == null) {
+                        image.setAttribute("src", "../images/study.jpg");
+                    }
+                    else{
+                        image.setAttribute("src", team.teamImage);
+                    }
+                    image.setAttribute("style", "height:200px; width:200px");
+
+                    let teamName = document.createElement('h3');
+                    teamName.innerHTML = team.teamName;
+                    teamName.setAttribute("style", "text-align:center; margin-top:10px;");
+
+                    let teamContent = document.createElement('div');
+                    teamContent.innerHTML = team.teamDesc;
+                    teamContent.setAttribute("style","text-align:center; " );
+
+                    let currentCount = document.createElement('div');
+                    currentCount.innerHTML = "현재 참여 인원 : " + team.currentCount+'/'+team.headCount;
+                    currentCount.setAttribute("style", "text-align:center; margin-top:3px;");
+
+                    let date = document.createElement('div');
+                    date.innerHTML= team.startDate + " ~ " +team.endDate;
+                    date.setAttribute("style","text-align:center;");
+
+                    let time = document.createElement('div');
+                    time.innerHTML = "목표 공부시간 : 하루 "+team.targetTime+"분";
+                    time.setAttribute("style","text-align:center;");
+
+                    let teamButton1 = document.createElement('button');
+                    teamButton1.innerText = "대화하기";
+                    teamButton1.setAttribute("id", team.tId);
+                    teamButton1.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
+                    teamButton1.addEventListener("click", ()=>{
+
+                        $.ajax({
+
+                            //단체 채팅
+
+                        });
+                    });
+
+                    let teamButton2 = document.createElement('button');
+                    teamButton2.innerText = "화상채팅";
+                    teamButton2.setAttribute("id", team.tId);
+                    teamButton2.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
+                    teamButton2.addEventListener("click", ()=>{
+                        location.href='/studying';
+                        $.ajax({
+
+                            //화상 채팅
+
+                        });
+                    });
+
+                    let teamButton3 = document.createElement('button');
+                    teamButton3.innerText = "팀 탈퇴";
+                    teamButton3.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
+                    teamButton3.addEventListener("click", ()=>{
+
+                        $.ajax({
+                            url: "/dropStudyTeam",
+                            type: "GET",
+                            dataType:"json",
+                            data: {
+                                tId : team.ttID
+                            },
+                            success: function (data){
+                                alert("팀이 탈퇴 되었습니다. ")
+                                window.location.replace('/myPage');
+
+                            }, error:function(){
+                                alert("error");
+                            }
+                        });
+                    });
+
+                    let eachTeam = document.createElement('div');
+                    eachTeam.append(image);
+                    eachTeam.append(teamName);
+                    eachTeam.append(teamContent);
+                    eachTeam.append(currentCount);
+                    eachTeam.append(date);
+                    eachTeam.append(time);
+                    eachTeam.append(teamButton1);
+                    eachTeam.append(teamButton2);
+                    eachTeam.append(teamButton3);
+                    eachTeam.setAttribute("class", "col-xs-4");
+                    eachTeam.setAttribute("style", "text-align:center; margin-top:10px;")
+                    teams.appendChild(eachTeam);
+
+                });
+            }, error:function(error){
+                console.log(error);
+            }
+        })
+    }
+
+</script>
 </body>
 </html>

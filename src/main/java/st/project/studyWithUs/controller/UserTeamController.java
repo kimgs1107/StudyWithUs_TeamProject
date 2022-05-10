@@ -10,6 +10,8 @@ import st.project.studyWithUs.domain.Team;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.service.teamService.TeamService;
 import st.project.studyWithUs.service.userTeamService.UserTeamService;
+import st.project.studyWithUs.vo.CompleteMemsVO;
+import st.project.studyWithUs.vo.StudyTimeVO;
 import st.project.studyWithUs.vo.TeamVO;
 
 import java.util.ArrayList;
@@ -51,9 +53,21 @@ public class UserTeamController {
             teamVO.setEndDate(t.getEndDate());
             teamVO.setStartDate(t.getStartDate());
             teamVO.setTeamImage(t.getTeamImage());
+            teamVO.setTargetTime(t.getTargetTime());
             tvo.add(teamVO);
         }
         return tvo;
+    }
 
+    @ResponseBody
+    @GetMapping("/completeMembers")
+    public List<CompleteMemsVO> completeMembers(@RequestParam Long tID){
+        return userTeamService.completeMembers(tID);
+    }
+
+    @ResponseBody
+    @GetMapping("/studyTime")
+    public List<StudyTimeVO> myStudyTime(@Login User loginUser){
+        return userTeamService.myStudyTime(loginUser.getUID());
     }
 }

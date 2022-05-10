@@ -8,8 +8,12 @@ import st.project.studyWithUs.domain.Team;
 import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.repository.TeamRepository;
 import st.project.studyWithUs.repository.UserTeamRepository;
+import st.project.studyWithUs.vo.CompleteMemsVO;
+import st.project.studyWithUs.vo.StudyTimeVO;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,5 +56,48 @@ public class UserTeamServiceImpl implements UserTeamService {
         return teams;
     }
 
+    @Override
+    public List<CompleteMemsVO> completeMembers(Long tID){
+        List<CompleteMemsVO> members = new ArrayList<>();
+        Team team = teamRepository.findBytID(tID);
+
+        Long targetTime = team.getTargetTime();
+        List<UserTeam> users = userTeamRepository.findUserTeamByTID(team.getTID());
+        for(UserTeam u : users){
+            Long realTime = u.getRealTime();
+            if(targetTime*60 <= realTime){
+                CompleteMemsVO mem = new CompleteMemsVO();
+                mem.setTID(team.getTID());
+                mem.setUuID(u.getUser().getUID());
+                mem.setUserName(u.getUser().getUserName());
+                mem.setUserImage(u.getUser().getUserImage());
+                members.add(mem);
+            }
+        }
+
+        return members;
+    }
+
+    @Override
+    public List<StudyTimeVO> myStudyTime(Long uID){
+        List<StudyTimeVO> studyTime = new ArrayList<>();
+
+        List<UserTeam> userTeams = userTeamRepository.findUserTeamByUID(uID);
+        for(UserTeam ut : userTeams){
+            StudyTimeVO stVO = new StudyTimeVO();
+            stVO.setTtID(ut.getTeam().getTID());
+            stVO.setTeamName(ut.getTeam().getTeamName());
+            stVO.setTargetTime(ut.getTeam().getTargetTime());
+            stVO.setTotalTime(ut.getTotalTime());
+
+            LocalDate start = ut.getTeam().getStartDate();
+            LocalDate end = ut.getTeam().getEndDate();
+            stVO.setPeriod(ChronoUnit.DAYS.between(start, end)+1);
+
+            studyTime.add(stVO);
+        }
+
+        return studyTime;
+    }
 
 }

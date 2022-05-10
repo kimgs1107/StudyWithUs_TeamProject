@@ -65,6 +65,9 @@ public class UserController {
             UserTeam userTeam = new UserTeam();
             userTeam.setTeam(teamService.findBytID(tId));
             userTeam.setUser(userService.find(loginUser.getUID()));
+            userTeam.setExist(false);
+            userTeam.setRealTime(0L);
+            userTeam.setTotalTime(0L);
             userTeamService.save(userTeam);
             return true;
         }
