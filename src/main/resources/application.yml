@@ -42,8 +42,7 @@ spring:
 
 viewname:
   chatroom:
-    list: /chat2/rooms
-    detail: /chat2/room-detail
+    detail: room-detail
 
 logging.level:
   org.hibernate.SQL: debug

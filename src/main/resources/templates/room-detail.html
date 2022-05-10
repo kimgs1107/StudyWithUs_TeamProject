@@ -24,7 +24,7 @@
 <div class="content" data-room-id="{{room.id}}" data-member="{{member}}">
     <ul class="chat_box">
     </ul>
-    <input name="message">
+    <input name="message" id="alpreah_input">
     <button class="send">보내기</button>
 </div>
 <script>
@@ -98,12 +98,19 @@
             client.send('/publish/chat/message', {}, JSON.stringify({chatRoomId: tId, type: 'CHAT', message: message, writer: member}));
             messageInput.val('');
         });
+
+        $(document).ready(function() {
+            $("#alpreah_input").keydown(function(key) {
+                if (key.keyCode == 13) {
+                    // alert("엔터키를 눌렀습니다.");
+                    var message = messageInput.val();
+                    client.send('/publish/chat/message', {}, JSON.stringify({chatRoomId: tId, type: 'CHAT', message: message, writer: member}));
+                    messageInput.val('');
+                }
+            });
+        });
+
     }
-
-/*
-    $(function () {
-
-    });*/
 </script>
 </body>
 </html>
