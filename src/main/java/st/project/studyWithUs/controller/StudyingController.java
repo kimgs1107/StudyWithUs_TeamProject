@@ -49,7 +49,11 @@ public class StudyingController {
         Long tID = 1l;
 
         UserTeam ut = studyingService.findUserTeam(user.getUID(),tID);
-        return ut.getTotalTime().intValue();
+        if(ut.getTotalTime()==null){
+            return 0;
+        }else {
+            return ut.getTotalTime().intValue();
+        }
     }
 
     @PostMapping("/getRealTime")
@@ -59,7 +63,11 @@ public class StudyingController {
         Long tID = 1l;
 
         UserTeam ut = studyingService.findUserTeam(user.getUID(),tID);
-        return ut.getRealTime().intValue();
+        if(ut.getRealTime()==null){
+            return 0;
+        }else{
+            return ut.getRealTime().intValue();
+        }
     }
 
     @PostMapping("/members")
