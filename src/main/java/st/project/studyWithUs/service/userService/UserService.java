@@ -36,4 +36,9 @@ public interface UserService {
     void saveEditUser(Long uid, String photo, String name, String id, String pw, String email);
 
     User findByuID(Long uid);
+
+    String getTempPW();
+
+    void mailToPW(String name, String email, String tempPW);
+
 }
