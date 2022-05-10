@@ -93,31 +93,6 @@ async function init() {
     webcamContainer.replaceChild(webcam.canvas,document.querySelector("canvas"));
 
     window.requestAnimationFrame(loop);
-
-    // 타이머
-    // if (active == false) {
-    //     active = true;
-    //     timeoutId = setInterval(function () {
-    //         second++;
-    //         if (second > 59) {
-    //             second = 0;
-    //             minute++;
-    //             if (minute > 59) {
-    //                 minute = 0;
-    //                 hour++;
-    //                 if (hour > 59) {
-    //                     hour = 0;
-    //                 }
-    //             }
-    //         }
-    //         document.getElementById("time").innerText =
-    //             (hour < 10 ? "0" + hour : hour) +
-    //             ":" +
-    //             (minute < 10 ? "0" + minute : minute) +
-    //             ":" +
-    //             (second < 10 ? "0" + second : second);
-    //     }, 1000);
-    // }
 }
 
 var camOFF = false;
