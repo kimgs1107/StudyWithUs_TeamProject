@@ -257,12 +257,7 @@
                     teamButton2.setAttribute("id", team.tId);
                     teamButton2.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
                     teamButton2.addEventListener("click", ()=>{
-                        location.href='/studying';
-                        $.ajax({
-
-                            //화상 채팅
-
-                        });
+                        location.href='/studying/'+team.ttID;
                     });
 
                     let teamButton3 = document.createElement('button');
