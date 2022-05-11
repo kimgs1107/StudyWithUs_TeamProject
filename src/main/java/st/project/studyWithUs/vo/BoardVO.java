@@ -16,6 +16,7 @@ public class BoardVO {
     private LocalDate uploadTime;
     private Long uID;
     private String name;
+    private Long idx;
 
 }
 
