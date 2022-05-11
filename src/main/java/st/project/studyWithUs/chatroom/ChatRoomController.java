@@ -77,8 +77,17 @@ public class ChatRoomController {
     @ResponseBody
     @GetMapping("/findTitle")
     public String findStudyUser(@RequestParam String tID){
+
         ChatRoom room = repository.getChatRoom(tID);
         return room.getName();
 
+    }
+
+    @ResponseBody
+    @GetMapping("/findCurrent")
+    public String findCurrent(@RequestParam String tID){
+        ChatRoom room = repository.getChatRoom(tID);
+        room.setCurrent(room.getCurrent() + 1);
+        return Integer.toString(room.getCurrent());
     }
 }
