@@ -3,74 +3,147 @@ const URL = "/my_model/";
 let model, webcam, webcamContainer, maxPredictions;
 webcamContainer = document.querySelector("#webcam-container")
 
-let curID;
+let curURL = window.location.href;
+let urlArr = curURL.split("/");
+let curTID = urlArr[urlArr.length-1];
+console.log(curTID);
 
 let hour=0,minute=0,second=0,active=false,timeoutId,totalTime,realTime;
 // Load the image model and setup the webcam
-$.ajax({
-    type: "POST",
-    url: "getTotalTime",
-    success: function (data) {
-        console.log("total" + data)
-        totalTime+=0
-        totalTime=data*100;
-    },
-    error: function (error) {
-        console.log(error);
-    }
-});
-$.ajax({
-    type: "POST",
-    url: "getRealTime",
-    success: function (data) {
-        console.log("realTime" + data)
-        realTime+=0
-        realTime=data*100;
-    },
-    error: function (error) {
-        console.log(error);
-    }
-});
-$.ajax({
-    type: "POST",
-    url: "/getLoginUser",
-    success: function (data) {
-        curID = data;
-    },
-    error: function (error) {
-        console.log(error);
-    }
-});
+
+// $.ajax({
+//     type: "POST",
+//     url: "/getLoginUser",
+//     success: function (data) {
+//         curID = data;
+//     },
+//     error: function (error) {
+//         console.log(error);
+//     }
+// });
 async function init() {
     document.querySelector("#start").setAttribute("hidden","true");
     document.querySelector("#stop").removeAttribute("hidden");
-    document.querySelector("#restart").removeAttribute("hidden");
+    // document.querySelector("#restart").removeAttribute("hidden");
 
     let webSocket = new WebSocket("ws://"+window.location.host+"/exist");
     webSocket.onopen = function(event){
-        webSocket.send(curID); //나중엔 팀 정보를 같이 넘겨줘야함
+        webSocket.send(curTID); //팀 정보를 전송
     }
     webSocket.onmessage = function(event){
-        console.log("In onmessage");
+        var message = event.data.split(" ");
+        let box = document.getElementById("box"+message[1]);
+        let id = document.getElementById(message[1]);
 
-        var mess = event.data.split(" ");
-        let id = document.getElementById(mess[0]);
-        id.innerHTML = event.data;
+        if(message[0] == "leave"){
+            members.removeChild(box);
+        }
+        else {
+            if (id == null) {
+                let box = document.createElement("div");
+                box.setAttribute("id", "box"+message[1]);
+                box.setAttribute("width", "100px")
+                box.setAttribute("style", "display:inline-block; margin-top:5px");
+
+                let userBox = document.createElement("div");
+
+                let userName = document.createElement("div");
+                userName.innerHTML = message[3];
+                userName.setAttribute("style", "text-align:center;");
+
+                let userImg = document.createElement("img");
+                if(message[2] == "noImage"){
+                    userImg.setAttribute("src", "/adminImage/userIcon.png");
+                }else {
+                    userImg.setAttribute("src", message[2]);
+                }
+                userImg.setAttribute("style", "width:50px; height:50px; border-radius:50%; margin: 5px 10px;");
+
+                let id = document.createElement("div");
+                id.innerHTML = "off";
+                id.setAttribute("id", message[1]);
+                id.setAttribute("style", "font-size:16pt; text-align:center;");
+
+                userBox.append(userName);
+                userBox.append(userImg);
+                box.append(userBox);
+                box.append(id);
+
+                members.append(box);
+            } else {
+                id.innerHTML = message[0];
+            }
+        }
+
+        console.log("In onmessage");
         console.log(event.data);
     }
+
+    $.ajax({
+        type: "POST",
+        url: "/getTotalTime",
+        data: {tID: curTID},
+        success: function (data) {
+            console.log("total" + data)
+            totalTime+=0
+            totalTime=data*100;
+
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+    $.ajax({
+        type: "POST",
+        url: "/getRealTime",
+        data: {tID: curTID},
+        success: function (data) {
+            console.log("realTime" + data)
+            realTime+=0
+            realTime=data*100;
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
 
     var members = document.querySelector("#members");
     $.ajax({
         type: "POST",
         url: "/members",
-        data: {tID: 1},
+        data: {tID: curTID},
         success: function (data) {
-            data.forEach(function(item){
-                let id = document.createElement("div");
-                id.innerHTML = item+" off";
-                id.setAttribute("id", item);
+            data.forEach(function(user){
+                let box = document.createElement("div");
+                box.setAttribute("id", "box"+user.uuID);
+                box.setAttribute("width", "100px")
+                box.setAttribute("style", "display:inline-block; margin-top:5px");
 
-                members.append(id);
+                let userBox = document.createElement("div");
+
+                let userName = document.createElement("div");
+                userName.innerHTML = user.userName;
+                userName.setAttribute("style", "text-align:center;");
+
+                let userImg = document.createElement("img");
+                if(user.userImage == null){
+                    userImg.setAttribute("src", "/adminImage/userIcon.png");
+                }else {
+                    userImg.setAttribute("src", user.userImage);
+                }
+                userImg.setAttribute("style", "width:50px; height:50px; border-radius:50%; margin: 5px 10px;");
+
+                let id = document.createElement("div");
+                id.innerHTML = "off";
+                id.setAttribute("id", user.uuID);
+                id.setAttribute("style", "font-size:16pt; text-align:center;");
+
+                userBox.append(userName);
+                userBox.append(userImg);
+                box.append(userBox);
+                box.append(id);
+
+                members.append(box);
             });
         },
         error: function (error) {
@@ -103,7 +176,7 @@ async function loop() {
         $.ajax({
             type: "POST",
             url: "/updateUserTeam",
-            data: {data: false, realTime:realTime,totalTime:totalTime},
+            data: {data: false, realTime:realTime, totalTime:totalTime, tID: curTID},
             success: function (data) {     },
             error: function (error) {
                 console.log(error);
@@ -138,9 +211,10 @@ async function predict() {
             data=false;
             $.ajax({
                 type: "POST",
-                url: "updateUserTeam",
-                data: {data: data, realTime:realTime,totalTime:totalTime},
-                success: function (data) {     },
+                url: "/updateUserTeam",
+                data: {data: data, realTime:realTime, totalTime:totalTime, tID: curTID},
+                success: function (data) {
+                },
                 error: function (error) {
                     console.log(error);
                 }
@@ -157,8 +231,8 @@ async function predict() {
 
             $.ajax({
                 type: "POST",
-                url: "updateUserTeam",
-                data: {data: data,realTime:realTime,totalTime:totalTime},
+                url: "/updateUserTeam",
+                data: {data: data, realTime:realTime, totalTime:totalTime, tID: curTID},
                 success: function (data) {
                 },
                 error: function (error) {
@@ -204,6 +278,8 @@ document.querySelector("#restart").setAttribute("hidden", "true");
 function stop(){
 
     camOFF = true;
+    document.querySelector("#stop").setAttribute("hidden", "true");
+    document.querySelector("#restart").removeAttribute("hidden");
 }
 
 async function restart(){
@@ -233,6 +309,25 @@ async function restart(){
                 (second < 10 ? "0" + second : second);
         }, 1000);
     }
+    document.querySelector("#stop").removeAttribute("hidden");
+    document.querySelector("#restart").setAttribute("hidden", "true");
+}
+
+function chat(){
+
+    $.ajax({
+        url: "/chat/rooms/"+curTID,
+        type: "GET",
+        dataType:"json",
+        success: function (data){
+            if(data==true){
+                window.location.replace('/chat/room/enter/'+curTID) ;
+            }
+        }, error:function(){
+
+            window.location.replace('/login') ;
+        }
+    });
 }
 /*
 //임의로 만든 time()함수 함수명 바꾼다면 실행할 함수명도 같이 바꿔줘야지 작동합니
