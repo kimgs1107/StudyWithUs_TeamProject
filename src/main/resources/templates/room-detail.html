@@ -40,7 +40,6 @@
 <body>
 
 <h1 id="title"></h1>
-
 <div class="content" data-room-id="{{room.id}}" data-member="{{member}}">
     <div class="chat_wrap">
         <div class="inner">
@@ -52,13 +51,12 @@
     <input name="message" id="alpreah_input">
     <button class="send">보내기</button>
 </div>
-<button class="exit" id = "exit">나가기</button>
 <script>
 
     let curURL = window.location.href;
     let urlArr = curURL.split("/");
     let tId = urlArr[urlArr.length-1];
-    let name="";
+    let name="hihi";
     $(document).ready(function () {
 
         findStudyUser();
@@ -89,56 +87,35 @@
                 console.log(error);
             }
         });
-        $.ajax({
-            url: "/chat/findCurrent",
-            type: "GET",
-            async: false,
-            data :{
-                tID:tId
-            },
-            success: function(data){
-                let title = document.getElementById('current');
-                title.innerText = data;
-            },error: function(error){
-                console.log(error);
-            }
-        });
     }
 
     function start(){
         var chatBox = $('.chat_box');
         var messageInput = $('input[name="message"]');
         var sendBtn = $('.send');
-        var exitBtn = $('.exit');
+        var roomId = $('.content').data('room-id');
         var member = name;
+        //var member = $('.content').data('member');
         var sock = new SockJS("/stomp-chat");
         var client = Stomp.over(sock);
         client.debug = function (e) {
         };
+
         client.connect({}, function () {
-            client.send('/publish/chat/join', {}, JSON.stringify({
-                chatRoomId: tId,
-                type: 'JOIN',
-                writer: member
-            }));
+            client.send('/publish/chat/join', {}, JSON.stringify({chatRoomId: tId, type: 'JOIN', writer: member}));
             client.subscribe('/subscribe/chat/room/' + tId, function (chat) {
                 var content = JSON.parse(chat.body);
                 // chatBox.append('<li>' + content.message + '(' + content.writer + ')</li>')
-                if(content.message==content.writer+"님이 입장하셨습니다."){
-                    chatBox.append('<h4 style="color: blue">'+content.message +'</h4>')
-                }
-                else if(name==content.writer){ //본인일 때
+                if(name==content.writer){
+
                     chatBox.append('<h4 style="color: black">'+ content.writer+ ' : ' + content.message +'</h4>')
-                }
-                else if(content.writer=="나감"){
-                    chatBox.append('<h4 style="color: red">'+content.message +'</h4>')
                 }
                 else{
-                    chatBox.append('<h4 style="color: black">'+ content.writer+ ' : ' + content.message +'</h4>')
+                    chatBox.append('<h4>'+ content.writer+ ' : ' + content.message +'</h4>')
                 }
+
             });
         });
-
 
         sendBtn.click(function () {
             if(messageInput.val()!="") {
@@ -171,15 +148,7 @@
                 }
             });
         });
-        exitBtn.click(function () {
-            client.send('/publish/chat/message', {}, JSON.stringify({
-                chatRoomId: tId,
-                type: 'CHAT',
-                message: member+"님이 나갔습니다.",
-                writer: "나감"
-            }));
-            window.location.replace('/myPage') ;
-        });
+
     }
 </script>
 </body>
