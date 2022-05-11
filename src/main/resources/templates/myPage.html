@@ -238,9 +238,17 @@
                     teamButton1.addEventListener("click", ()=>{
 
                         $.ajax({
+                            url: "/chat/rooms/"+team.ttID,
+                            type: "GET",
+                            dataType:"json",
+                            success: function (data){
+                                if(data==true){
+                                    window.location.replace('/chat/room/enter/'+team.ttID) ;
+                                }
+                            }, error:function(){
 
-                            //단체 채팅
-
+                                window.location.replace('/login') ;
+                            }
                         });
                     });
 
