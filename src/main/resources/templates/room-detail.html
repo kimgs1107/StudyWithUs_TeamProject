@@ -51,6 +51,7 @@
     <input name="message" id="alpreah_input">
     <button class="send">보내기</button>
 </div>
+<button class="exit">나가기</button>
 <script>
 
     let curURL = window.location.href;
@@ -102,7 +103,11 @@
         };
 
         client.connect({}, function () {
-            client.send('/publish/chat/join', {}, JSON.stringify({chatRoomId: tId, type: 'JOIN', writer: member}));
+            client.send('/publish/chat/join', {}, JSON.stringify({
+                chatRoomId: tId,
+                type: 'JOIN',
+                writer: member
+            }));
             client.subscribe('/subscribe/chat/room/' + tId, function (chat) {
                 var content = JSON.parse(chat.body);
                 // chatBox.append('<li>' + content.message + '(' + content.writer + ')</li>')
@@ -116,6 +121,7 @@
 
             });
         });
+
 
         sendBtn.click(function () {
             if(messageInput.val()!="") {

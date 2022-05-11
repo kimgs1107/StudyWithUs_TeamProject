@@ -42,6 +42,12 @@ public class ChatRoom {
         if (chatMessage.getType() == MessageType.JOIN) {
             join(session);
             chatMessage.setMessage(chatMessage.getWriter() + "님이 입장했습니다.");
+
+        }
+
+        else if (chatMessage.getType() == MessageType.QUIT) {
+//            remove(session);
+            chatMessage.setMessage(chatMessage.getWriter() + "님이 퇴장했습니다.");
         }
         
         send(chatMessage, objectMapper);
