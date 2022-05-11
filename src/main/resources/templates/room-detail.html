@@ -50,6 +50,7 @@
     </div>
     <input name="message" id="alpreah_input">
     <button class="send">보내기</button>
+    <button class="exit">나가기</button>
 </div>
 <script>
 
@@ -93,6 +94,7 @@
         var chatBox = $('.chat_box');
         var messageInput = $('input[name="message"]');
         var sendBtn = $('.send');
+        var exitBtn = $('.exit');
         var roomId = $('.content').data('room-id');
         var member = name;
         //var member = $('.content').data('member');
@@ -106,9 +108,14 @@
             client.subscribe('/subscribe/chat/room/' + tId, function (chat) {
                 var content = JSON.parse(chat.body);
                 // chatBox.append('<li>' + content.message + '(' + content.writer + ')</li>')
-                if(name==content.writer){
-
-                    chatBox.append('<h4 style="color: black">'+ content.writer+ ' : ' + content.message +'</h4>')
+                if(content.message==content.writer+"님이 입장하셨습니다."){
+                    chatBox.append('<h4 style="color: blue">'+ content.message +'</h4>')
+                }
+                else if(content.writer==name){ //본인일 때
+                    chatBox.append('<h4 style="color: orange">'+ content.writer+ ' : ' + content.message +'</h4>')
+                }
+                else if(content.writer==""){
+                    chatBox.append('<h4 style="color: red">'+ content.message +'</h4>')
                 }
                 else{
                     chatBox.append('<h4>'+ content.writer+ ' : ' + content.message +'</h4>')
@@ -128,6 +135,18 @@
                 }));
                 messageInput.val('');
             }
+        });
+
+
+        exitBtn.click(function () {
+            client.send('/publish/chat/message', {}, JSON.stringify({
+                chatRoomId: tId,
+                type: 'CHAT',
+                message: member+"님이 채팅방을 나갔습니다.",
+                writer: ""
+            }));
+            messageInput.val('');
+            window.location.href = "/myPage";
         });
 
 
