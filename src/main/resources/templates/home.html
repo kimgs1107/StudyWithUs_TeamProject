@@ -29,7 +29,7 @@
 
 
         <div class="col-xs-2">
-            <button type="submit" onclick="location.href='/myPage'"  >
+            <button type="button" onclick='location.href="/myPage"'>
                 마이페이지
             </button>
         </div>
@@ -56,8 +56,8 @@
     <div class="row">
         <div class="col-xs-4" style="margin: 20px; text-align: center;">
             <input type="text" id="teamName" placeholder="찾고자 하는 스터디를 입력해주세요." style="width: 250px;">
-            <button id ="search">검색</button>
-            <button id ="reset" type="reset" placeholder="찾고자 하는 스터디를 입력해주세요.">취소</button>
+            <button type="button" id ="search">검색</button>
+            <button type="reset" id ="reset">취소</button>
         </div>
 
     </div>
@@ -81,6 +81,7 @@
         $("#reset").on('click', function() {
             check1 = 0;
             teamName1 ="";
+            $("#teamName").val("");
             $('#Teams').empty();
             getTeam();
         })
