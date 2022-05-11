@@ -23,7 +23,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/","/css/**", "/*.ico", "/error", "/signUp", "/login",
                         "/findID","/findPW" , "/kakaoLogin" ,"/logout", "/images/*.jpg","/images/*.png",
                          "/loginCheck", "/explain", "/validateMem", "/loginUser", "/findAllTeams",
-                        "../images/*.jpg","/updateUserTeam","/validateEmail"
+                        "../images/*.jpg","/updateUserTeam","/validateEmail", "/board", "/findComment", "/deleteContent", "/boardSearch", "/detailContent",
+                        "/detailContent/*", "/checkUser", "/pageable", "/saveContent", "/write"
 
                         ); // url 에는 인터셉트 먹이지마.
     }

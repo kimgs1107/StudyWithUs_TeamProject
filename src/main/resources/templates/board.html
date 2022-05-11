@@ -2,17 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>자유게시판 목록</title>
 </head>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<!-- 합쳐지고 최소화된 최신 CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
-<!-- 부가적인 테마 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <body>
 
@@ -22,52 +17,115 @@
             <a href="/">로고</a>
         </div>
         <div class="col-xs-4"></div>
-        <div class="col-xs-2"><a href="/board">자유게시판</a></div>
+        <div class="col-xs-1"><a href="/board">자유게시판</a></div>
         <div class="col-xs-1"><a href="/login">로그인</a></div>
         <div class="col-xs-2">
-            <button type="submit" onclick="location.href='/myPage'"  >
+            <button type="submit" onclick="location.href='/myPage'">
                 마이페이지
             </button>
         </div>
     </div>
 </div>
-<div style="text-align: center; margin-top: 100px">
-    <a href="/write">글쓰기</a>
+
+<div class="row" style="margin-top: 20px; margin-left: 50px;">
+    <div class="col-xs-4">
+        <h2>자유게시판</h2>
+    </div>
 </div>
 
+<div id="boardSearch">
+    <form name="search-form" id="form">
+        <div class="search">
+            <input name="keyword" id="keyword" type="text" placeholder="검색어를 입력해주세요.">
+        </div>
+        <button type="button" id="boardSearchBtn">검색하기</button>
+    </form>
+</div>
 
-<div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
-
+<div class="row" style="margin-top: 80px; margin-bottom: 10px; text-align: center;">
     <div class="col-xs-3"><h3>No.</h3></div>
     <div class="col-xs-3"><h3>제목</h3></div>
     <div class="col-xs-3"><h3>작성자</h3></div>
     <div class="col-xs-3"><h3>작성일</h3></div>
-
 </div>
+
 <hr>
-<div class="row" >
+
+<div class="row" id="row">
     <div id="contents">
-
-
     </div>
+    <!--    <table class="table">-->
+    <!--        <thead>-->
+    <!--        <th>No.</th>-->
+    <!--        <th>제목</th>-->
+    <!--        <th>작성자</th>-->
+    <!--        <th>작성일</th>-->
+    <!--        </thead>-->
+    <!--        <tbody id="tbody">-->
+    <!--        <tr id="tr">-->
+    <!--            <td id="no"></td>-->
+    <!--            <td id="title"></td>-->
+    <!--            <td id="writer"></td>-->
+    <!--            <td id="date"></td>-->
+    <!--        </tr>-->
+    <!--        </tbody>-->
+    <!--    </table>-->
 </div>
+
+<!--<div style="text-align: center; margin-top: 100px">-->
+<!--    <a href="/write">글작성</a>-->
+<!--</div>-->
+
+<div class="col-xs-2" style="float: right; margin-top: 30px;">
+    <button type="button" id="writerCheck">
+        글작성
+    </button>
+</div>
+
 
 <script>
+    jQuery(document).ready(function (){
+        // writerCheck();
 
-    getBoardINfo();
-    function getBoardINfo(){
+        $("#writerCheck").click(function () {
+            writerCheck();
+            console.log("글쓰기 클릭");
+        })
+
+
+        function writerCheck() {
+            $.ajax({
+                url: "/checkUser",
+                type: "POST",
+                success: function (data) {
+                    console.log('성공')
+                    console.log(data)
+                    if (data == 0) {
+                        alert("게시글은 회원만 작성할 수 있습니다.")
+                    } else {
+                        location.href = '/write';
+                    }
+                }, error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
         $.ajax({
-            type:"get",
-            url:"/contentsListInfo",
-            success: function(data){
+            type: "POST",
+            url: "/boardSearch", //게시물 목록 조회화면
+            data: {keyword: ""},
+            success: function (data) {
+                console.log('성공')
+                console.log(data)
 
                 let contents = document.getElementById('contents');
                 data.forEach(function(content){
                     let bid = document.createElement('h4');
                     bid.setAttribute("class", "col-xs-3");
-                    bid.innerHTML = content.bbID;
+                    bid.innerHTML = content.idx;
 
-                    let title = document.createElement('button');
+                    let title = document.createElement('a');
                     title.setAttribute("class", "col-xs-3");
                     title.innerText = content.title;
 
@@ -79,13 +137,12 @@
                     date.setAttribute("class", "col-xs-3");
                     date.innerHTML = content.uploadTime;
 
-
                     title.addEventListener("click", ()=>{
-                        window.location.replace('/detailContent/'+content.bbID);
+                        window.location.href='/detailContent/'+content.bbID;
                     });
 
                     let eachContent = document.createElement('div');
-                    eachContent.setAttribute("style", "text-align:center; margin-top:10px;  ")
+                    eachContent.setAttribute("style", "text-align:center; margin-top:10px;")
                     eachContent.append(bid);
                     eachContent.append(title);
                     eachContent.append(name)
@@ -93,18 +150,120 @@
                     contents.appendChild(eachContent);
 
                 });
-            }, error:function(){
+
+            },error: function(error){
+                console.log(error);
+            }
+        });
+
+    });
+
+    let btn = document.querySelector('button[id="boardSearchBtn"]');
+
+    btn.addEventListener('click', function(evt){
+        evt.preventDefault();
+        searching();
+    });
+
+    $('#keyword').keypress(function (key){
+        if(key.keyCode == '13'){
+
+            console.log("검색돼!")
+
+            searching();
+
+            return false;
+        }
+    })
+
+    function searching(){
+        let ct = document.getElementById('contents');
+        ct.remove();
+        let contents = document.createElement('div');
+        contents.setAttribute('id', 'contents');
+        let row = document.getElementById('row');
+        row.appendChild(contents);
+
+        console.log('click')
+        console.log($('#keyword').val())
+        $.ajax({
+            type: "POST",
+            url: "/boardSearch",
+            data: {keyword: $('#keyword').val()},
+            success: function (data) {
+                console.log('성공')
+                console.log(data)
+
+
+                data.forEach(function(content){
+                    let bid = document.createElement('h4');
+                    bid.setAttribute("class", "col-xs-3");
+                    bid.innerHTML = content.idx;
+
+                    let title = document.createElement('a');
+                    title.setAttribute("class", "col-xs-3");
+                    title.innerText = content.title;
+
+                    let name = document.createElement('h4');
+                    name.setAttribute("class", "col-xs-3");
+                    name.innerHTML = content.name;
+
+                    let date = document.createElement('h4');
+                    date.setAttribute("class", "col-xs-3");
+                    date.innerHTML = content.uploadTime;
+
+                    title.addEventListener("click", ()=>{
+                        window.location.replace('/detailContent/'+content.bbID);
+                    });
+
+                    let eachContent = document.createElement('div');
+                    eachContent.setAttribute("style", "text-align:center; margin-top:10px;")
+                    eachContent.append(bid);
+                    eachContent.append(title);
+                    eachContent.append(name)
+                    eachContent.append(date);
+                    contents.appendChild(eachContent);
+
+                });
+
+            },error: function(){
                 alert("error");
             }
-        })
+        });
     }
 
-
-
 </script>
-
-
-
-
 </body>
 </html>
+
+
+
+<!--<div th:if="${teams.content.size()!=0}">-->
+<!--    <nav aria-label="Page navigation example">-->
+<!--        <ul class="pagination justify-content-center">-->
+<!--            <li class="page-item" th:classappend="${1 ==currentPage} ? 'disabled'" >-->
+<!--                <a class="page-link" href="#" th:href="@{/SearchingTeam(page=0,teamId=${param.teamId})}" aria-label="Previous">-->
+<!--                    <span aria-hidden="true">&laquo;</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li class="page-item" th:classappend="${1 ==currentPage} ? 'disabled'" >-->
+<!--                <a class="page-link" href="#" th:href="@{/SearchingTeam(page=${currentPage-2},teamId=${param.teamId})}" aria-label="Previous">-->
+<!--                    <span aria-hidden="true"><</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li class="page-item" th:classappend="${idx ==currentPage} ? 'disabled'" th:each="idx:${#numbers.sequence(startPage,endPage)}">-->
+<!--                <a class="page-link" href="#" th:href="@{/SearchingTeam(page=${idx-1},teamId=${param.teamId})}" th:text="${idx}"></a></li>-->
+
+<!--            <li class="page-item" th:classappend="${teams.totalPages ==currentPage} ? 'disabled'">-->
+<!--                <a class="page-link" href="#" th:href="@{/SearchingTeam(page=${currentPage},teamId=${param.teamId})}"  aria-label="Next">-->
+<!--                    <span aria-hidden="true">></span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li class="page-item" th:classappend="${teams.totalPages ==currentPage} ? 'disabled'">-->
+<!--                <a class="page-link" href="#" th:href="@{/SearchingTeam(page=${end-1},teamId=${param.teamId})}"  aria-label="Next">-->
+<!--                    <span aria-hidden="true">&raquo;</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+<!--</div>-->
