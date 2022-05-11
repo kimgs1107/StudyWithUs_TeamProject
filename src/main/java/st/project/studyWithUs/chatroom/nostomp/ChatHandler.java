@@ -1,20 +1,18 @@
 package st.project.studyWithUs.chatroom.nostomp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.chatroom.model.ChatMessage;
 import st.project.studyWithUs.chatroom.model.ChatRoom;
 import st.project.studyWithUs.chatroom.repository.ChatRoomRepository;
-import st.project.studyWithUs.domain.User;
 
 @Slf4j
 @Profile("!stomp")
@@ -33,8 +31,6 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 
-
-
         String payload = message.getPayload();
         log.info("payload : {}", payload);
 
@@ -43,9 +39,9 @@ public class ChatHandler extends TextWebSocketHandler {
         chatRoom.handleMessage(session, chatMessage, objectMapper);
     }
 
+
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         repository.remove(session);
     }
-
 }

@@ -20,21 +20,8 @@ import java.util.UUID;
 public class ChatRoom {
     private String id;
     private String name;
+    private int current;
     private Set<WebSocketSession> sessions = new HashSet<>();
-
-    public static ChatRoom create2(String id, String name) {
-        ChatRoom created = new ChatRoom();
-        created.id = id;
-        created.name = name;
-        return created;
-    }
-    public static ChatRoom create(@NonNull String name) {
-        ChatRoom created = new ChatRoom();
-        created.id = UUID.randomUUID().toString();
-        created.name = name;
-        return created;
-    }
-
 
 
     public void handleMessage(WebSocketSession session, ChatMessage chatMessage, ObjectMapper objectMapper) {

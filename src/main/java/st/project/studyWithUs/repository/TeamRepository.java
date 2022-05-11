@@ -21,4 +21,6 @@ public interface TeamRepository extends JpaRepository<Team, Long>{
     List<Team> findTeams();
 
     Team findByTeamName(String teamName);
+
+
 }
