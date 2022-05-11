@@ -36,6 +36,8 @@ public class User {
 
     private Long point;
 
+    private String phoneNumber;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserTeam> userTeams = new ArrayList<>();
 
