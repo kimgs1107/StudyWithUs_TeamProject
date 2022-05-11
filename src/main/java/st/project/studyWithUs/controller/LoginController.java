@@ -120,9 +120,6 @@ public class LoginController {
         //세션 값을 담아온다.
         log.info("로그아웃");
         HttpSession session = request.getSession(false);
-        System.out.println(session.getId());
-        System.out.println(session.getAttribute("SessionConst.LOGIN_USER"));
-        System.out.println(session.getAttribute(SessionConst.LOGIN_USER));
         String access_Token = (String)session.getAttribute("access_Token");
 
         //카카오 토큰 삭제
@@ -135,7 +132,6 @@ public class LoginController {
         //현재 담겨져있는 세션값이 존재한다면 세션을 드랍한다.
         if(session !=null){
             session.invalidate();
-
         }
         // 로그인 페이지로 이동
         return "redirect:/login";
