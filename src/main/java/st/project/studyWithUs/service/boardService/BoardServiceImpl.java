@@ -1,6 +1,8 @@
 package st.project.studyWithUs.service.boardService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import st.project.studyWithUs.domain.Board;
 import st.project.studyWithUs.repository.BoardRepository;
@@ -15,7 +17,6 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService{
 
     private final BoardRepository boardRepository;
-
 
     @Override
     public void saveContent(Board board) {
@@ -64,10 +65,19 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     @Override
     public void update(Long bID, String titleID, String contentID) {
+
         Board b = boardRepository.findBybID(bID);
         b.setTitle(titleID);
         b.setContent(contentID);
         boardRepository.save(b);
 
+    }
+
+    @Override
+    public List<Board> findByTitleContaining(String title){
+
+        List<Board> res = boardRepository.findByTitleContaining(title);
+
+        return res;
     }
 }
