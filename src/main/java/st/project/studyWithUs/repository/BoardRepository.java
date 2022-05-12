@@ -19,7 +19,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Board findBybID(Long bID);
 
-    @Query("select b from Board b where b.title like concat('%', :title, '%')" )
+    @Query("select b from Board b where b.title like concat('%', :title, '%') order by b.uploadTime DESC" )
     List<Board> findByTitleContaining(@Param("title") String title);
 
 }

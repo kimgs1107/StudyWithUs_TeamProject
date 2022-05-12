@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class Board {
     private String title;
 
     @NotNull
-    private LocalDate uploadTime;
+    private LocalDateTime uploadTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="uID")
