@@ -10,16 +10,20 @@
 <style>
     #container{
         width: 900px;
+        margin: 20px auto;
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 50px repeat(2, minmax(250px, auto));
     }
     #startBox{
+        grid-row: 1/2;
         grid-column: 1/3;
     }
-    #webcam-container{
+    #camBox{
         grid-column: 1/2;
         grid-row: 2/3;
+        border: 1px solid gray;
+        border-radius: 5px;
     }
     #startStopBox{
         grid-column: 1/2;
@@ -28,26 +32,48 @@
     #members{
         grid-column: 2/3;
         grid-row: 2/3;
+        border: 1px solid gray;
+        border-radius: 5px;
     }
     #chatBox{
         grid-column: 2/3;
         grid-row: 3/4;
+        border: 1px solid gray;
+        border-radius: 5px;
+    }
+
+    #start{
+        width: 80px;
+        margin: 0 auto;
+    }
+    #stop{
+        width: 80px;
+        margin: 0 auto;
+    }
+    #restart{
+        width: 80px;
+        margin: 0 auto;
+    }
+    #webcam-container{
+        text-align: center;
     }
 
 
 </style>
 <body>
 
-<button type="button" onclick="location.href='/'">홈</button>
     <div id="container">
         <div id="startBox">
+            <a href='/'>로고</a>
             <button type="button" onclick="init()" id="start">시작</button>
         </div>
 
-        <div id="webcam-container">
-            <canvas width="200" height="200" hidden></canvas>
-            <img src="/adminImage/noseat.png" id="img" style="width: 200px; height: 200px" hidden/>
-            <div id="time">00:00:00</div>
+        <div id="camBox">
+            <div id="webcam-container">
+                <canvas width="200" height="200" hidden></canvas>
+                <img src="/adminImage/noseat.png" id="img" style="width: 200px; height: 200px" hidden/>
+                <div id="time">00:00:00</div>
+            </div>
         </div>
 
         <div id="startStopBox">
