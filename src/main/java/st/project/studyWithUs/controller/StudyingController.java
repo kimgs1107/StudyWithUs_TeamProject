@@ -7,6 +7,7 @@ import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.service.studyingService.StudyingService;
+import st.project.studyWithUs.service.userTeamService.UserTeamService;
 import st.project.studyWithUs.vo.MemberInSameVO;
 import st.project.studyWithUs.websocketHandler.ExistWebSocketHandler;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class StudyingController {
 
     private final StudyingService studyingService;
+    private final UserTeamService userTeamService;
     private final ExistWebSocketHandler handler;
 
     @GetMapping("/studying/{tID}")
@@ -81,6 +83,17 @@ public class StudyingController {
 
         return members;
     }
+    @PostMapping("/checkExist")
+    @ResponseBody
+    public boolean checkExist(@RequestParam("tID") String tID,@Login User loginUser) {
+        UserTeam ut = userTeamService.findByUIDAndTID(loginUser.getUID(), Long.parseLong(tID));
+        if (ut != null) {
+            return ut.getExist();
+        }else{
+            return true;
+    }
+}
+
 
 //    @PostMapping("/getLoginUser")
 //    @ResponseBody
