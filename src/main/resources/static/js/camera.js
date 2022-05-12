@@ -187,13 +187,14 @@ async function loop() {
         return;
     }
     webcam.update(); // update the webcam frame
-    await predict();
+    await predict();// 주석하면 겁나 빨라
     window.requestAnimationFrame(loop);
 }
 
 let cnt=0;
 let data;
 async function predict() {
+
     const prediction = await model.predict(webcam.canvas);
     for (let i = 0; i < maxPredictions; i++) {
 
@@ -213,6 +214,7 @@ async function predict() {
                 type: "POST",
                 url: "/updateUserTeam",
                 data: {data: data, realTime:realTime, totalTime:totalTime, tID: curTID},
+
                 success: function (data) {
                 },
                 error: function (error) {
@@ -233,6 +235,7 @@ async function predict() {
                 type: "POST",
                 url: "/updateUserTeam",
                 data: {data: data, realTime:realTime, totalTime:totalTime, tID: curTID},
+
                 success: function (data) {
                 },
                 error: function (error) {
@@ -313,22 +316,6 @@ async function restart(){
     document.querySelector("#restart").setAttribute("hidden", "true");
 }
 
-function chat(){
-
-    $.ajax({
-        url: "/chat/rooms/"+curTID,
-        type: "GET",
-        dataType:"json",
-        success: function (data){
-            if(data==true){
-                window.location.replace('/chat/room/enter/'+curTID) ;
-            }
-        }, error:function(){
-
-            window.location.replace('/login') ;
-        }
-    });
-}
 /*
 //임의로 만든 time()함수 함수명 바꾼다면 실행할 함수명도 같이 바꿔줘야지 작동합니
 function time(seconds) {
