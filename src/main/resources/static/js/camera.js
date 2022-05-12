@@ -176,7 +176,7 @@ async function loop() {
         return;
     }
     webcam.update(); // update the webcam frame
-    await predict();
+    await predict();// 주석하면 겁나 빨라
     window.requestAnimationFrame(loop);
 }
 
