@@ -214,7 +214,6 @@
             }
         });
 
-
         exitBtn.click(function () {
             client.send('/publish/chat/message', {}, JSON.stringify({
                 chatRoomId: tId,
@@ -225,7 +224,6 @@
             messageInput.val('');
             window.location.href = "/myPage";
         });
-
 
         $(document).ready(function() {
             $("#alpreah_input").keydown(function(key) {
@@ -244,7 +242,6 @@
                 }
             });
         });
-
     }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
