@@ -100,4 +100,10 @@ public class UserTeamServiceImpl implements UserTeamService {
         return studyTime;
     }
 
+    @Override
+    public UserTeam findByUIDAndTID(Long uid, Long tid){
+        return userTeamRepository.findByuIDandtID(uid,tid);
+    }
+
+
 }

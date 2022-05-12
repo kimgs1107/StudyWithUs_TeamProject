@@ -25,4 +25,6 @@ public interface UserTeamService {
     List<MemberInSameVO> completeMembers(Long tID);
 
     List<StudyTimeVO> myStudyTime(Long uID);
+
+    UserTeam findByUIDAndTID(Long uid, Long tid);
 }

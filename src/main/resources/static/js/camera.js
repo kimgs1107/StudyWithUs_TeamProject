@@ -11,16 +11,6 @@ console.log(curTID);
 let hour=0,minute=0,second=0,active=false,timeoutId,totalTime,realTime;
 // Load the image model and setup the webcam
 
-// $.ajax({
-//     type: "POST",
-//     url: "/getLoginUser",
-//     success: function (data) {
-//         curID = data;
-//     },
-//     error: function (error) {
-//         console.log(error);
-//     }
-// });
 async function init() {
     document.querySelector("#start").setAttribute("hidden","true");
     document.querySelector("#stop").removeAttribute("hidden");
@@ -87,12 +77,11 @@ async function init() {
             console.log("total" + data)
             totalTime+=0
             totalTime=data*100;
-
         },
         error: function (error) {
             console.log(error);
         }
-    });
+    }); // 총시간 셋팅 (스터디 생성 이후 시간++)
     $.ajax({
         type: "POST",
         url: "/getRealTime",
@@ -105,7 +94,7 @@ async function init() {
         error: function (error) {
             console.log(error);
         }
-    });
+    }); // 하루공부시간 셋팅 (이전시간 ++)
 
     var members = document.querySelector("#members");
     $.ajax({
@@ -170,7 +159,7 @@ async function init() {
 
 var camOFF = false;
 async function loop() {
-    if(camOFF) {
+    if(camOFF) { // 캠 정지하면 exist=false, reat/totalTime 셋팅
         clearInterval(timeoutId);
         window.cancelAnimationFrame(loop);
         $.ajax({
@@ -193,20 +182,21 @@ async function loop() {
 
 let cnt=0;
 let data;
-async function predict() {
+
+async function predict() { //프레임한번
 
     const prediction = await model.predict(webcam.canvas);
-    for (let i = 0; i < maxPredictions; i++) {
+    for (let i = 0; i < maxPredictions; i++) { // 학습한 모델의 갯수만큼 돈다.
 
         if(prediction[1].probability.toFixed(2) < 0.2){ // 자리이탈
             cnt++;
-            if(cnt<=500){
+            if(cnt<=500){ // 자리이탈 5초까지는 있는 시간으로 측정해서 ++
                 realTime++;
                 totalTime++
             }
         }
 
-        if(cnt>500){ // 100 = 1초  // 30000=300초=5분 // 테스트는 10초로
+        if(cnt>500){ // 100 = 1초  // 30000=300초=5분 // 테스트는 5초로. 5초 넘어가면 exist=false, real/totalTime 저장
             clearInterval(timeoutId);
             active = false;
             data=false;
@@ -231,17 +221,27 @@ async function predict() {
             cnt=0;
             data=true;
 
-            $.ajax({
-                type: "POST",
-                url: "/updateUserTeam",
-                data: {data: data, realTime:realTime, totalTime:totalTime, tID: curTID},
 
-                success: function (data) {
-                },
-                error: function (error) {
-                    console.log(error);
+            $.ajax({
+                type:"POST",
+                url:"/checkExist",
+                data:{tID: curTID},
+                success: function(data){
+                    if(data==false){
+                        $.ajax({
+                            type: "POST",
+                            url: "/updateUserTeam",
+                            data: {data: true, realTime:realTime, totalTime:totalTime, tID: curTID},
+                            success: function (data) {
+                            },
+                            error: function (error) {
+                                console.log(error);
+                            }
+                        });
+                    }
                 }
-            });
+            })
+
 
             document.querySelector('img').setAttribute("hidden","true");
             document.querySelector('canvas').removeAttribute("hidden");
