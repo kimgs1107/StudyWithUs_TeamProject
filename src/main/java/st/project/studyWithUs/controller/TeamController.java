@@ -128,8 +128,8 @@ public class TeamController {
         userTeam.setTeam(team);
         userTeam.setUser(loginUser);
         userTeam.setExist(false);
-        userTeam.setTotalTime(1000L);
-        userTeam.setRealTime(10L);
+        userTeam.setTotalTime(0l); // 초 _ 스터디 끝날때까지 저장될 값
+        userTeam.setRealTime(0l); // 초 _ 매일 자정 리셋
         userTeamService.save(userTeam);
 
         chatRoomRepository.add(team.getTID(), team.getTeamName());
