@@ -313,22 +313,6 @@ async function restart(){
     document.querySelector("#restart").setAttribute("hidden", "true");
 }
 
-function chat(){
-
-    $.ajax({
-        url: "/chat/rooms/"+curTID,
-        type: "GET",
-        dataType:"json",
-        success: function (data){
-            if(data==true){
-                window.location.replace('/chat/room/enter/'+curTID) ;
-            }
-        }, error:function(){
-
-            window.location.replace('/login') ;
-        }
-    });
-}
 /*
 //임의로 만든 time()함수 함수명 바꾼다면 실행할 함수명도 같이 바꿔줘야지 작동합니
 function time(seconds) {
