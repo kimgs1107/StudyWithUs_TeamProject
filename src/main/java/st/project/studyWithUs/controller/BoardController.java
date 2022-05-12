@@ -2,10 +2,6 @@ package st.project.studyWithUs.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import st.project.studyWithUs.argumentresolver.Login;
@@ -14,7 +10,8 @@ import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.service.boardService.BoardService;
 import st.project.studyWithUs.vo.BoardVO;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +51,7 @@ public class BoardController {
 
 
         board.setUser(loginUser);
-        board.setUploadTime(LocalDate.now());
+        board.setUploadTime(LocalDateTime.now());
 
         boardservice.saveContent(board);
 
@@ -131,7 +128,7 @@ public class BoardController {
             vo.setContent(li.getContent());
             vo.setTitle(li.getTitle());
             vo.setName(li.getUser().getUserName());
-            vo.setUploadTime(li.getUploadTime());
+            vo.setUploadTime(li.getUploadTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             vo.setBbID(li.getBID());
             vo.setIdx(idx--);
             vo.setUID(li.getUser().getUID());
