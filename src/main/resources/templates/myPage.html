@@ -64,10 +64,12 @@
 </div>
 <hr>
 
-<div id="completeMembers">
-</div>
+<div id="completeBox" style="display: grid; grid-template-columns: 1fr 1fr;">
+    <div id="completeMembers" style="grid-column: 1/2;">
+    </div>
 
-<div id="myStudyTime">
+    <div id="myStudyTime" style="grid-column: 2/3;">
+    </div>
 </div>
 <hr>
 
@@ -112,7 +114,7 @@
 
     function completeMembers(){
         let compMemberBox = document.getElementById("completeMembers");
-        compMemberBox.setAttribute("style", "text-align:center; display:inline-block; width: 450px;");
+        compMemberBox.setAttribute("style", "text-align:center;");
         let title = document.createElement("h3");
         title.innerHTML = "오늘의 목표를 달성한 사람들";
         title.setAttribute("style", "text-align: center;");
@@ -166,7 +168,7 @@
 
     function myStudyTime(){
         let studyTimeBox = document.getElementById("myStudyTime");
-        studyTimeBox.setAttribute("style", "text-align:center; display:inline-block; width: 450px;");
+        studyTimeBox.setAttribute("style", "text-align:center;");
         let title = document.createElement("h3");
         title.innerHTML = "나의 목표 달성률";
         title.setAttribute("style", "text-align: center;");
@@ -267,7 +269,7 @@
                     teamButton2.setAttribute("id", team.tId);
                     teamButton2.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
                     teamButton2.addEventListener("click", ()=>{
-                        location.href='/studying/'+team.ttID;
+                        location.href='/chat/studyRoom/enter/'+team.ttID;
                     });
 
                     let teamButton3 = document.createElement('button');
