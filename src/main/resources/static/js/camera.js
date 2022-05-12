@@ -3,9 +3,9 @@ const URL = "/my_model/";
 let model, webcam, webcamContainer, maxPredictions;
 webcamContainer = document.querySelector("#webcam-container")
 
-let curURL = window.location.href;
-let urlArr = curURL.split("/");
-let curTID = urlArr[urlArr.length-1];
+let url = window.location.href;
+let urlList = url.split("/");
+let curTID = urlList[urlList.length-1];
 console.log(curTID);
 
 let hour=0,minute=0,second=0,active=false,timeoutId,totalTime,realTime;
