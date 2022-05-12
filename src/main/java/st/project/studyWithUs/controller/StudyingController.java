@@ -2,14 +2,12 @@ package st.project.studyWithUs.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.service.studyingService.StudyingService;
+import st.project.studyWithUs.vo.MemberInSameVO;
 import st.project.studyWithUs.websocketHandler.ExistWebSocketHandler;
 
 import java.util.ArrayList;
@@ -23,32 +21,31 @@ public class StudyingController {
     private final StudyingService studyingService;
     private final ExistWebSocketHandler handler;
 
-    @GetMapping("/studying")
+    @GetMapping("/studying/{tID}")
     public String studying(){
         return "studying";
     }
 
     @PostMapping("/updateUserTeam")
     @ResponseBody
-    public void updateUserTeam(@RequestParam("data") boolean data, @RequestParam("realTime") String realTime, @RequestParam("totalTime") String totalTime, @Login User user) throws Exception{
+    public void updateUserTeam(@RequestParam("data") boolean data, @RequestParam("realTime") String realTime, @RequestParam("totalTime") String totalTime, @RequestParam("tID") String tID, @Login User user) throws Exception{
 
-        Long tID = 1l;
-
-        UserTeam ut = studyingService.findUserTeam(user.getUID(), tID);
+        System.out.println("!!!!!updateUserTeam 함수");
+        System.out.println(user.getUID());
+        System.out.println(tID);
+        UserTeam ut = studyingService.findUserTeam(user.getUID(), Long.parseLong(tID));
         ut.setExist(data);
         ut.setRealTime(Long.parseLong(realTime)/100);
         ut.setTotalTime(Long.parseLong(totalTime)/100);
         studyingService.save(ut);
-        handler.noticeExist(ut);
+        handler.noticeExist(ut, Long.parseLong(tID));
     }
 
     @PostMapping("/getTotalTime")
     @ResponseBody
-    public int getTotalTime(@Login User user) {
+    public int getTotalTime(@Login User user, @RequestParam("tID") String tID) {
 
-        Long tID = 1l;
-
-        UserTeam ut = studyingService.findUserTeam(user.getUID(),tID);
+        UserTeam ut = studyingService.findUserTeam(user.getUID(),Long.parseLong(tID));
         if(ut.getTotalTime()==null){
             return 0;
         }else {
@@ -58,11 +55,9 @@ public class StudyingController {
 
     @PostMapping("/getRealTime")
     @ResponseBody
-    public int getRealTime(@Login User user) {
+    public int getRealTime(@Login User user, @RequestParam("tID") String tID) {
 
-        Long tID = 1l;
-
-        UserTeam ut = studyingService.findUserTeam(user.getUID(),tID);
+        UserTeam ut = studyingService.findUserTeam(user.getUID(),Long.parseLong(tID));
         if(ut.getRealTime()==null){
             return 0;
         }else{
@@ -72,22 +67,25 @@ public class StudyingController {
 
     @PostMapping("/members")
     @ResponseBody
-    public List<Long> members(@RequestParam("tID") String tID){
+    public List<MemberInSameVO> members(@RequestParam("tID") String tID){
         List<UserTeam> userTeams = studyingService.findUserTeamByTID(Long.parseLong(tID));
-        List<Long> membersID = new ArrayList<>();
+        List<MemberInSameVO> members = new ArrayList<>();
 
         for(UserTeam ut : userTeams){
-            membersID.add(ut.getUser().getUID());
+            MemberInSameVO mem = new MemberInSameVO();
+            mem.setUuID(ut.getUser().getUID());
+            mem.setUserImage(ut.getUser().getUserImage());
+            mem.setUserName(ut.getUser().getUserName());
+            members.add(mem);
         }
 
-        return membersID;
+        return members;
     }
 
-    @PostMapping("/getLoginUser")
-    @ResponseBody
-    public Long getLoginUser(@Login User loginUser){
-        Long uID = loginUser.getUID();
-        return uID;
-    }
-
+//    @PostMapping("/getLoginUser")
+//    @ResponseBody
+//    public Long getLoginUser(@Login User loginUser){
+//        Long uID = loginUser.getUID();
+//        return uID;
+//    }
 }

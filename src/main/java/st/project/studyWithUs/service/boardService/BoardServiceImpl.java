@@ -7,6 +7,7 @@ import st.project.studyWithUs.repository.BoardRepository;
 import st.project.studyWithUs.vo.BoardVO;
 
 import javax.transaction.Transactional;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,6 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService{
 
     private final BoardRepository boardRepository;
-
 
     @Override
     public void saveContent(Board board) {
@@ -31,7 +31,7 @@ public class BoardServiceImpl implements BoardService{
             bvo.setBbID(b.getBID());
             bvo.setTitle(b.getTitle());
             bvo.setName(b.getUser().getUserName());
-            bvo.setUploadTime(b.getUploadTime());
+            bvo.setUploadTime(b.getUploadTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             bVO.add(bvo);
         }
         return bVO;
@@ -41,7 +41,7 @@ public class BoardServiceImpl implements BoardService{
     public BoardVO findBybID(Long bID) {
         Board b = boardRepository.findBybID(bID);
         BoardVO boardVO = new BoardVO();
-        boardVO.setUploadTime(b.getUploadTime());
+        boardVO.setUploadTime(b.getUploadTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         boardVO.setContent(b.getContent());
         boardVO.setBbID(b.getBID());
         boardVO.setUID(b.getUser().getUID());
@@ -64,10 +64,19 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     @Override
     public void update(Long bID, String titleID, String contentID) {
+
         Board b = boardRepository.findBybID(bID);
         b.setTitle(titleID);
         b.setContent(contentID);
         boardRepository.save(b);
 
+    }
+
+    @Override
+    public List<Board> findByTitleContaining(String title){
+
+        List<Board> res = boardRepository.findByTitleContaining(title);
+
+        return res;
     }
 }
