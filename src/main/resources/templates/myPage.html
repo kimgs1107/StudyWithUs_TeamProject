@@ -15,6 +15,14 @@
 
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script>
+    // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+    Kakao.init('e6a4b96a4b6b23c1663853846b4c3f14'); // 사용할 앱의 JavaScript키를 입력해 주세요.
+</script>
+
 <body>
 
 <div class="container" style="margin-top: 10px;">
@@ -71,7 +79,9 @@
         </div>
     </div>
 </div>
-
+<a href="javascript:void kakaoChatStart()" class="kakaoChatPc hidden-md hidden-sm hidden-xs">
+    <p id="kakao-talk-channel-chat-button"></p>
+</a>
 
 <script>
 
@@ -308,6 +318,21 @@
         })
     }
 
+</script>
+<script type="text/javascript">
+    function chat() {
+        Kakao.Channel.chat({
+            channelPublicId: '_kxjRLb' // 카카오톡 채널 홈 URL에 명시된 id로 설정합니다.
+        });
+    }
+
+    btn_chat();
+    function btn_chat() {
+        Kakao.Channel.createChatButton({
+            container: '#kakao-talk-channel-chat-button',
+            channelPublicId: '_kxjRLb' // 카카오톡 채널 홈 URL에 명시된 id로 설정합니다.
+        });
+    }
 </script>
 </body>
 </html>
