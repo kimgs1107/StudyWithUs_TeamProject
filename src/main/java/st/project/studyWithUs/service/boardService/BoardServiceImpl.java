@@ -1,14 +1,13 @@
 package st.project.studyWithUs.service.boardService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import st.project.studyWithUs.domain.Board;
 import st.project.studyWithUs.repository.BoardRepository;
 import st.project.studyWithUs.vo.BoardVO;
 
 import javax.transaction.Transactional;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class BoardServiceImpl implements BoardService{
             bvo.setBbID(b.getBID());
             bvo.setTitle(b.getTitle());
             bvo.setName(b.getUser().getUserName());
-            bvo.setUploadTime(b.getUploadTime());
+            bvo.setUploadTime(b.getUploadTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             bVO.add(bvo);
         }
         return bVO;
@@ -42,7 +41,7 @@ public class BoardServiceImpl implements BoardService{
     public BoardVO findBybID(Long bID) {
         Board b = boardRepository.findBybID(bID);
         BoardVO boardVO = new BoardVO();
-        boardVO.setUploadTime(b.getUploadTime());
+        boardVO.setUploadTime(b.getUploadTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         boardVO.setContent(b.getContent());
         boardVO.setBbID(b.getBID());
         boardVO.setUID(b.getUser().getUID());
