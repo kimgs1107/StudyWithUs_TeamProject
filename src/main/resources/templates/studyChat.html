@@ -124,7 +124,7 @@
             </div>
             <input name="message" id="alpreah_input">
             <button class="send">보내기</button>
-            <button class="exit">나가기</button>
+            <button class="exit" id="exit">나가기</button>
         </div>
     </div>
 </div>
@@ -215,14 +215,19 @@
         });
 
         exitBtn.click(function () {
-            client.send('/publish/chat/message', {}, JSON.stringify({
-                chatRoomId: tId,
-                type: 'CHAT',
-                message: member+"님이 채팅방을 나갔습니다.",
-                writer: ""
-            }));
-            messageInput.val('');
-            window.location.href = "/myPage";
+            let c = confirm("스터디방을 나가시겠습니까?")
+            if(c) {
+                stop()
+                client.send('/publish/chat/message', {}, JSON.stringify({
+                    chatRoomId: tId,
+                    type: 'CHAT',
+                    message: member+"님이 채팅방을 나갔습니다.",
+                    writer: ""
+                }));
+                messageInput.val('');
+                window.location.href = "/myPage";
+            }
+
         });
 
         $(document).ready(function() {

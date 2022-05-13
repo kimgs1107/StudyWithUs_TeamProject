@@ -182,9 +182,7 @@ async function loop() {
 
 let cnt=0;
 let data;
-
 async function predict() { //프레임한번
-
     const prediction = await model.predict(webcam.canvas);
     for (let i = 0; i < maxPredictions; i++) { // 학습한 모델의 갯수만큼 돈다.
 
@@ -204,7 +202,6 @@ async function predict() { //프레임한번
                 type: "POST",
                 url: "/updateUserTeam",
                 data: {data: data, realTime:realTime, totalTime:totalTime, tID: curTID},
-
                 success: function (data) {
                 },
                 error: function (error) {
