@@ -10,4 +10,5 @@ public class MemberInSameVO {
     private Long uuID;
     private String userName;
     private String userImage;
+    private String exist;
 }

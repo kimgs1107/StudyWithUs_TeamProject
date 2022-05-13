@@ -182,7 +182,7 @@
                 teams.forEach(function(team) {
                     let timeBox = document.createElement("div");
                     let teamName = document.createElement("div");
-                    teamName.innerHTML = team.teamName;
+                    teamName.innerHTML = team.teamName+" : ";
                     teamName.setAttribute("style", "display:inline-block; font-size: 14pt; margin-right: 3px;");
                     let time = document.createElement("div");
                     if(team.totalTime/(team.targetTime*team.period) >=1){

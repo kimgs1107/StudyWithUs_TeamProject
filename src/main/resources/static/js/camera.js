@@ -29,7 +29,7 @@ async function init() {
             members.removeChild(box);
         }
         else {
-            if (id == null) {
+            if (box == null) {
                 let box = document.createElement("div");
                 box.setAttribute("id", "box"+message[1]);
                 box.setAttribute("width", "100px")
@@ -50,9 +50,14 @@ async function init() {
                 userImg.setAttribute("style", "width:50px; height:50px; border-radius:50%; margin: 5px 10px;");
 
                 let id = document.createElement("div");
-                id.innerHTML = "off";
+                id.innerHTML = message[0];
+                if(message[0] === "ON"){
+                    id.setAttribute("style", "color:red; font-size:16pt; text-align:center;");
+                }
+                else{
+                    id.setAttribute("style", "color:black; font-size:16pt; text-align:center;");
+                }
                 id.setAttribute("id", message[1]);
-                id.setAttribute("style", "font-size:16pt; text-align:center;");
 
                 userBox.append(userName);
                 userBox.append(userImg);
@@ -62,6 +67,12 @@ async function init() {
                 members.append(box);
             } else {
                 id.innerHTML = message[0];
+                if(message[0] === "ON"){
+                    id.setAttribute("style", "color:red; font-size:16pt; text-align:center;");
+                }
+                else{
+                    id.setAttribute("style", "color:black; font-size:16pt; text-align:center;");
+                }
             }
         }
 
@@ -123,9 +134,14 @@ async function init() {
                 userImg.setAttribute("style", "width:50px; height:50px; border-radius:50%; margin: 5px 10px;");
 
                 let id = document.createElement("div");
-                id.innerHTML = "off";
+                id.innerHTML = user.exist;
+                if(user.exist === "ON"){
+                    id.setAttribute("style", "color:red; font-size:16pt; text-align:center;");
+                }
+                else{
+                    id.setAttribute("style", "color:black; font-size:16pt; text-align:center;");
+                }
                 id.setAttribute("id", user.uuID);
-                id.setAttribute("style", "font-size:16pt; text-align:center;");
 
                 userBox.append(userName);
                 userBox.append(userImg);
@@ -311,6 +327,150 @@ async function restart(){
     }
     document.querySelector("#stop").removeAttribute("hidden");
     document.querySelector("#restart").setAttribute("hidden", "true");
+}
+
+
+let name="hihi";
+$(document).ready(function () {
+
+    findStudyUser();
+    start();
+});
+function findStudyUser(){
+    $.ajax({
+        url: "/chat/findStudyUser",
+        type: "GET",
+        async: false,
+        success: function(data){
+            name = data;
+        },error: function(error){
+            console.log(error);
+        }
+    });
+    $.ajax({
+        url: "/chat/findTitle",
+        type: "GET",
+        async: false,
+        data :{
+            tID:curTID
+        },
+        success: function(data){
+            let title = document.getElementById('title');
+            title.innerText = data;
+        },error: function(error){
+            console.log(error);
+        }
+    });
+}
+
+function start(){
+    var chatBox = $('.chat_box');
+    var messageInput = $('input[name="message"]');
+    var sendBtn = $('.send');
+    var exitBtn = $('.exit');
+    var roomId = $('.content').data('room-id');
+    var member = name;
+    //var member = $('.content').data('member');
+    var sock = new SockJS("/stomp-chat");
+    var client = Stomp.over(sock);
+    client.debug = function (e) {
+    };
+
+    client.connect({}, function () {
+        client.send('/publish/chat/join', {}, JSON.stringify({chatRoomId: curTID, type: 'JOIN', writer: member}));
+        client.subscribe('/subscribe/chat/room/' + curTID, function (chat) {
+            var content = JSON.parse(chat.body);
+            // chatBox.append('<li>' + content.message + '(' + content.writer + ')</li>')
+            if(content.message==content.writer+"님이 입장하셨습니다."){
+                chatBox.append('<h4 style="color: blue">'+ content.message +'</h4>')
+            }
+            else if(content.writer==name){ //본인일 때
+                chatBox.append('<h4 style="color: orange">'+ content.writer+ ' : ' + content.message +'</h4>')
+            }
+            else if(content.writer==""){
+                chatBox.append('<h4 style="color: red">'+ content.message +'</h4>')
+            }
+            else{
+                chatBox.append('<h4>'+ content.writer+ ' : ' + content.message +'</h4>')
+            }
+
+        });
+    });
+
+    sendBtn.click(function () {
+        if(messageInput.val()!="") {
+            var message = messageInput.val();
+            client.send('/publish/chat/message', {}, JSON.stringify({
+                chatRoomId: curTID,
+                type: 'CHAT',
+                message: message,
+                writer: member
+            }));
+            messageInput.val('');
+        }
+    });
+
+    exitBtn.click(function () {
+        let c = confirm("스터디방을 나가시겠습니까?")
+        if(c) {
+
+            $.ajax({
+                type: "POST",
+                url: "/updateUserTeam",
+                data: {data: false, realTime:realTime, totalTime:totalTime, tID: curTID},
+                success: function (data) {
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+
+            stop()
+            client.send('/publish/chat/message', {}, JSON.stringify({
+                chatRoomId: curTID,
+                type: 'CHAT',
+                message: member+"님이 채팅방을 나갔습니다.",
+                writer: ""
+            }));
+            messageInput.val('');
+            window.location.href = "/myPage";
+        }
+
+    });
+
+    $(document).ready(function() {
+        $("#alpreah_input").keydown(function(key) {
+            if (key.keyCode == 13) {
+                // alert("엔터키를 눌렀습니다.");
+                if(messageInput.val()!="") {
+                    var message = messageInput.val();
+                    client.send('/publish/chat/message', {}, JSON.stringify({
+                        chatRoomId: curTID,
+                        type: 'CHAT',
+                        message: message,
+                        writer: member
+                    }));
+                    messageInput.val('');
+                }
+            }
+        });
+    });
+}
+
+function home(){
+    $.ajax({
+        type: "POST",
+        url: "/updateUserTeam",
+        data: {data: false, realTime:realTime, totalTime:totalTime, tID: curTID},
+        success: function (data) {
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+    stop();
+
+    window.location.href = "/";
 }
 
 /*
