@@ -40,7 +40,7 @@ public class StudyingController {
         ut.setRealTime(Long.parseLong(realTime)/100);
         ut.setTotalTime(Long.parseLong(totalTime)/100);
         studyingService.save(ut);
-        handler.noticeExist(ut, Long.parseLong(tID));
+        handler.noticeExist(ut);
     }
 
     @PostMapping("/getTotalTime")
@@ -78,6 +78,10 @@ public class StudyingController {
             mem.setUuID(ut.getUser().getUID());
             mem.setUserImage(ut.getUser().getUserImage());
             mem.setUserName(ut.getUser().getUserName());
+            if(ut.getExist() == true)
+                mem.setExist("ON");
+            else
+                mem.setExist("OFF");
             members.add(mem);
         }
 
