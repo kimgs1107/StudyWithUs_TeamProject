@@ -7,6 +7,7 @@ import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.service.studyingService.StudyingService;
+import st.project.studyWithUs.service.userTeamService.UserTeamService;
 import st.project.studyWithUs.vo.MemberInSameVO;
 import st.project.studyWithUs.websocketHandler.ExistWebSocketHandler;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class StudyingController {
 
     private final StudyingService studyingService;
+    private final UserTeamService userTeamService;
     private final ExistWebSocketHandler handler;
 
     @GetMapping("/studying/{tID}")
@@ -38,7 +40,7 @@ public class StudyingController {
         ut.setRealTime(Long.parseLong(realTime)/100);
         ut.setTotalTime(Long.parseLong(totalTime)/100);
         studyingService.save(ut);
-        handler.noticeExist(ut, Long.parseLong(tID));
+        handler.noticeExist(ut);
     }
 
     @PostMapping("/getTotalTime")
@@ -76,11 +78,26 @@ public class StudyingController {
             mem.setUuID(ut.getUser().getUID());
             mem.setUserImage(ut.getUser().getUserImage());
             mem.setUserName(ut.getUser().getUserName());
+            if(ut.getExist() == true)
+                mem.setExist("ON");
+            else
+                mem.setExist("OFF");
             members.add(mem);
         }
 
         return members;
     }
+    @PostMapping("/checkExist")
+    @ResponseBody
+    public boolean checkExist(@RequestParam("tID") String tID,@Login User loginUser) {
+        UserTeam ut = userTeamService.findByUIDAndTID(loginUser.getUID(), Long.parseLong(tID));
+        if (ut != null) {
+            return ut.getExist();
+        }else{
+            return true;
+    }
+}
+
 
 //    @PostMapping("/getLoginUser")
 //    @ResponseBody
