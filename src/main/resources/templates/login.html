@@ -24,6 +24,20 @@
             $("#login_btn").on('click', function() {
                 loginChk();
             })
+
+            $('#naver_id_login').click(function(){
+                console.log("클릭")
+                $.ajax({
+                    url:"/getInfo",
+                    type:"post",
+                    success:function(data){
+                        location.href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id="+data.client_id+"&redirect_uri=http://localhost:8080/naverLogin&state="+data.state;
+                    },
+                    error:function (error){
+                        console.log(error)
+                    }
+                })
+            })
         });
         function loginChk() {
             $.ajax({
@@ -76,6 +90,10 @@
                         <img src="../images/kakaologo.png" alt="" style= "width: 23px; height: 23px; float: left; margin-right: 10px; ">
                         <h5 style=" text-decoration: none; color: #595858;"> 카카오계정으로 로그인</h5>
                     </a>
+                </div>
+                <div>
+<!--                    <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=quDmxXiN1GypP5C8hzbi&redirect_uri=http://localhost:8080/naverLogin&state=38748">네이버로 로그인</a>-->
+                    <button  id="naver_id_login">네이버!!!!!!!!!</button>
                 </div>
 
                 <div class="row">
