@@ -27,6 +27,9 @@ public class ExistWebSocketHandler extends TextWebSocketHandler {
 
     public void noticeExist(UserTeam userTeam) throws Exception{
 
+        System.out.println("In SocketHandler "+userTeam.getTeam().getTID());
+        System.out.println(userTeam.getUser().getUID());
+
         List<WebSocketSession> sess = teamSessionList.get(userTeam.getTeam().getTID());
 
         TextMessage message = null;

@@ -84,6 +84,31 @@
                 })
             })
 
+            //private일 때 비밀번호 입력창 보이게
+            $('input:radio[name=scope]').change(function (){
+                if($('input:radio[name=scope]:checked').val() === 'public'){
+                    $('input[name=password]').val("");
+                    document.getElementById('passwordBox').setAttribute('hidden', 'true');
+                }
+                if($('input:radio[name=scope]:checked').val() === 'private'){
+                    document.getElementById('passwordBox').removeAttribute('hidden');
+                }
+            });
+
+            //시작일은 오늘 이후부터 선택가능
+            $('input[name="startDate"]').change(function (){
+                let ymd = new Date();
+                let year = ymd.getFullYear();
+                let month = ymd.getMonth();
+                let date = ymd.getDate();
+                let today = new Date(year, month, date);
+                let choose = new Date($('input[name="startDate"]').val());
+                if(today > choose){
+                    $('input[name="startDate"]').val("");
+                    $('input[name="startDate"]').focus();
+                }
+            });
+
             // 서버로 데이터 전송
             $('#submit').click(function (evt) {
                 evt.preventDefault();
@@ -127,6 +152,11 @@
                 let targetTime = document.querySelector('input[name="targetTime"]');
                 if(!targetTime.value){
                     targetTime.focus();
+                    evt.preventDefault();
+                    return;
+                }
+                if($('input:radio[name=scope]:checked').val() === 'private' && $('input[name=password]').val()==="") {
+                    $('input[name=password]').focus();
                     evt.preventDefault();
                     return;
                 }
@@ -226,6 +256,19 @@
                     <label class="col-sm-3 control-label">스터디 목표 시간</label>
                     <div class="col-sm-9"><input type="text" name="targetTime" id="targetTime" placeholder="목표 공부 시간을 입력해주세요."
                                                   class="form-control" required/></div>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-sm-9">
+                        <label for="public">공개</label>
+                        <input type="radio" name="scope" value="public" id="public" checked/>
+                        <label for="private">비공개</label>
+                        <input type="radio" name="scope" value="private" id="private"/>
+                    </div>
+                </div>
+                <div class="mb-3 row" id="passwordBox" hidden>
+                    <label class="col-sm-3 control-label">비밀번호</label>
+                    <div class="col-sm-9"><input type="text" name="password" id="password" placeholder="비밀번호를 입력해주세요."
+                                                 class="form-control"/></div>
                 </div>
 
                 <div class="mb-3 row">
