@@ -185,11 +185,11 @@
                     teamName.innerHTML = team.teamName+" : ";
                     teamName.setAttribute("style", "display:inline-block; font-size: 14pt; margin-right: 3px;");
                     let time = document.createElement("div");
-                    if(team.totalTime/(team.targetTime*team.period) >=1){
+                    if(team.totalTime/(team.targetTime*team.period*60) >=1){
                         time.innerHTML = "100%";
                     }
                     else {
-                        time.innerHTML = Math.round(team.totalTime/(team.targetTime*team.period)*100)+"%";
+                        time.innerHTML = Math.round(team.totalTime/(team.targetTime*team.period*60)*100)+"%";
                     }
                     time.setAttribute("style", "display:inline-block; font-size: 14pt");
 

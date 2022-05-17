@@ -120,30 +120,78 @@
                         let teamButton = document.createElement('button');
                         teamButton.innerText = "스터디 참가하기";
 
-
                         teamButton.addEventListener("click", ()=>{
-                            $.ajax({
-                                url: "/studyDeposit",
-                                type: "GET",
-                                dataType:"json",
-                                data: {
-                                    tId : team.ttID,
-                                    point : team.depositPoint
-                                },
-                                success: function (data){
-                                    if (data==true){
-                                        alert("입금이 완료 되었습니다. 스터디 참가가 가능합니다. ")
-                                        window.location.replace('/myPage');
+                            if(team.scope === "public") {
+                                $.ajax({
+                                    url: "/studyDeposit",
+                                    type: "GET",
+                                    dataType: "json",
+                                    data: {
+                                        tId: team.ttID,
+                                        point: team.depositPoint
+                                    },
+                                    success: function (data) {
+                                        if (data == true) {
+                                            alert("입금이 완료 되었습니다. 스터디 참가가 가능합니다. ")
+                                            window.location.replace('/myPage');
+                                        } else if (data == false) {
+                                            alert("잔액이 부족합니다. 포인트를 충전해주세요 ")
+                                            window.location.replace('/chargePoint');
+                                        }
+                                    }, error: function () {
+                                        alert("로그인 후 이용해주세요.");
+                                        window.location.replace('/login');
                                     }
-                                    else if(data==false){
-                                        alert("잔액이 부족합니다. 포인트를 충전해주세요 ")
-                                        window.location.replace('/chargePoint') ;
+                                });
+                            }
+                            else if(team.scope === "private"){
+                                if(team.isLogin) {
+                                    var pwInput = prompt("비공개 스터디입니다. 비밀번호를 입력하세요.");
+                                    if (pwInput != null) {
+                                        $.ajax({
+                                            url: "/checkTeamPW",
+                                            type: "POST",
+                                            data: {
+                                                tId: team.ttID,
+                                                password: pwInput
+                                            },
+                                            success: function (data) {
+                                                if (data) {
+                                                    $.ajax({
+                                                        url: "/studyDeposit",
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        data: {
+                                                            tId: team.ttID,
+                                                            point: team.depositPoint
+                                                        },
+                                                        success: function (data) {
+                                                            if (data == true) {
+                                                                alert("입금이 완료 되었습니다. 스터디 참가가 가능합니다. ")
+                                                                window.location.replace('/myPage');
+                                                            } else if (data == false) {
+                                                                alert("잔액이 부족합니다. 포인트를 충전해주세요 ")
+                                                                window.location.replace('/chargePoint');
+                                                            }
+                                                        }, error: function (error) {
+                                                            console.log(error)
+                                                        }
+                                                    });
+                                                } else {
+                                                    alert("비밀번호가 틀립니다.");
+                                                }
+                                            }, error: function () {
+                                                alert("로그인 후 이용해주세요.");
+                                                window.location.replace('/login');
+                                            }
+                                        });
                                     }
-                                }, error:function(){
-                                    alert("로그인 후 이용해주세요.");
-                                    window.location.replace('/login') ;
                                 }
-                            });
+                                else{
+                                    alert("로그인 후 이용해주세요.");
+                                    window.location.replace('/login');
+                                }
+                            }
                         });
                         let eachTeam = document.createElement('div');
                         eachTeam.append(image);

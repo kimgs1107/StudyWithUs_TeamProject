@@ -22,5 +22,6 @@ public class TeamVO {
     private LocalDate startDate;
     private LocalDate endDate;
     private String teamImage;
-
+    private String scope;
+    private Boolean isLogin;
 }
