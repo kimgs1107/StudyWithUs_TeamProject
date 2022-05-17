@@ -2,11 +2,15 @@ package st.project.studyWithUs.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import st.project.studyWithUs.service.naverService.NaverService;
+import st.project.studyWithUs.service.naverService.*;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.interceptor.SessionConst;
 import st.project.studyWithUs.service.kakaoService.KakaoService;
@@ -28,6 +32,38 @@ public class LoginController {
     private final KakaoService kakaoService;
     private final NaverService naverService;
     private final UserService userService;
+
+    // 캡차 키&이미지 생성
+    @ResponseBody
+    @PostMapping("/getimg")
+    public HashMap<String,String> getimg(){
+        String key = naverService.getKey();
+        String img = naverService.receiveImg(key);
+
+        HashMap<String,String> data = new HashMap<>();
+        data.put("key",key);
+        data.put("img",img);
+
+        return data;
+    }
+
+    // 캡차 값 결과 체크
+    @ResponseBody
+    @PostMapping("/getCheck")
+    public String getCheck(@RequestParam("data") String data,@RequestParam("key") String key){
+        String responseBody = naverService.resCap(key, data);
+        String result="";
+        try {
+            JSONParser jsonParser = new JSONParser();
+            Object parse = jsonParser.parse(responseBody);
+            JSONObject jsonObject = (JSONObject) parse;
+
+            result = String.valueOf(jsonObject.get("result"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     @GetMapping("/login")
     public String login() {
