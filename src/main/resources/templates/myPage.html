@@ -269,7 +269,15 @@
                     teamButton2.setAttribute("id", team.tId);
                     teamButton2.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
                     teamButton2.addEventListener("click", ()=>{
-                        location.href='/chat/studyRoom/enter/'+team.ttID;
+                        let ymd = new Date();
+                        let today = new Date(ymd.getFullYear(), ymd.getMonth(), ymd.getDate(), 9);
+                        let start = new Date(team.startDate);
+                        if(today < start){
+                            alert('아직 스터디가 시작하지 않았습니다.');
+                        }
+                        else {
+                            location.href = '/chat/studyRoom/enter/' + team.ttID;
+                        }
                     });
 
                     let teamButton3 = document.createElement('button');

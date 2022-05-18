@@ -6,7 +6,17 @@ webcamContainer = document.querySelector("#webcam-container")
 let url = window.location.href;
 let urlList = url.split("/");
 let curTID = urlList[urlList.length-1];
-console.log(curTID);
+let curUID;
+$.ajax({
+    type: "POST",
+    url: "/getLoginUser",
+    success: function (data) {
+        curUID = data;
+    },
+    error: function (error) {
+        console.log(error);
+    }
+});
 
 let hour=0,minute=0,second=0,active=false,timeoutId,totalTime,realTime;
 // Load the image model and setup the webcam
@@ -18,7 +28,7 @@ async function init() {
 
     let webSocket = new WebSocket("ws://"+window.location.host+"/exist");
     webSocket.onopen = function(event){
-        webSocket.send(curTID); //팀 정보를 전송
+        webSocket.send(curUID+" "+curTID); //사용자 정보를 전송
     }
     webSocket.onmessage = function(event){
         var message = event.data.split(" ");
