@@ -3,21 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script>
 <body>
 
-        <div style="text-align: center; margin-top: 100px; ">
-
-            <button id="100_Point">100 포인트 충전</button>
-
-            <button id="300_Point">300 포인트 충전</button>
-
-            <button id="500_Point">500 포인트 충전</button>
-
+<div class="header">
+    <div class="container flex" style="margin-top: 10px">
+        <div class="logo">
+            <a href="/">
+                <img src="../images/logo.png" />
+            </a>
         </div>
+        <div class="row">
+            <form id="form">
+                <ul>
+                    <li>
+                        <a href="/createStudy"><h4>스터디 생성하기</h4></a>
+                    </li>
+                    <li>
+                        <a href="/board"><h4>자유게시판</h4></a>
+                    </li>
+                    <li>
+                        <a href="/login"><h4>로그인</h4></a>
+                    </li>
+                    <li>
+                        <a href="/logout" id="logoutbtn"><h4>로그아웃</h4></a>
+                    </li>
+                    <li>
+                        <button type="button" onclick='location.href="/myPage"'>
+                            마이페이지
+                        </button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
 
+<div style="text-align: center; margin-top: 100px;">
+
+    <button id="100_Point">100 포인트 충전</button>
+
+    <button id="300_Point">300 포인트 충전</button>
+
+    <button id="500_Point">500 포인트 충전</button>
+
+</div>
 <script>
 
     $("#100_Point").click(function () {
@@ -48,10 +83,10 @@
             console.log(rsp);
             if (rsp.success) {
                 var msg = '결제가 완료되었습니다.';
-              /*  msg += '고유ID : ' + rsp.imp_uid;
-                msg += '상점 거래ID : ' + rsp.merchant_uid;
-                msg += '결제 금액 : ' + rsp.paid_amount;
-                msg += '카드 승인번호 : ' + rsp.apply_num;*/
+                /*  msg += '고유ID : ' + rsp.imp_uid;
+                  msg += '상점 거래ID : ' + rsp.merchant_uid;
+                  msg += '결제 금액 : ' + rsp.paid_amount;
+                  msg += '카드 승인번호 : ' + rsp.apply_num;*/
                 $.ajax({
                     url: "/deposit",
                     type: "GET",
