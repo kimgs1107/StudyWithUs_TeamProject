@@ -206,8 +206,10 @@ public class NaverServiceImpl implements NaverService{
                 byte[] bytes = new byte[1024];
                 // 랜덤한 이름으로 파일 생성
                 String tempname = Long.valueOf(new Date().getTime()).toString();
-                String path = "C:\\StudyWithUs_teamProject\\src\\main\\resources\\static\\teamImage\\";
-                File f = new File(path + tempname+ ".jpg");
+//                String path = "C:\\StudyWithUs_teamProject\\src\\main\\resources\\static\\teamImage\\";
+                String fullPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"teamImage"+File.separator;
+
+                File f = new File(fullPath + tempname+ ".jpg");
                 f.createNewFile();
                 OutputStream outputStream = new FileOutputStream(f);
                 while ((read = is.read(bytes)) != -1) {
