@@ -2,7 +2,12 @@ package st.project.studyWithUs.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.domain.Board;
@@ -111,17 +116,28 @@ public class BoardController {
 
 
 
-    @PostMapping(value = "/boardSearch") //게시물 목록 조회페이지
-    @ResponseBody
-    public List<BoardVO> search(@Login User loginUser, @RequestParam("keyword") String keyword) {
+    @GetMapping(value = "/boardSearch") //게시물 목록 조회페이지
+    public String search(Model model, @Login User loginUser, @PageableDefault(page=0,size = 5,sort = "uploadTime", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam(required = false, defaultValue = "", name = "keyword") String keyword) {
 
         System.out.println("키워드" + keyword);
 
         List<BoardVO> list = new ArrayList<>();
 
-        List<Board> all = boardservice.findByTitleContaining(keyword);
+        Page<Board> all = boardservice.findByTitleContaining(keyword,pageable);
+        model.addAttribute("boardList",all);
 
-        long idx = all.size();
+        int currentPage=all.getPageable().getPageNumber()+1; // 현재 페이지 넘버 _ 인덱스는 1부터니까 +1
+        int startPage=Math.max(currentPage-4,1);
+        int endPage=Math.min(currentPage+4,all.getTotalPages());
+        model.addAttribute("currentPage",currentPage);
+        model.addAttribute("startPage",startPage);
+        model.addAttribute("endPage",endPage);
+        model.addAttribute("end",all.getTotalPages());
+
+        System.out.println("=============================================");
+        System.out.println(all.getContent().get(0).getTitle());
+
+        long idx = all.getContent().size();
 
         for (Board li : all) {
             BoardVO vo = new BoardVO();
@@ -135,7 +151,11 @@ public class BoardController {
             list.add(vo);
         }
 
-        return list;
+
+        model.addAttribute("VOlist",list);
+
+
+        return "/board";
     }
 
 
