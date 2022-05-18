@@ -1,6 +1,8 @@
 package st.project.studyWithUs.service.boardService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import st.project.studyWithUs.domain.Board;
 import st.project.studyWithUs.repository.BoardRepository;
@@ -73,9 +75,9 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<Board> findByTitleContaining(String title){
+    public Page<Board> findByTitleContaining(String title, Pageable pageable){
 
-        List<Board> res = boardRepository.findByTitleContaining(title);
+        Page<Board> res = boardRepository.findByTitleContaining(title,pageable);
 
         return res;
     }
