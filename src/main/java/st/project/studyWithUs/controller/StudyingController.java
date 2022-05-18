@@ -24,11 +24,6 @@ public class StudyingController {
     private final UserTeamService userTeamService;
     private final ExistWebSocketHandler handler;
 
-    @GetMapping("/studying/{tID}")
-    public String studying(){
-        return "studying";
-    }
-
     @PostMapping("/updateUserTeam")
     @ResponseBody
 //    public void updateUserTeam(@RequestParam("exist") boolean data, @RequestParam("realTime") String realTime, @RequestParam("totalTime") String totalTime, @RequestParam("tID") String tID, @Login User user) throws Exception{
@@ -103,11 +98,10 @@ public class StudyingController {
     }
 }
 
-
-//    @PostMapping("/getLoginUser")
-//    @ResponseBody
-//    public Long getLoginUser(@Login User loginUser){
-//        Long uID = loginUser.getUID();
-//        return uID;
-//    }
+    @PostMapping("/getLoginUser")
+    @ResponseBody
+    public Long getLoginUser(@Login User loginUser){
+        Long uID = loginUser.getUID();
+        return uID;
+    }
 }

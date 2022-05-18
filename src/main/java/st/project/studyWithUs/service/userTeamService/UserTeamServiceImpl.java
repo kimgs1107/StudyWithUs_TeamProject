@@ -106,4 +106,10 @@ public class UserTeamServiceImpl implements UserTeamService {
     }
 
 
+    @Override
+    public void updateExistFalse(Long uID, Long tID){
+        UserTeam ut = userTeamRepository.findByuIDandtID(uID, tID);
+        ut.setExist(false);
+        userTeamRepository.save(ut);
+    }
 }

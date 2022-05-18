@@ -39,7 +39,7 @@ public class UserTeamController {
     }
 
     @ResponseBody
-    @GetMapping("findMyTeams")
+    @GetMapping("/findMyTeams")
     public List<TeamVO> findMyTeams (@Login User loginUser){
 
 
