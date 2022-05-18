@@ -22,36 +22,79 @@
 
     <script>
         $(document).ready(function () {
-            $("#login_btn").on('click', function() {
+            $('#naver_id_login').click(function () {
+                console.log("클릭")
+                $.ajax({
+                    url: "/getInfo",
+                    type: "post",
+                    success: function (data) {
+                        location.href = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=" + data.client_id + "&redirect_uri=http://localhost:8080/naverLogin&state=" + data.state;
+                    }
+                })
+            })
+
+            let key;
+            getKM()
+            function getKM() {
+                $.ajax({
+                    url: "/getimg",
+                    type: "POST",
+                    success: function (data) {
+                        key=data.key
+                        $('#img').attr('src', '/teamImage/' + data.img);
+                        // console.log(data.img)
+                    }
+                })
+            }
+
+            $("#login_btn").on('click', function () {
                 loginChk();
             })
-        });
-        function loginChk() {
-            $.ajax({
-                url: "/loginUser",
-                type: "POST",
-                data: {
-                    id:$("#id").val(),
-                    pw:$("#pw").val()
-                },
-                success: function(data){
-                    if(data =="아이디 또는 비밀번호가 일치하지 않습니다."){
-                        $("#check").html(data);
-                        $("#check").attr('color', 'red');
-                    }
-                    else{
-                        window.location.href = data;
-                    }
-                },
-            });
-        }
-    </script>
+            function loginChk() {
+                $.ajax({
+                    url: "/loginUser",
+                    type: "POST",
+                    data: {
+                        id: $("#id").val(),
+                        pw: $("#pw").val()
+                    },
+                    success: function (data) {
+                        if (data == "아이디 또는 비밀번호가 일치하지 않습니다.") {
+                            // $("#check").html(data);
+                            // $("#check").attr('color', 'red');
+                            history.go(0);
+                        } else {
+                            $.ajax({
+                                url: "/getCheck",
+                                type: "POST",
+                                data: {data: $('#txt').val(), key: key},
+                                success: function (data) {
+                                    console.log(data)
+                                    if (data == "true") {
+                                        // console.log("맞음")
+                                        window.location.href = "/";
+                                    } else {
+                                        // console.log("다름")
+                                        alert("자동입력 방지문자가 틀립니다.")
+                                        $('#txt').val("")
+                                        getKM();
+                                    }
+                                }
+                            })
+                        }
+                    },
+                });
+            }
 
+
+
+
+        })
+    </script>
 
 
 </head>
 <body>
-
 <div class="container" style="margin-top: 20px;">
     <div class="row" >
         <div class="col-4"></div>
@@ -66,8 +109,13 @@
                        placeholder="PW" style="margin-top: 10px;" >
                 <font id = "check" size="2"> </font>
 
-                <div class="col-12" style="margin-top: 20px;">
-                    <button class="btn btn-outline-secondary" id = "login_btn" type="submit" style="width: 100%;" > 로그인</button>
+                <span>아래 이미지를 보이는 대로 입력해주세요.</span><br/>
+                <img id="img" width="300">
+                <input type="text" id="txt"/>
+
+                <div class="col-12" style="margin-top: 10px;">
+                    <button class="btn btn-outline-secondary" id="login_btn" type="submit" style="width: 100%;"> 로그인
+                    </button>
                 </div>
             </div>
 
@@ -77,6 +125,9 @@
                     <img src="../images/kakaologo.png" alt="" style= "width: 23px; height: 23px; float: left; margin-right: 10px; ">
                     <h5 style="text-decoration: none; color: #595858;"> 카카오계정으로 로그인</h5>
                 </a>
+            </div>
+            <div>
+                <button id="naver_id_login">네이버!!!!!</button>
             </div>
 
             <div class="row">
