@@ -88,6 +88,20 @@
                 })
             })
 
+            //시작일은 오늘 이후부터 선택가능
+            $('input[name="startDate"]').change(function (){
+                let ymd = new Date();
+                let year = ymd.getFullYear();
+                let month = ymd.getMonth();
+                let date = ymd.getDate();
+                let today = new Date(year, month, date);
+                let choose = new Date($('input[name="startDate"]').val());
+                if(today < choose){
+                    $('input[name="startDate"]').val("");
+                    $('input[name="startDate"]').focus();
+                }
+            });
+
             // 서버로 데이터 전송
             $('#submit').click(function (evt) {
                 evt.preventDefault();
