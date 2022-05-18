@@ -14,7 +14,7 @@ public class BoardVO {
     private String uploadTime;
     private Long uID;
     private String name;
-    private Long idx;
+    private int idx;
 
 }
 
