@@ -6,6 +6,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import st.project.studyWithUs.argumentresolver.LoginMemberArgumentResolver;
+import st.project.studyWithUs.interceptor.AdminInterceptor;
 import st.project.studyWithUs.interceptor.LoginCheckIntercept;
 
 import java.util.List;
@@ -27,6 +28,11 @@ public class WebConfig implements WebMvcConfigurer {
                         "/detailContent/*", "/checkUser", "/pageable", "/saveContent", "/write","/getInfo","/naverLogin",
                         "/getimg","/getCheck","/teamImage/*"
                         ); // url 에는 인터셉트 먹이지마.
+
+        registry.addInterceptor(new AdminInterceptor())
+                .order(2)
+                .addPathPatterns("/userList", "/adminPage", "/teamList")
+                .excludePathPatterns();
     }
 
     @Override

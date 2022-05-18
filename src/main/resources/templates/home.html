@@ -58,6 +58,7 @@
             <input type="text" id="teamName" placeholder="찾고자 하는 스터디를 입력해주세요." style="width: 250px;">
             <button type="button" id ="search">검색</button>
             <button type="reset" id ="reset">취소</button>
+            <button type="button" id="voice">음성검색</button>
         </div>
 
     </div>
@@ -323,6 +324,29 @@
         formElement.setAttribute("method", "post");
         formElement.submit();
     })
+
+
+    if(!("webkitSpeechRecognition") in window){
+        alert("Connect in Chrome Browser");
+    }else{
+        const speech = new webkitSpeechRecognition;
+        document.getElementById("voice").addEventListener("click",()=>{
+            speech.start();
+            setTimeout(function() {
+                speech.stop();
+            }, 4000);
+        });
+        speech.addEventListener("result", (event)=>{
+            console.log(event);
+            const { transcript } = event["results"][0][0];
+            console.log(transcript);
+            resultListView(transcript);
+        });
+
+        function resultListView(transcript){
+            document.getElementById("teamName").value = transcript;
+        }
+    }
 </script>
 </body>
 </html>
