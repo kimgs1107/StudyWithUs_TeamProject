@@ -64,7 +64,7 @@
 
 <form class="row mb-3" th:action="@{/boardSearch}">
     <div class="col-sm-11">
-        <input class="form-control form-control-lg" type="text" name="teamId" th:value="${param.keyword}" placeholder="게시글을 검색하세요"/>
+        <input class="form-control form-control-lg" type="text" name="keyword" th:value="${param.keyword}" placeholder="게시글을 검색하세요"/>
     </div>
     <div class="col-sm-1">
         <button id="searchbtn" type="submit" class="btn btn-success"><i class="bi bi-search" style="font-size: 1.5em; "></i></button>
@@ -78,15 +78,16 @@
         <th style="width: 15em">작성일</th>
     </thead>
     <tbody>
-    <tr th:each="list : ${VOlist}" id="dataTable">
+    <sc
+    <tr th:each="list,idx : ${VOlist}" id="dataTable">
         <th th:text="${list.idx}"></th>
         <td th:text="${list.title}"></td>
         <td th:text="${list.name}"></td>
         <td th:text="${list.uploadTime}"></td>
     </tr>
-<!--    <tr th:if="${VOlist.size()==0}">-->
-<!--        <td colspan="4" style="text-align: center">게시물이 존재하지 않습니다.</td>-->
-<!--    </tr>-->
+    <tr th:if="${boardList.content.size()==0}">
+        <td colspan="4" style="text-align: center">게시물이 존재하지 않습니다.</td>
+    </tr>
     </tbody>
 </table>
 
