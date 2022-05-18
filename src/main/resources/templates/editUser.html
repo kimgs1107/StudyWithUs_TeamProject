@@ -3,78 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 </head>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 <!-- 부가적인 테마 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <body>
-
-<div class="container" style="margin-top: 10px;">
-    <div class="row">
-        <div class="col-xs-3">
-            <a href="/">로고</a>
+<div class="header">
+    <div class="container flex" style="margin-top: 10px">
+        <div class="logo">
+            <a href="/">
+                <img src="../images/logo.png" />
+            </a>
         </div>
-        <div class="col-xs-7"></div>
-        <div class="col-xs-2">
-            <button type="submit" onclick="location.href='/myPage'"  >
-                마이페이지
-            </button>
+        <div class="row">
+            <form id="form">
+                <ul>
+                    <li>
+                        <a href="/createStudy"><h4>스터디 생성하기</h4></a>
+                    </li>
+                    <li>
+                        <a href="/board"><h4>자유게시판</h4></a>
+                    </li>
+                    <li>
+                        <a href="/login"><h4>로그인</h4></a>
+                    </li>
+                    <li>
+                        <a href="/logout" id="logoutbtn"><h4>로그아웃</h4></a>
+                    </li>
+                    <li>
+                        <button type="button" onclick='location.href="/myPage"'>
+                            마이페이지
+                        </button>
+                    </li>
+                </ul>
+            </form>
         </div>
     </div>
 </div>
-
 
 <div class="container" style="margin-top: 20px;">
-    <div class="row" style="text-align: center;">
-        <h1>개인정보 수정</h1>
+    <div class="row topMargin" style="text-align: center;">
+        <h2>개인정보 수정</h2>
     </div>
 
-    <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
-        <div class="col-xs-2">프로필 사진</div>
-        <div class="col-xs-10" id="photo">
+    <div class="formcontainer topMargin">
+
+        <div class="row flex" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
+            <div class="col-xs-2">프로필 사진</div>
+            <div class="col-xs-10" id="photo">
+            </div>
         </div>
-    </div>
-    <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
-        <div class="col-xs-2">이름</div>
-        <div class="col-xs-10" id="name">
+        <div class="row flex" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
+            <div class="col-xs-2">이름</div>
+            <div class="col-xs-10" id="name">
 
+            </div>
         </div>
-    </div>
-    <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
-        <div class="col-xs-2">아이디</div>
-        <div class="col-xs-10" id="id">
+        <div class="row flex" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
+            <div class="col-xs-2">아이디</div>
+            <div class="col-xs-10" id="id">
 
-        </div>
-
-    </div>
-    <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
-        <div class="col-xs-2">비밀번호</div>
-        <div class="col-xs-10" id="pw">
+            </div>
 
         </div>
+        <div class="row flex" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
+            <div class="col-xs-2">비밀번호</div>
+            <div class="col-xs-10" id="pw">
 
-    </div>
-    <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
-
-        <div class="col-xs-2">이메일</div>
-        <div class="col-xs-10" id="email">
+            </div>
 
         </div>
-    </div>
-    <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
-        <button id="btn">저장하기</button>
+        <div class="row flex" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
+
+            <div class="col-xs-2">이메일</div>
+            <div class="col-xs-10" id="email">
+
+            </div>
+        </div>
+        <div class="row" style="margin-top: 50px; margin-bottom: 10px; text-align: center;">
+            <button id="btn">저장하기</button>
+        </div>
     </div>
 
 
 </div>
 
+<div class="footer">
+    <div class="container grid2">
+        <div class="box">
+            <img src="https://see.fontimg.com/api/renderfont4/Ea2l9/eyJyIjoiZnMiLCJoIjoxNTIsInciOjIwMDAsImZzIjo3NiwiZmdjIjoiIzAwMDAwMCIsImJnYyI6IiNGRkZGRkYifQ/U1RVRFkgV0lUSCBVUw/valentine.png"
+                 alt="logo"
+            />
+            <p>온라인 스터디 공간입니다.</p>
+            <div class="socialIcon">
+                <i class="fab fa-facebook-f "></i>
+                <i class="fab fa-instagram "></i>
+                <i class="fab fa-twitter "></i>
+                <i class="fab fa-youtube "></i>
+            </div>
+        </div>
+
+        <div class="box">
+            <h2>Contact Us</h2>
+
+            <div class="icon">
+                <i class="fa fa-location-dot"></i>
+                <label htmlFor="">Location: 서울시 서초구 서초동 1307</label>
+            </div>
+            <div class="icon">
+                <i class="fa fa-phone"></i>
+                <label htmlFor="">Phone: +82 2 6666 6666</label>
+            </div>
+            <div class="icon">
+                <i class="fa fa-envelope"></i>
+                <label htmlFor="">Email: support@gmail.com</label>
+            </div>
+        </div>
+    </div>
+    <div class="legal container">
+        <p>Copyright @2022. All rights reserved.</p>
+        <label htmlFor="">
+            Design & Developed by <span>6조머지?</span>
+        </label>
+    </div>
+</div>
 
 
 <script>
