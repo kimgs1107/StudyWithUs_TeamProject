@@ -1,12 +1,16 @@
 package st.project.studyWithUs.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import st.project.studyWithUs.service.naverService.*;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.interceptor.SessionConst;
 import st.project.studyWithUs.service.kakaoService.KakaoService;
@@ -18,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,8 +30,40 @@ import java.util.HashMap;
 public class LoginController {
 
     private final KakaoService kakaoService;
-
+    private final NaverService naverService;
     private final UserService userService;
+
+    // 캡차 키&이미지 생성
+    @ResponseBody
+    @PostMapping("/getimg")
+    public HashMap<String,String> getimg(){
+        String key = naverService.getKey();
+        String img = naverService.receiveImg(key);
+
+        HashMap<String,String> data = new HashMap<>();
+        data.put("key",key);
+        data.put("img",img);
+
+        return data;
+    }
+
+    // 캡차 값 결과 체크
+    @ResponseBody
+    @PostMapping("/getCheck")
+    public String getCheck(@RequestParam("data") String data,@RequestParam("key") String key){
+        String responseBody = naverService.resCap(key, data);
+        String result="";
+        try {
+            JSONParser jsonParser = new JSONParser();
+            Object parse = jsonParser.parse(responseBody);
+            JSONObject jsonObject = (JSONObject) parse;
+
+            result = String.valueOf(jsonObject.get("result"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     @GetMapping("/login")
     public String login() {
@@ -70,6 +107,62 @@ public class LoginController {
         }
     }
 
+    // client_id 숨기기 위해 ajax로 전송한다.
+    @ResponseBody
+    @PostMapping("/getInfo")
+    public HashMap<String,String> getInfo(){
+        String state = UUID.randomUUID().toString();
+
+        HashMap<String,String> res = new HashMap<>();
+
+        res.put("client_id","quDmxXiN1GypP5C8hzbi");
+        res.put("state",state);
+
+        return res;
+    }
+
+    @GetMapping("/naverLogin")
+    public String naver(String code, HttpServletRequest request, HttpServletResponse response) throws IOException{
+        log.info("코드 : {}", code);
+        String access_Token = naverService.getNaverToken(code);
+        log.info("토큰 : {}", access_Token);
+
+        HashMap<String, Object> userInfo = naverService.getUserInfo(access_Token);
+        log.info("name : {}", userInfo.get("name"));
+        log.info("email : {}", userInfo.get("email"));
+
+
+        HttpSession session = request.getSession();
+
+        if (userInfo.get("email") != null) {
+            session.setAttribute("userId_N", userInfo.get("email"));
+            session.setAttribute("access_Token_N", access_Token);
+        }
+
+        log.info("access_token : {}", access_Token);
+
+        String name = userInfo.get("name").toString();
+        String email = userInfo.get("email").toString();
+
+        User loginUser = userService.getNameEmail(name, email);
+
+        if (loginUser == null) {
+            response.setContentType("text/html; charset=euc-kr");
+            PrintWriter out = response.getWriter();
+
+            out.println("<script>alert('가입한 정보가 없습니다.\\n 네이버 아이디와 연동을 원하신다면 네이버와 연동된 E-mail과 이름으로 가입하세요.'); location.href='/signUp';</script>");
+            out.flush();
+            return "redirect:/signUp";
+        } else {
+
+            session.setAttribute(SessionConst.LOGIN_USER, loginUser);
+
+            if (loginUser.getRole().equals("admin")) {
+                return "/adminPage";
+            }
+            return "home";
+        }
+    }
 
     @GetMapping("/kakaoLogin")
     public String kakao(String code, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -122,11 +215,13 @@ public class LoginController {
         HttpSession session = request.getSession(false);
         String access_Token = (String)session.getAttribute("access_Token");
 
-        //카카오 토큰 삭제
+        //소셜 로그인 토큰 삭제
         if(access_Token != null && !"".equals(access_Token)) {
-            kakaoService.kakaoLogout(access_Token);
+            kakaoService.kakaoLogout(access_Token); // 카카오
             session.removeAttribute("access_Token");
             session.removeAttribute("userId");
+            session.removeAttribute("access_Token_N");
+            session.removeAttribute("userId_N");
         }
 
         //현재 담겨져있는 세션값이 존재한다면 세션을 드랍한다.

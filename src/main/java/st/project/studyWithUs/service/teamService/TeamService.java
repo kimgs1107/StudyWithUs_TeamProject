@@ -32,4 +32,6 @@ public interface TeamService {
     void saveTeam(Team team);
 
     Team findByTeamName(String teamName);
+
+    Boolean checkTeamPassword(Long tID, String password);
 }

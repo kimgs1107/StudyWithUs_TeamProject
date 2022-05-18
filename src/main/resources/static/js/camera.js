@@ -83,7 +83,8 @@ async function init() {
     $.ajax({
         type: "POST",
         url: "/getTotalTime",
-        data: {tID: curTID},
+        contentType: 'application/json',
+        data: JSON.stringify({tID: curTID}),
         success: function (data) {
             console.log("total" + data)
             totalTime+=0
@@ -96,7 +97,8 @@ async function init() {
     $.ajax({
         type: "POST",
         url: "/getRealTime",
-        data: {tID: curTID},
+        contentType: 'application/json',
+        data: JSON.stringify({tID: curTID}),
         success: function (data) {
             console.log("realTime" + data)
             realTime+=0
@@ -111,7 +113,8 @@ async function init() {
     $.ajax({
         type: "POST",
         url: "/members",
-        data: {tID: curTID},
+        contentType: 'application/json',
+        data: JSON.stringify({tID: curTID}),
         success: function (data) {
             data.forEach(function(user){
                 let box = document.createElement("div");
@@ -181,7 +184,8 @@ async function loop() {
         $.ajax({
             type: "POST",
             url: "/updateUserTeam",
-            data: {data: false, realTime:realTime, totalTime:totalTime, tID: curTID},
+            contentType: 'application/json',
+            data: JSON.stringify({data: false, realTime:realTime, totalTime:totalTime, tID: curTID}),
             success: function (data) {     },
             error: function (error) {
                 console.log(error);
@@ -217,7 +221,8 @@ async function predict() { //프레임한번
             $.ajax({
                 type: "POST",
                 url: "/updateUserTeam",
-                data: {data: data, realTime:realTime, totalTime:totalTime, tID: curTID},
+                contentType: 'application/json',
+                data: JSON.stringify({data: data, realTime:realTime, totalTime:totalTime, tID: curTID}),
                 success: function (data) {
                 },
                 error: function (error) {
@@ -238,13 +243,15 @@ async function predict() { //프레임한번
             $.ajax({
                 type:"POST",
                 url:"/checkExist",
-                data:{tID: curTID},
+                contentType: 'application/json',
+                data:JSON.stringify({tID: curTID}),
                 success: function(data){
                     if(data==false){
                         $.ajax({
                             type: "POST",
                             url: "/updateUserTeam",
-                            data: {data: true, realTime:realTime, totalTime:totalTime, tID: curTID},
+                            contentType: 'application/json',
+                            data: JSON.stringify({data: true, realTime:realTime, totalTime:totalTime, tID: curTID}),
                             success: function (data) {
                             },
                             error: function (error) {

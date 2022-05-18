@@ -46,6 +46,11 @@ public class Team {
 
     private String teamImage;
 
+    @NotNull
+    private String scope;
+
+    private String password;
+
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<UserTeam> userTeams = new ArrayList<>();
 

@@ -12,6 +12,7 @@ import st.project.studyWithUs.vo.MemberInSameVO;
 import st.project.studyWithUs.websocketHandler.ExistWebSocketHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -30,24 +31,25 @@ public class StudyingController {
 
     @PostMapping("/updateUserTeam")
     @ResponseBody
-    public void updateUserTeam(@RequestParam("data") boolean data, @RequestParam("realTime") String realTime, @RequestParam("totalTime") String totalTime, @RequestParam("tID") String tID, @Login User user) throws Exception{
-
+//    public void updateUserTeam(@RequestParam("exist") boolean data, @RequestParam("realTime") String realTime, @RequestParam("totalTime") String totalTime, @RequestParam("tID") String tID, @Login User user) throws Exception{
+        public void updateUserTeam(@RequestBody HashMap<String, String> data, @Login User user) throws Exception{
         System.out.println("!!!!!updateUserTeam 함수");
         System.out.println(user.getUID());
-        System.out.println(tID);
-        UserTeam ut = studyingService.findUserTeam(user.getUID(), Long.parseLong(tID));
-        ut.setExist(data);
-        ut.setRealTime(Long.parseLong(realTime)/100);
-        ut.setTotalTime(Long.parseLong(totalTime)/100);
+        System.out.println(data.get("tID"));
+        UserTeam ut = studyingService.findUserTeam(user.getUID(), Long.parseLong(data.get("tID")));
+        ut.setExist(Boolean.valueOf(data.get("data")));
+        ut.setRealTime(Long.parseLong(data.get("realTime"))/100);
+        ut.setTotalTime(Long.parseLong(data.get("totalTime"))/100);
+
         studyingService.save(ut);
         handler.noticeExist(ut);
     }
 
     @PostMapping("/getTotalTime")
     @ResponseBody
-    public int getTotalTime(@Login User user, @RequestParam("tID") String tID) {
-
-        UserTeam ut = studyingService.findUserTeam(user.getUID(),Long.parseLong(tID));
+//    public int getTotalTime(@Login User user, @RequestParam("tID") String tID) {
+    public int getTotalTime(@Login User user, @RequestBody HashMap<String, String> data) {
+        UserTeam ut = studyingService.findUserTeam(user.getUID(), Long.parseLong(data.get("tID")));
         if(ut.getTotalTime()==null){
             return 0;
         }else {
@@ -57,9 +59,10 @@ public class StudyingController {
 
     @PostMapping("/getRealTime")
     @ResponseBody
-    public int getRealTime(@Login User user, @RequestParam("tID") String tID) {
+//    public int getRealTime(@Login User user, @RequestParam("tID") String tID) {
+    public int getRealTime(@Login User user, @RequestBody HashMap<String, String> data) {
+        UserTeam ut = studyingService.findUserTeam(user.getUID(), Long.parseLong(data.get("tID")));
 
-        UserTeam ut = studyingService.findUserTeam(user.getUID(),Long.parseLong(tID));
         if(ut.getRealTime()==null){
             return 0;
         }else{
@@ -69,8 +72,9 @@ public class StudyingController {
 
     @PostMapping("/members")
     @ResponseBody
-    public List<MemberInSameVO> members(@RequestParam("tID") String tID){
-        List<UserTeam> userTeams = studyingService.findUserTeamByTID(Long.parseLong(tID));
+//    public List<MemberInSameVO> members(@RequestParam("tID") String tID){
+    public List<MemberInSameVO> members(@RequestBody HashMap<String, String> data){
+        List<UserTeam> userTeams = studyingService.findUserTeamByTID(Long.parseLong(data.get("tID")));
         List<MemberInSameVO> members = new ArrayList<>();
 
         for(UserTeam ut : userTeams){
@@ -89,8 +93,9 @@ public class StudyingController {
     }
     @PostMapping("/checkExist")
     @ResponseBody
-    public boolean checkExist(@RequestParam("tID") String tID,@Login User loginUser) {
-        UserTeam ut = userTeamService.findByUIDAndTID(loginUser.getUID(), Long.parseLong(tID));
+//    public boolean checkExist(@RequestParam("tID") String tID, @Login User loginUser) {
+    public boolean checkExist(@Login User loginUser, @RequestBody HashMap<String, String> data) {
+        UserTeam ut = userTeamService.findByUIDAndTID(loginUser.getUID(), Long.parseLong(data.get("tID")));
         if (ut != null) {
             return ut.getExist();
         }else{

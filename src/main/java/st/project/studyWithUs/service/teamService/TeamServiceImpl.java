@@ -71,15 +71,14 @@ public class TeamServiceImpl implements TeamService {
             List <TeamVO> serachTeamList = new ArrayList<>();
             for(Team t : teams){
                 if(t.getTeamName().contains(teamName)&&t.getHeadCount()!=t.getCurrentCount()){
-                    serachTeamList.add(create(t));
+                    serachTeamList.add(create(t, user));
                 }
             }
             return serachTeamList;
         }
         //회원일 때 검색
         else{
-            List<Team> te;
-            te = userTeamRepository.findUserTeam(user.getUID());
+            List<Team> te = userTeamRepository.findUserTeam(user.getUID());
             List <Team> teams = teamRepository.findAll();
             List <TeamVO> serachTeamList = new ArrayList<>();
 
@@ -95,7 +94,7 @@ public class TeamServiceImpl implements TeamService {
                 }
                 if(check1==true){
                     if(t.getTeamName().contains(teamName)){
-                        serachTeamList.add(create(t));
+                        serachTeamList.add(create(t, user));
                     }
                 }
             }
@@ -110,15 +109,14 @@ public class TeamServiceImpl implements TeamService {
             List<Team> findTeams = teamRepository.findTeams();
             List<TeamVO> teamVO =  new ArrayList<>();
             for(Team t : findTeams){
-                teamVO.add(create(t));
+                teamVO.add(create(t, user));
             }
             return teamVO;
         }
         //회원일 때
         else{
             List<Team> teams = teamRepository.findAll();
-            List<Team> te;
-            te = userTeamRepository.findUserTeam(user.getUID());
+            List<Team> te = userTeamRepository.findUserTeam(user.getUID());
             List<TeamVO> teamVO =  new ArrayList<>();
             for(Team t : teams){
                 boolean check1 =true;
@@ -131,7 +129,7 @@ public class TeamServiceImpl implements TeamService {
                     }
                 }
                 if(check1==true){
-                    teamVO.add(create(t));
+                    teamVO.add(create(t, user));
                 }
             }
             return teamVO;
@@ -144,13 +142,24 @@ public class TeamServiceImpl implements TeamService {
         List <TeamVO> searchTeamList = new ArrayList<>();
         for(Team t : teams){
             if(t.getTeamName().contains(teamName)){
-                searchTeamList.add(create(t));
+                searchTeamList.add(create(t, null));
             }
         }
         return searchTeamList;
     }
 
-    public TeamVO create(Team t){
+    @Override
+    public Boolean checkTeamPassword(Long tID, String password){
+        Team team = teamRepository.findBytID(tID);
+        if(team.getPassword().equals(password)){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public TeamVO create(Team t, User user){
         TeamVO tVO = new TeamVO();
         tVO.setTtID(t.getTID());
         tVO.setTeamName(t.getTeamName());
@@ -162,6 +171,13 @@ public class TeamServiceImpl implements TeamService {
         tVO.setEndDate(t.getEndDate());
         tVO.setStartDate(t.getStartDate());
         tVO.setTeamImage(t.getTeamImage());
+        tVO.setScope(t.getScope());
+        if(user == null){
+            tVO.setIsLogin(false);
+        }
+        else{
+            tVO.setIsLogin(true);
+        }
         return tVO;
     }
 
