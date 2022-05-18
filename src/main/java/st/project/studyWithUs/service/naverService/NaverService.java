@@ -3,14 +3,12 @@ package st.project.studyWithUs.service.naverService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public interface NaverService {
 
     String getNaverToken(String code);
     HashMap<String, Object> getUserInfo (String access_Token);
-    void naverLogout(String access_Token);
 
     String getKey();
     String receiveImg(String key);

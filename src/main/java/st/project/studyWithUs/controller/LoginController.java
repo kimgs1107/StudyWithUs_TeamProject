@@ -135,8 +135,8 @@ public class LoginController {
         HttpSession session = request.getSession();
 
         if (userInfo.get("email") != null) {
-            session.setAttribute("userId", userInfo.get("email"));
-            session.setAttribute("access_Token", access_Token);
+            session.setAttribute("userId_N", userInfo.get("email"));
+            session.setAttribute("access_Token_N", access_Token);
         }
 
         log.info("access_token : {}", access_Token);
@@ -218,9 +218,10 @@ public class LoginController {
         //소셜 로그인 토큰 삭제
         if(access_Token != null && !"".equals(access_Token)) {
             kakaoService.kakaoLogout(access_Token); // 카카오
-            naverService.naverLogout(access_Token); // 네이버
             session.removeAttribute("access_Token");
             session.removeAttribute("userId");
+            session.removeAttribute("access_Token_N");
+            session.removeAttribute("userId_N");
         }
 
         //현재 담겨져있는 세션값이 존재한다면 세션을 드랍한다.
