@@ -169,11 +169,3 @@ public class BoardController {
     }
 
 }
-
-//    int currentPage=all.getPageable().getPageNumber()+1; // 현재 페이지 넘버 _ 인덱스는 1부터니까 +1
-//    int startPage=Math.max(currentPage-4,1);
-//    int endPage=Math.min(currentPage+4,all.getTotalPages());
-//        model.addAttribute("currentPage",currentPage);
-//                model.addAttribute("startPage",startPage);
-//                model.addAttribute("endPage",endPage);
-//                model.addAttribute("end",all.getTotalPages());
