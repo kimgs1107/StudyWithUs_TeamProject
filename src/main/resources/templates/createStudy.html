@@ -109,6 +109,15 @@
                 }
             });
 
+            $('input[name="endDate"]').change(function (){
+                let start = new Date($('input[name="startDate"]').val());
+                let end = new Date($('input[name="endDate"]').val());
+                if(start > end){
+                    $('input[name="endDate"]').val("");
+                    $('input[name="endDate"]').focus();
+                }
+            });
+
             // 서버로 데이터 전송
             $('#submit').click(function (evt) {
                 evt.preventDefault();

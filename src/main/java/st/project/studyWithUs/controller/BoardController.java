@@ -137,7 +137,7 @@ public class BoardController {
 
         int totalPage=all.getTotalPages();
         int size = all.getSize();
-        int idx = ((totalPage-currentPage)*size+1);
+        int idx = Math.max(((totalPage-currentPage)*size+1),1);
 
         for (Board li : all) {
             BoardVO vo = new BoardVO();

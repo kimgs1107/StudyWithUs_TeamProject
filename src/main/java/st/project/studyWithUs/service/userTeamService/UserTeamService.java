@@ -27,4 +27,6 @@ public interface UserTeamService {
     List<StudyTimeVO> myStudyTime(Long uID);
 
     UserTeam findByUIDAndTID(Long uid, Long tid);
+
+    void updateExistFalse(Long uID, Long tID);
 }
