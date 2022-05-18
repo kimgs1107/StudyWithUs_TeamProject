@@ -117,7 +117,7 @@ public class BoardController {
 
 
     @GetMapping(value = "/boardSearch") //게시물 목록 조회페이지
-    public String search(Model model, @Login User loginUser, @PageableDefault(page=0,size = 5,sort = "uploadTime", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam(required = false, defaultValue = "", name = "keyword") String keyword) {
+    public String search(Model model, @Login User loginUser, @PageableDefault(page=0,size = 10,sort = "uploadTime", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam(required = false, defaultValue = "", name = "keyword") String keyword) {
 
         System.out.println("키워드" + keyword);
 
@@ -134,10 +134,10 @@ public class BoardController {
         model.addAttribute("endPage",endPage);
         model.addAttribute("end",all.getTotalPages());
 
-        System.out.println("=============================================");
-        System.out.println(all.getContent().get(0).getTitle());
 
-        long idx = all.getContent().size();
+        int totalPage=all.getTotalPages();
+        int size = all.getSize();
+        int idx = ((totalPage-currentPage)*size+1);
 
         for (Board li : all) {
             BoardVO vo = new BoardVO();
@@ -150,7 +150,6 @@ public class BoardController {
             vo.setUID(li.getUser().getUID());
             list.add(vo);
         }
-
 
         model.addAttribute("VOlist",list);
 
