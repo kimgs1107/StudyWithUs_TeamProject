@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <title>study with us</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" href="../css/style.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="http://madalla.kr/js/jquery-1.8.3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Poppins:wght@200;300;400&family=Roboto+Serif:wght@800&display=swap');
     </style>
@@ -53,7 +57,7 @@
         jQuery(document).ready(function () {
             let isIdValid=false;
 
-             // 그룹아이디 유효성 체크
+            // 그룹아이디 유효성 체크
             $('#teamName').focusout(function (evt){
                 let teamName = document.querySelector('#teamName')
                 sendData = $('#teamName').val();
@@ -121,7 +125,6 @@
             // 서버로 데이터 전송
             $('#submit').click(function (evt) {
                 evt.preventDefault();
-
                 let teamName = document.querySelector('input[name="teamName"]');
                 if (!teamName.value) {
                     teamName.focus();
@@ -172,7 +175,6 @@
                 let res = confirm("스터디를 생성하시겠습니까?");
                 if (res == true) {
                     let qs = $('#CreateForm').serialize();
-
                     $.ajax({
                         type: "POST",
                         url: "createStudy",
@@ -189,7 +191,6 @@
                 }
             })
         })
-
         function fileTypeCheck(obj) {
             pathpoint = obj.value.lastIndexOf('.');
             filepoint = obj.value.substring(pathpoint+1,obj.length);
@@ -204,12 +205,40 @@
                 return false;
             }
         }
-
     </script>
 </head>
 <body>
-
-<div>
+<div class="header">
+    <div class="container flex" style="margin-top: 10px">
+        <div class="logo">
+            <a href="/">
+                <img src="../images/logo.png" />
+            </a>
+        </div>
+        <div class="row nav">
+            <ul>
+                <li>
+                    <a href="/createStudy"><h5>스터디 생성하기</h5></a>
+                </li>
+                <li>
+                    <a href="/board"><h5>자유게시판</h5></a>
+                </li>
+                <li>
+                    <a href="/login"><h5>로그인</h5></a>
+                </li>
+                <li>
+                    <a href="/logout" id="logoutbtn"><h5>로그아웃</h5></a>
+                </li>
+                <li>
+                    <button type="button" onclick='location.href="/myPage"'>
+                        마이페이지
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="topMargin">
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
@@ -234,38 +263,39 @@
                 <div class="mb-3 row">
                     <label class="col-sm-3 control-label">스터디명</label>
                     <div class="col-sm-9"><input type="text" name="teamName" id="teamName" placeholder="스터디명을 입력해주세요."
-                                                  class="form-control" required/></div>
+                                                 class="form-control" required/></div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-3 control-label">스터디 설명 및 목적</label>
                     <div class="col-sm-9"><textarea name="teamDesc" id="teamDesc" cols="40" rows="10"
-                                                  class="form-control" required></textarea></div>
+                                                    class="form-control" required></textarea></div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-3 control-label">스터디 시작</label>
                     <div class="col-sm-9"><input type="date" name="startDate" id="startDate"
-                                                  class="form-control" required/></div>
+                                                 class="form-control" required/></div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-3 control-label">스터디 종료</label>
                     <div class="col-sm-9"><input type="date" name="endDate" id="endDate"
-                                                  class="form-control" required/></div>
+                                                 class="form-control" required/></div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-3 control-label">인원수</label>
                     <div class="col-sm-9"><input type="number" min="0" max="30" name="headCount" id="headCount" placeholder="인원 수를 입력해주세요"
-                                                  class="form-control" required/></div>
+                                                 class="form-control" required/></div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-3 control-label">참여 포인트</label>
                     <div class="col-sm-9"><input type="number" step="100" min="0" name="depositPoint" id="depositPoint" placeholder="참여 포인트를 입력해주세요"
-                                                  class="form-control" required/></div>
+                                                 class="form-control" required/></div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-3 control-label">스터디 목표 시간</label>
                     <div class="col-sm-9"><input type="text" name="targetTime" id="targetTime" placeholder="목표 공부 시간을 입력해주세요."
-                                                  class="form-control" required/></div>
+                                                 class="form-control" required/></div>
                 </div>
+                
                 <div class="mb-3 row">
                     <div class="col-sm-9">
                         <label for="public">공개</label>
@@ -280,7 +310,7 @@
                                                  class="form-control"/></div>
                 </div>
 
-                <div class="mb-3 row">
+                <div class="mb-3 row topMargin">
                     <div class="d-grid gap-2 col-6 mx-auto">
                         <button type="submit" class="btn btn-lg" id="submit">그룹 생성</button>
                     </div>
@@ -288,6 +318,45 @@
             </form>
         </div>
         <div class="col-3"></div>
+    </div>
+</div>
+<div class="footer">
+    <div class="container grid2">
+        <div class="box">
+            <img src="https://see.fontimg.com/api/renderfont4/Ea2l9/eyJyIjoiZnMiLCJoIjoxNTIsInciOjIwMDAsImZzIjo3NiwiZmdjIjoiIzAwMDAwMCIsImJnYyI6IiNGRkZGRkYifQ/U1RVRFkgV0lUSCBVUw/valentine.png"
+                 alt="logo"
+            />
+            <p>온라인 스터디 공간입니다.</p>
+            <div class="socialIcon">
+                <i class="fab fa-facebook-f "></i>
+                <i class="fab fa-instagram "></i>
+                <i class="fab fa-twitter "></i>
+                <i class="fab fa-youtube "></i>
+            </div>
+        </div>
+
+        <div class="box">
+            <h2>Contact Us</h2>
+
+            <div class="icon">
+                <i class="fa fa-location-dot"></i>
+                <label htmlFor="">Location: 서울시 서초구 서초동 1307</label>
+            </div>
+            <div class="icon">
+                <i class="fa fa-phone"></i>
+                <label htmlFor="">Phone: +82 2 6666 6666</label>
+            </div>
+            <div class="icon">
+                <i class="fa fa-envelope"></i>
+                <label htmlFor="">Email: support@gmail.com</label>
+            </div>
+        </div>
+    </div>
+    <div class="legal container">
+        <p>Copyright @2022. All rights reserved.</p>
+        <label htmlFor="">
+            Design & Developed by <span>6조머지?</span>
+        </label>
     </div>
 </div>
 </body>
