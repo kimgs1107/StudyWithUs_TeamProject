@@ -79,9 +79,9 @@
     </thead>
     <tbody>
     <sc
-    <tr th:each="list,idx : ${VOlist}" id="dataTable">
+    <tr th:each="list : ${VOlist}">
         <th th:text="${list.idx}"></th>
-        <td th:text="${list.title}"></td>
+        <td><a th:text="${list.title}" th:href="@{'/detailContent/'+${list.bbID}}"></a></td>
         <td th:text="${list.name}"></td>
         <td th:text="${list.uploadTime}"></td>
     </tr>
