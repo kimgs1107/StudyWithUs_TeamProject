@@ -23,7 +23,7 @@ public interface BoardService {
 
     void update(Long bID, String titleID, String contentID);
 
-    List<Board> findByTitleContaining(String title);
+    Page<Board> findByTitleContaining(String title,Pageable pageable);
 
 
 }
