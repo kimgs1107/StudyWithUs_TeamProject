@@ -37,9 +37,13 @@ public class TeamController {
     @GetMapping("/findAllTeams")
     public List<TeamVO> teams (@RequestParam int check, @RequestParam String teamName, @Login User loginUser){
         // 검색해서 나오는 스터디 리스트
-        if(check==1) return teamService.searchTeam(teamName, loginUser);
+        if(check==1) {
+            return teamService.searchTeam(teamName, loginUser);
+        }
         // 비로그인/로그인에서 볼 수 있는 모든 스터디 리스트
-        else return teamService.findAllTeams(loginUser);
+        else {
+            return teamService.findAllTeams(loginUser);
+        }
     }
 
     @GetMapping("/createStudy")
@@ -121,6 +125,11 @@ public class TeamController {
         team.setCurrentCount(1);
         team.setDepositPoint((long)studyForm.getDepositPoint());
         team.setTargetTime((long)studyForm.getTargetTime()*60); // 분으로 저장
+        team.setScope(studyForm.getScope());
+        if(studyForm.getScope().equals("private")){
+            team.setPassword(studyForm.getPassword());
+        }
+
 
         teamService.saveTeam(team);
 
@@ -128,10 +137,16 @@ public class TeamController {
         userTeam.setTeam(team);
         userTeam.setUser(loginUser);
         userTeam.setExist(false);
-        userTeam.setTotalTime(1000L);
-        userTeam.setRealTime(10L);
+        userTeam.setTotalTime(0l); // 초 _ 스터디 끝날때까지 저장될 값
+        userTeam.setRealTime(0l); // 초 _ 매일 자정 리셋
         userTeamService.save(userTeam);
 
         chatRoomRepository.add(team.getTID(), team.getTeamName());
+    }
+
+    @ResponseBody
+    @PostMapping("/checkTeamPW")
+    public boolean checkTeamPassword(@RequestParam("tId") String tID, @RequestParam("password") String password) {
+        return teamService.checkTeamPassword(Long.parseLong(tID), password);
     }
 }

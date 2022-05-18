@@ -8,7 +8,7 @@ import st.project.studyWithUs.domain.Team;
 import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.repository.TeamRepository;
 import st.project.studyWithUs.repository.UserTeamRepository;
-import st.project.studyWithUs.vo.CompleteMemsVO;
+import st.project.studyWithUs.vo.MemberInSameVO;
 import st.project.studyWithUs.vo.StudyTimeVO;
 
 import javax.transaction.Transactional;
@@ -57,8 +57,8 @@ public class UserTeamServiceImpl implements UserTeamService {
     }
 
     @Override
-    public List<CompleteMemsVO> completeMembers(Long tID){
-        List<CompleteMemsVO> members = new ArrayList<>();
+    public List<MemberInSameVO> completeMembers(Long tID){
+        List<MemberInSameVO> members = new ArrayList<>();
         Team team = teamRepository.findBytID(tID);
 
         Long targetTime = team.getTargetTime();
@@ -66,7 +66,7 @@ public class UserTeamServiceImpl implements UserTeamService {
         for(UserTeam u : users){
             Long realTime = u.getRealTime();
             if(targetTime*60 <= realTime){
-                CompleteMemsVO mem = new CompleteMemsVO();
+                MemberInSameVO mem = new MemberInSameVO();
                 mem.setTID(team.getTID());
                 mem.setUuID(u.getUser().getUID());
                 mem.setUserName(u.getUser().getUserName());
@@ -100,4 +100,16 @@ public class UserTeamServiceImpl implements UserTeamService {
         return studyTime;
     }
 
+    @Override
+    public UserTeam findByUIDAndTID(Long uid, Long tid){
+        return userTeamRepository.findByuIDandtID(uid,tid);
+    }
+
+
+    @Override
+    public void updateExistFalse(Long uID, Long tID){
+        UserTeam ut = userTeamRepository.findByuIDandtID(uID, tID);
+        ut.setExist(false);
+        userTeamRepository.save(ut);
+    }
 }

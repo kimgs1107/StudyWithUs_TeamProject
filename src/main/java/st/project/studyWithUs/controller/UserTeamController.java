@@ -10,9 +10,10 @@ import st.project.studyWithUs.domain.Team;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.service.teamService.TeamService;
 import st.project.studyWithUs.service.userTeamService.UserTeamService;
-import st.project.studyWithUs.vo.CompleteMemsVO;
+import st.project.studyWithUs.vo.MemberInSameVO;
 import st.project.studyWithUs.vo.StudyTimeVO;
 import st.project.studyWithUs.vo.TeamVO;
+import st.project.studyWithUs.websocketHandler.ExistWebSocketHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +26,20 @@ public class UserTeamController {
 
     private final UserTeamService userTeamService;
     private final TeamService teamService;
+    private final ExistWebSocketHandler handler;
 
     @ResponseBody
     @GetMapping("/dropStudyTeam")
-    public boolean dropTeam(@RequestParam Long tId, @Login User loginUser){
+    public boolean dropTeam(@RequestParam Long tId, @Login User loginUser) throws Exception{
+        handler.noticeLeave(loginUser.getUID(), tId);
+
         userTeamService.dropStudyTeam(tId, loginUser.getUID());
         teamService.decreaseCurrentCount(tId);
         return true;
     }
 
     @ResponseBody
-    @GetMapping("findMyTeams")
+    @GetMapping("/findMyTeams")
     public List<TeamVO> findMyTeams (@Login User loginUser){
 
 
@@ -61,7 +65,7 @@ public class UserTeamController {
 
     @ResponseBody
     @GetMapping("/completeMembers")
-    public List<CompleteMemsVO> completeMembers(@RequestParam Long tID){
+    public List<MemberInSameVO> completeMembers(@RequestParam Long tID){
         return userTeamService.completeMembers(tID);
     }
 

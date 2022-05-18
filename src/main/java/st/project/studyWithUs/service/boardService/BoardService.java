@@ -1,5 +1,7 @@
 package st.project.studyWithUs.service.boardService;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import st.project.studyWithUs.domain.Board;
 import st.project.studyWithUs.vo.BoardVO;
@@ -8,6 +10,7 @@ import java.util.List;
 
 @Service
 public interface BoardService {
+
     void saveContent(Board board);
 
     List<BoardVO> contentsListInfo();
@@ -19,4 +22,8 @@ public interface BoardService {
     void delete(Long bID);
 
     void update(Long bID, String titleID, String contentID);
+
+    Page<Board> findByTitleContaining(String title,Pageable pageable);
+
+
 }

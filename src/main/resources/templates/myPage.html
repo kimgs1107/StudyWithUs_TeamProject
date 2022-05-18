@@ -15,6 +15,14 @@
 
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script>
+    // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+    Kakao.init('e6a4b96a4b6b23c1663853846b4c3f14'); // 사용할 앱의 JavaScript키를 입력해 주세요.
+</script>
+
 <body>
 
 <div class="container" style="margin-top: 10px;">
@@ -56,10 +64,12 @@
 </div>
 <hr>
 
-<div id="completeMembers">
-</div>
+<div id="completeBox" style="display: grid; grid-template-columns: 1fr 1fr;">
+    <div id="completeMembers" style="grid-column: 1/2;">
+    </div>
 
-<div id="myStudyTime">
+    <div id="myStudyTime" style="grid-column: 2/3;">
+    </div>
 </div>
 <hr>
 
@@ -71,7 +81,9 @@
         </div>
     </div>
 </div>
-
+<a href="javascript:void kakaoChatStart()" class="kakaoChatPc hidden-md hidden-sm hidden-xs">
+    <p id="kakao-talk-channel-chat-button"></p>
+</a>
 
 <script>
 
@@ -102,7 +114,7 @@
 
     function completeMembers(){
         let compMemberBox = document.getElementById("completeMembers");
-        compMemberBox.setAttribute("style", "text-align:center; display:inline-block; width: 450px;");
+        compMemberBox.setAttribute("style", "text-align:center;");
         let title = document.createElement("h3");
         title.innerHTML = "오늘의 목표를 달성한 사람들";
         title.setAttribute("style", "text-align: center;");
@@ -156,7 +168,7 @@
 
     function myStudyTime(){
         let studyTimeBox = document.getElementById("myStudyTime");
-        studyTimeBox.setAttribute("style", "text-align:center; display:inline-block; width: 450px;");
+        studyTimeBox.setAttribute("style", "text-align:center;");
         let title = document.createElement("h3");
         title.innerHTML = "나의 목표 달성률";
         title.setAttribute("style", "text-align: center;");
@@ -170,14 +182,14 @@
                 teams.forEach(function(team) {
                     let timeBox = document.createElement("div");
                     let teamName = document.createElement("div");
-                    teamName.innerHTML = team.teamName;
+                    teamName.innerHTML = team.teamName+" : ";
                     teamName.setAttribute("style", "display:inline-block; font-size: 14pt; margin-right: 3px;");
                     let time = document.createElement("div");
-                    if(team.totalTime/(team.targetTime*team.period) >=1){
+                    if(team.totalTime/(team.targetTime*team.period*60) >=1){
                         time.innerHTML = "100%";
                     }
                     else {
-                        time.innerHTML = Math.round(team.totalTime/(team.targetTime*team.period)*100)+"%";
+                        time.innerHTML = Math.round(team.totalTime/(team.targetTime*team.period*60)*100)+"%";
                     }
                     time.setAttribute("style", "display:inline-block; font-size: 14pt");
 
@@ -257,12 +269,15 @@
                     teamButton2.setAttribute("id", team.tId);
                     teamButton2.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
                     teamButton2.addEventListener("click", ()=>{
-                        location.href='/studying';
-                        $.ajax({
-
-                            //화상 채팅
-
-                        });
+                        let ymd = new Date();
+                        let today = new Date(ymd.getFullYear(), ymd.getMonth(), ymd.getDate(), 9);
+                        let start = new Date(team.startDate);
+                        if(today < start){
+                            alert('아직 스터디가 시작하지 않았습니다.');
+                        }
+                        else {
+                            location.href = '/chat/studyRoom/enter/' + team.ttID;
+                        }
                     });
 
                     let teamButton3 = document.createElement('button');
@@ -308,6 +323,21 @@
         })
     }
 
+</script>
+<script type="text/javascript">
+    function chat() {
+        Kakao.Channel.chat({
+            channelPublicId: '_kxjRLb' // 카카오톡 채널 홈 URL에 명시된 id로 설정합니다.
+        });
+    }
+
+    btn_chat();
+    function btn_chat() {
+        Kakao.Channel.createChatButton({
+            container: '#kakao-talk-channel-chat-button',
+            channelPublicId: '_kxjRLb' // 카카오톡 채널 홈 URL에 명시된 id로 설정합니다.
+        });
+    }
 </script>
 </body>
 </html>

@@ -116,6 +116,8 @@ public class KakaoServiceImpl implements KakaoService {
                 result += line;
             }
 
+            System.out.println("==========================================================");
+            System.out.println(result);
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 

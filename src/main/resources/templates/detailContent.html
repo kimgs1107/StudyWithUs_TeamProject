@@ -9,18 +9,44 @@
 </head>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<!-- 합쳐지고 최소화된 최신 CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
-<!-- 부가적인 테마 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<style>
+    table.table {
+        border-collapse: separate;
+        border-spacing: 0;
+        text-align: center;
+        line-height: 1.5;
+        border-top: 1px solid #ccc;
+        border-left: 1px solid #ccc;
+        /*margin : 20px 10px;*/
+        margin-left: 250px;
+        margin-top: 50px;
+        width: 1400px;
+    }
+    table.table th {
+        width: 150px;
+        padding: 10px;
+        font-weight: bold;
+        vertical-align: top;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        border-top: 1px solid #fff;
+        border-left: 1px solid #fff;
+        background-color: #eee;
+    }
+    table.table td {
+        width: 350px;
+        padding: 10px;
+        vertical-align: top;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+    }
+
+</style>
+
 <body>
-
-
-
 <div class="container" style="margin-top: 10px;">
     <div class="row">
         <div class="col-xs-3">
@@ -36,88 +62,80 @@
         </div>
     </div>
 </div>
-<div style="text-align: center; margin-top: 100px">
-    <h1>내용</h1>
-    <a href="/board">목록</a>
-    <table border="1" style="margin-left: 400px">
 
-        <tr><!-- 첫번째 줄 시작 -->
-            <td>번호</td>
-            <td id="bID"></td>
-            <td>작성일</td>
-            <td id="date"></td>
-        </tr><!-- 첫번째 줄 끝 -->
-        <tr><!-- 두번째 줄 시작 -->
-            <td>작성자</td>
-            <td  id = "name"></td>
-        </tr><!-- 두번째 줄 끝 -->
-        <tr><!-- 두번째 줄 시작 -->
-            <td>제목</td>
-            <td  id = "title"></td>
-        </tr><!-- 두번째 줄 끝 -->
-        <tr><!-- 두번째 줄 시작 -->
-            <td>내용</td>
-            <td  id = "content"></td>
-        </tr><!-- 두번째 줄 끝 -->
-    </table>
-
-
-
-
+<div class="row" style="margin-top: 20px; margin-left: 50px;">
+    <div class="col-xs-4">
+        <h2>자유게시판</h2>
+    </div>
 </div>
 
+<div class="col-xs-2" style="float: right; margin-top: 10px; margin-right: 10px;">
+    <button type="submit" onclick="location.href='/board'">
+        목록
+    </button>
+</div>
+
+<table class="table">
+    <tr><!-- 첫번째 줄 시작 -->
+        <td>번호</td>
+        <td id="bID"></td>
+        <td>작성일</td>
+        <td id="date"></td>
+    </tr><!-- 첫번째 줄 끝 -->
+    <tr><!-- 두번째 줄 시작 -->
+        <td>작성자</td>
+        <td id="name" ></td>
+        <td colspan="3"></td>
+    </tr><!-- 두번째 줄 끝 -->
+    <tr><!-- 두번째 줄 시작 -->
+        <td>제목</td>
+        <td id="title" colspan="3"></td>
+    </tr><!-- 두번째 줄 끝 -->
+    <tr><!-- 두번째 줄 시작 -->
+        <td>내용</td>
+        <td id="content" colspan="3"></td>
+    </tr><!-- 두번째 줄 끝 -->
+</table>
 
 
+<div style="text-align: center; margin-right: 265px;">
+    <div id="deleteBtn" style="float: right;"></div>
+    <div id="updateBtn" style="float: right;"></div>
+</div>
 
-
-    <div style="text-align: center;">
-        <div id="deleteBtn"> </div>
-        <div id="updateBtn"></div>
+<div class="row" style="margin-top: 80px; margin-left: 250px;">
+    <hr>
+    <div class="col-xs-4">
+        <h4>comment</h4>
     </div>
-
-
 
     <div class="row">
-        <div style="text-align: center; margin-top: 40px">
-            <div style="text-align: center">
-                <textarea id="comment" placeholder="내용을 입력해주세요" style="width: 700px; height: 100px; "></textarea>
-            </div>
-            <div style="text-align: center">
-
-
-
-                <font id = "check" size="2"> </font>
-                <div id="btn">
-                    등록
-                </div>
-            </div>
-
+        <div style="margin-top: 40px; margin-left: 20px;">
+            <textarea id="comment" placeholder="내용을 입력해주세요" style="width: 700px; height: 50px;"></textarea>
+            <button type="button" id="btn">
+                등록
+            </button>
+            <hr>
         </div>
     </div>
+</div>
 
-    <div class="row" style="margin-left: 200px; margin-top: 100px;">
-
-        <div style="text-align: center">
-            <div id="commentList">
-
-            </div>
-        </div>
-
-    </div>
-
-
-
-
-    <div class="edit">
-        <div class="modal">
-            <h1>- Happy New Year 2021 -</h1>
-            <h2>2021년 신축년 (辛丑年) </h2>
-            <h2>새해 복 많이 받으세요!</h2>
-            <figure><img src="ricecake.jpg" alt=""></figure>
+<div class="row" style="margin-top: 30px; margin-left: 250px;">
+    <div class="col-xs-4">
+        <div id="commentList">
         </div>
     </div>
+</div>
 
-</tr>
+<!--    <div class="edit">-->
+<!--        <div class="modal">-->
+<!--            <h1>- Happy New Year 2021 -</h1>-->
+<!--            <h2>2021년 신축년 (辛丑年) </h2>-->
+<!--            <h2>새해 복 많이 받으세요!</h2>-->
+<!--            <figure><img src="ricecake.jpg" alt=""></figure>-->
+<!--        </div>-->
+<!--    </div>-->
+</hr>
 <script>
     let curURL = window.location.href;
     let urlArr = curURL.split("/");
@@ -126,7 +144,6 @@
         findContent();
         findComment();
         deleteContent();
-
 
         $("#btn").on('click', function() {
             saveComment();
@@ -166,10 +183,7 @@
                             }
                         });
                     });
-
-
                 }
-
             },error:function(){
                 alert("error");
             }
@@ -177,7 +191,6 @@
     }
 
     function saveComment(){
-
         $.ajax({
             url: "/saveComment",
             type: "GET",
@@ -200,9 +213,22 @@
             }
         });
     }
+    $.ajax({
+        url: "/checkUser",
+        type: "POST",
+        success: function(data){
+            console.log('성공')
+            console.log(data)
+            if(data==0){
+                $('#comment').attr('readonly', 'true')
+                $('#comment').attr('placeholder', '회원만 이용할 수 있습니다.')
+            }
+        }
+    })
+
     function findContent() {
         $.ajax({
-            url: "/detailContent",
+            url: "/detailContent", //게시물 상세조회
             type: "GET",
             data: {
                 bID:bId
@@ -235,7 +261,7 @@
                     },
                     success: function(flag){
                         if(flag==true){
-                            //수정 버튼 생겨
+                            //글 작성자만 수정 버튼 생겨
                             let updatebtn1 = document.getElementById("updateBtn");
                             let update1 = document.createElement('button');
                             update1.innerHTML = "게시물 수정";
@@ -261,12 +287,13 @@
                                 let updatebtn2 = document.getElementById("updateBtn");
                                 let update2 = document.createElement('button');
                                 update2.setAttribute('id', 'update2')
-                                update2.innerHTML = "수정 완료";
+                                update2.innerHTML = "게시글 수정 완료";
                                 updatebtn2.appendChild(update2);
                                 $("#update2").on('click', function() {
                                     saveUpdateContent();
                                 })
-                                function saveUpdateContent(){
+
+                                function saveUpdateContent(){ //수정 완료 후 게시글 보여주기
                                     $.ajax({
                                         url: "/updateContent",
                                         type: "GET",
@@ -331,7 +358,7 @@
                         },
                         success: function(data){
                             if(data==true){
-                                //삭제 버튼 생겨
+                                //댓글 삭제 버튼 생겨
                                 let delComment = document.createElement('button');
                                 delComment.innerHTML = "삭제";
 
@@ -369,7 +396,7 @@
                         },
                         success: function(data){
                             if(data==true){
-                                //수정 버튼 생겨
+                                //댓글 수정 버튼 생겨
                                 let updateComment = document.createElement('button');
 
                                 updateComment.innerHTML = "수정";
@@ -384,10 +411,10 @@
                                         },
                                         success: function (data){
                                             if(data==true){
-                                                const name = '#'+ comment.cmID;
-                                                const name2 = comment.cmID;
-                                                let con = $('name').val();
-                                                $(name).empty(); //name만
+                                                // const name = '#'+ comment.cmID;
+                                                // const name2 = comment.cmID;
+                                                // let con = $('name').val();
+                                                // $(name).empty(); //name만
 
                                                 let div2 = document.createElement('div');
                                                 div2.setAttribute('class', 'col-xs-4');
@@ -395,7 +422,7 @@
                                                 content1.setAttribute('id', "editComment");
                                                 content1.setAttribute('type', 'text');
                                                 content1.setAttribute('value', comment.commentContent)
-                                       /*         content.setAttribute('id', comment.cmID+'n');*/
+                                                /*         content.setAttribute('id', comment.cmID+'n');*/
                                                 div2.appendChild(content1);
                                                 div1.appendChild(div2);
 
@@ -408,7 +435,7 @@
 
                                                 upbtn.addEventListener("click", ()=>{
                                                     $.ajax({
-                                                        url: "/updateCommentSave",
+                                                        url: "/updateCommentSave", //댓글 수정하기 버튼 누르고 나오는 수정하기 버튼
                                                         type: "GET",
                                                         dataType:"json",
                                                         data: {
@@ -425,11 +452,7 @@
                                                         }
                                                     });
                                                 });
-
-
-
-
-                                               // window.location.replace('/detailContent/'+bId) ;
+                                                // window.location.replace('/detailContent/'+bId) ;
                                             }
                                         }, error:function(){
                                             alert("에러");
@@ -442,29 +465,13 @@
                             alert("error");
                         }
                     });
-
-
                     commentList.appendChild(div1);
                 });
-
-
             },error:function(){
                 alert("error");
             }
         });
     }
-
-
-
-
-
-
-
-
-
-
-
 </script>
-
 </body>
 </html>

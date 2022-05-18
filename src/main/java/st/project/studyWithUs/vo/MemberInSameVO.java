@@ -5,9 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CompleteMemsVO {
+public class MemberInSameVO {
     private Long tID;
     private Long uuID;
     private String userName;
     private String userImage;
+    private String exist;
 }

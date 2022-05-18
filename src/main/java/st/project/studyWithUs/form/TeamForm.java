@@ -20,4 +20,8 @@ public class TeamForm {
 
     private int targetTime;
 
+    private String scope;
+
+    private String password;
+
 }

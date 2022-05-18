@@ -6,8 +6,12 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+import st.project.studyWithUs.argumentresolver.Login;
+import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.service.studyingService.StudyingService;
+import st.project.studyWithUs.service.userService.UserService;
+import st.project.studyWithUs.service.userTeamService.UserTeamService;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,39 +20,54 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ExistWebSocketHandler extends TextWebSocketHandler {
 
-    private final StudyingService studyingService;
+    private final UserTeamService userTeamService;
+    private final UserService userService;
 
-    List<WebSocketSession> sessions = new ArrayList<>(); //전체 유저 세션
-    Map<Long, WebSocketSession> userSessionsMap = new HashMap<>(); //uID별로 세션 -> 나중에 tID별로 바꾸면 팀별로 세션 보낼 수 있을 거 같음
+//    List<WebSocketSession> sessions = new ArrayList<>(); //전체 유저 세션
+    Map<Long, List<WebSocketSession>> teamSessionList = new HashMap<>(); //uID별로 세션 -> 나중에 tID별로 바꾸면 팀별로 세션 보낼 수 있을 거 같음
+    Map<WebSocketSession, Long> teamSession = new HashMap<>();
+    Map<WebSocketSession, Long> userSession = new HashMap<>();
 
     public void noticeExist(UserTeam userTeam) throws Exception{
-//        System.out.println("왜 안돼냐ㅜㅜㅜ"+userSessionsMap.size());
-//        Set<Long> key = userSessionsMap.keySet();
-//        for(Long uID : key){
-//            System.out.println("In handler "+uID);
-//            WebSocketSession sess = userSessionsMap.get(key);
-//            System.out.println(userSessionsMap.get(key));
 
-//            if(!userTeam.getExist()) {
-//                TextMessage message = new TextMessage(userTeam.getUser().getUID() + "");
-//                sess.sendMessage(message);
-//            }
-//        }
+        System.out.println("In SocketHandler "+userTeam.getTeam().getTID());
+        System.out.println(userTeam.getUser().getUID());
 
-//        전체 유저에게 보내는 방법
-        for(WebSocketSession sess : sessions){
-            TextMessage message = null;
-            if(!userTeam.getExist()) {
-                message = new TextMessage(userTeam.getUser().getUID() + " off");
-            }
-            else{
-                message = new TextMessage(userTeam.getUser().getUID() + " on");
-            }
+        List<WebSocketSession> sess = teamSessionList.get(userTeam.getTeam().getTID());
+
+        TextMessage message = null;
+        String userImage = userTeam.getUser().getUserImage();
+        if(userImage == null){
+            userImage = "noImage";
+        }
+        if(userTeam.getExist()) {
+            message = new TextMessage("ON "+userTeam.getUser().getUID()+" "+userImage+" "+userTeam.getUser().getUserName());
+        }
+        else{
+            message = new TextMessage("OFF "+userTeam.getUser().getUID()+" "+userImage+" "+userTeam.getUser().getUserName());
+        }
+        for(WebSocketSession s : sess) {
             try{
-                synchronized (sess){
-                    sess.sendMessage(message);
+                synchronized (s) {
+                    s.sendMessage(message);
                 }
-            }catch (IOException e){
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void noticeLeave(Long uID, Long tID) throws Exception{
+
+        List<WebSocketSession> sess = teamSessionList.get(tID);
+
+        TextMessage message = new TextMessage("leave "+uID);
+        for(WebSocketSession s : sess) {
+            try{
+                synchronized (s) {
+                    s.sendMessage(message);
+                }
+            } catch (IOException e){
                 e.printStackTrace();
             }
         }
@@ -56,20 +75,58 @@ public class ExistWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception{
-        System.out.println("!!!!!!!!curUID : "+message); //나중엔 tID도 받아야 함
-        System.out.println("!!!!!session : "+session);
-        userSessionsMap.put(Long.parseLong(message.getPayload()), session);
-        System.out.println("get : "+Long.parseLong(message.getPayload())+" "+userSessionsMap.get(Long.parseLong(message.getPayload())));
+        String[] ids = message.getPayload().split(" ");
+        List<WebSocketSession> sessionList = teamSessionList.get(Long.parseLong(ids[1]));
+        if(sessionList == null){
+            sessionList = new ArrayList<>();
+        }
+        sessionList.add(session);
+        teamSessionList.put(Long.parseLong(ids[1]), sessionList);
+        teamSession.put(session, Long.parseLong(ids[1]));
+        userSession.put(session, Long.parseLong(ids[0]));
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception{
-        sessions.add(session);
-        System.out.println("소켓 연결!!");
+        //System.out.println("소켓 연결!!"+session.getId());
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception{
+        Long tID = teamSession.get(session);
+        Long uID = userSession.get(session);
+
+        userTeamService.updateExistFalse(uID, tID);
+        User user = userService.findByuID(uID);
+
+        String userImage = user.getUserImage();
+        if(userImage == null){
+            userImage = "noImage";
+        }
+        TextMessage message = new TextMessage("OFF "+uID+" "+userImage+" "+user.getUserName());
+
+        List<WebSocketSession> list = teamSessionList.get(tID);
+        for(WebSocketSession s : list) {
+            if(s.getId() != session.getId()) {
+                try {
+                    synchronized (s) {
+                        s.sendMessage(message);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+//        List<WebSocketSession> list = teamSessionList.get(tID);
+        for(WebSocketSession s : list){
+            if(s.getId() == session.getId()){
+                list.remove(s);
+                teamSessionList.put(tID, list);
+                break;
+            }
+        }
+        teamSession.remove(session);
     }
 
     @Override

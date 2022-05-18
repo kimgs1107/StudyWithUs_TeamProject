@@ -5,7 +5,7 @@ package st.project.studyWithUs.service.userTeamService;
 import org.springframework.stereotype.Service;
 import st.project.studyWithUs.domain.Team;
 import st.project.studyWithUs.domain.UserTeam;
-import st.project.studyWithUs.vo.CompleteMemsVO;
+import st.project.studyWithUs.vo.MemberInSameVO;
 import st.project.studyWithUs.vo.StudyTimeVO;
 
 import java.util.List;
@@ -22,7 +22,11 @@ public interface UserTeamService {
 
     List<Team> findMyTeams(Long uid);
 
-    List<CompleteMemsVO> completeMembers(Long tID);
+    List<MemberInSameVO> completeMembers(Long tID);
 
     List<StudyTimeVO> myStudyTime(Long uID);
+
+    UserTeam findByUIDAndTID(Long uid, Long tid);
+
+    void updateExistFalse(Long uID, Long tID);
 }
