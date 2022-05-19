@@ -4,19 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <title>StudyWithUs</title>
 
+    <link rel="stylesheet" href="../css/style.css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="/webjars/jquery/dist/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <!-- 합쳐지고 최소화된 최신 CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <!-- 부가적인 테마 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <style>
         .chat_wrap {
             border: 1px solid #999;
@@ -92,6 +87,38 @@
 </head>
 <body>
 
+<div class="header">
+    <div class="container flex" style="margin-top: 10px">
+        <div class="logo">
+            <a href="/">
+                <img src="../images/logo.png" />
+            </a>
+        </div>
+        <div class="row">
+            <form id="form">
+                <ul>
+                    <li>
+                        <a href="/createStudy"><h4>스터디 생성하기</h4></a>
+                    </li>
+                    <li>
+                        <a href="/board"><h4>자유게시판</h4></a>
+                    </li>
+                    <li>
+                        <a href="/login"><h4>로그인</h4></a>
+                    </li>
+                    <li>
+                        <a href="/logout" id="logoutbtn"><h4>로그아웃</h4></a>
+                    </li>
+                    <li>
+                        <button type="button" onclick='location.href="/myPage"'>
+                            마이페이지
+                        </button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
 <div id="container">
     <div id="startBox">
         <button onclick="home()">로고</button>
@@ -116,14 +143,11 @@
     </div>
 
     <div id="chatBox">
-<!--        <button type="button" onclick="chat()" id="chat">채팅하기</button>-->
-        <h1 id="title"></h1>
         <div class="content" data-room-id="{{room.id}}" data-member="{{member}}">
             <div class="chat_wrap">
                 <div class="inner">
                     <ul class="chat_box" style="text-align: left;">
                     </ul>
-
                 </div>
             </div>
             <input name="message" id="alpreah_input">
@@ -135,6 +159,7 @@
         <button class="exit" id="exit">나가기</button>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 <script src="/js/camera.js"></script>
