@@ -98,12 +98,10 @@
 </a>
 
 <script>
-
     getUser();
     completeMembers();
     myStudyTime();
     getTeams();
-
     function getUser(){
         $.ajax({
             type:"get",
@@ -113,7 +111,6 @@
                 let name = document.getElementById('name');
                 name.innerHTML = data.userName+"님의 페이지";
                 name.setAttribute("style", "font-size:24pt; margin:5px");
-
                 let point = document.getElementById('point');
                 point.innerHTML = "현재 잔여 포인트 : "+data.point;
                 point.setAttribute("style", "font-size:16pt");
@@ -123,7 +120,6 @@
             }
         })
     }
-
     function completeMembers(){
         let compMemberBox = document.getElementById("completeMembers");
         compMemberBox.setAttribute("style", "text-align:center;");
@@ -131,7 +127,6 @@
         title.innerHTML = "오늘의 목표를 달성한 사람들";
         title.setAttribute("style", "text-align: center;");
         compMemberBox.append(title);
-
         $.ajax({
             type: "get",
             url: "/findMyTeams",
@@ -142,7 +137,6 @@
                     let teamLabel = document.createElement("h4");
                     teamLabel.innerText = team.teamName;
                     teamBox.append(teamLabel);
-
                     $.ajax({
                         type: "get",
                         url: "/completeMembers",
@@ -177,7 +171,6 @@
             }
         });
     }
-
     function myStudyTime(){
         let studyTimeBox = document.getElementById("myStudyTime");
         studyTimeBox.setAttribute("style", "text-align:center;");
@@ -185,7 +178,6 @@
         title.innerHTML = "나의 목표 달성률";
         title.setAttribute("style", "text-align: center;");
         studyTimeBox.append(title);
-
         $.ajax({
             type: "get",
             url: "/studyTime",
@@ -197,11 +189,11 @@
                     teamName.innerHTML = team.teamName+" : ";
                     teamName.setAttribute("style", "display:inline-block; font-size: 14pt; margin-right: 3px;");
                     let time = document.createElement("div");
-                    if(team.totalTime/(team.targetTime*team.period) >=1){
+                    if(team.totalTime/(team.targetTime*team.period*60) >=1){
                         time.innerHTML = "100%";
                     }
                     else {
-                        time.innerHTML = Math.round(team.totalTime/(team.targetTime*team.period)*100)+"%";
+                        time.innerHTML = Math.round(team.totalTime/(team.targetTime*team.period*60)*100)+"%";
                     }
                     time.setAttribute("style", "display:inline-block; font-size: 14pt");
 
@@ -215,16 +207,13 @@
             }
         });
     }
-
     function getTeams(){
         $.ajax({
             type:"get",
             url:"/findMyTeams",
             datatype:'json',
             success: function(data){
-
                 var teams = document.getElementById('myTeams');
-
                 data.forEach(function(team){
                     let image = document.createElement('img');
                     if(team.teamImage == null) {
@@ -234,31 +223,27 @@
                         image.setAttribute("src", team.teamImage);
                     }
                     image.setAttribute("style", "height:200px; width:200px");
-
                     let teamName = document.createElement('h3');
                     teamName.innerHTML = team.teamName;
                     teamName.setAttribute("style", "text-align:center; margin-top:10px;");
-
                     let teamContent = document.createElement('div');
                     teamContent.innerHTML = team.teamDesc;
                     teamContent.setAttribute("style","text-align:center; " );
-
                     let currentCount = document.createElement('div');
                     currentCount.innerHTML = "현재 참여 인원 : " + team.currentCount+'/'+team.headCount;
                     currentCount.setAttribute("style", "text-align:center; margin-top:3px;");
 
                     let date = document.createElement('div');
                     date.innerHTML= team.startDate + " ~ " +team.endDate;
-                    date.setAttribute("style","text-align:center; color: gray");
+                    date.setAttribute("style","text-align:center;");
 
                     let time = document.createElement('div');
                     time.innerHTML = "목표 공부시간 : 하루 "+team.targetTime+"분";
                     time.setAttribute("style","text-align:center;");
-
                     let teamButton1 = document.createElement('button');
                     teamButton1.innerText = "대화하기";
                     teamButton1.setAttribute("id", team.tId);
-                    teamButton1.setAttribute("style", "margin-bottom:20px; margin-top:3px; margin-right:2px");
+                    teamButton1.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
                     teamButton1.addEventListener("click", ()=>{
 
                         $.ajax({
@@ -270,25 +255,30 @@
                                     window.location.replace('/chat/room/enter/'+team.ttID) ;
                                 }
                             }, error:function(){
-
                                 window.location.replace('/login') ;
                             }
                         });
                     });
-
                     let teamButton2 = document.createElement('button');
                     teamButton2.innerText = "화상채팅";
                     teamButton2.setAttribute("id", team.tId);
-                    teamButton2.setAttribute("style", "margin-bottom:20px; margin-top:3px; margin-right:2px");
+                    teamButton2.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
                     teamButton2.addEventListener("click", ()=>{
-                        location.href='/chat/studyRoom/enter/'+team.ttID;
+                        let ymd = new Date();
+                        let today = new Date(ymd.getFullYear(), ymd.getMonth(), ymd.getDate(), 9);
+                        let start = new Date(team.startDate);
+                        if(today < start){
+                            alert('아직 스터디가 시작하지 않았습니다.');
+                        }
+                        else {
+                            location.href = '/chat/studyRoom/enter/' + team.ttID;
+                        }
                     });
 
                     let teamButton3 = document.createElement('button');
                     teamButton3.innerText = "팀 탈퇴";
                     teamButton3.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
                     teamButton3.addEventListener("click", ()=>{
-
                         $.ajax({
                             url: "/dropStudyTeam",
                             type: "GET",
@@ -299,13 +289,11 @@
                             success: function (data){
                                 alert("팀이 탈퇴 되었습니다. ")
                                 window.location.replace('/myPage');
-
                             }, error:function(){
                                 alert("error");
                             }
                         });
                     });
-
                     let eachTeam = document.createElement('div');
                     eachTeam.append(image);
                     eachTeam.append(teamName);
@@ -319,14 +307,12 @@
                     eachTeam.setAttribute("class", "col-xs-4");
                     eachTeam.setAttribute("style", "text-align:center; margin-top:10px;")
                     teams.appendChild(eachTeam);
-
                 });
             }, error:function(error){
                 console.log(error);
             }
         })
     }
-
 </script>
 <script type="text/javascript">
     function chat() {
@@ -334,7 +320,6 @@
             channelPublicId: '_kxjRLb' // 카카오톡 채널 홈 URL에 명시된 id로 설정합니다.
         });
     }
-
     btn_chat();
     function btn_chat() {
         Kakao.Channel.createChatButton({
