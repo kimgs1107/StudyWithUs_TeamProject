@@ -15,19 +15,18 @@
     </style>
 </head>
 <body>
-
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<div class="container" style="text-align: center;">
-    <div class="topMargin" style="display:inline-block; text-align: center; width:850px; ">
+<div class="container" style="text-align: center; width:850px;">
+    <div class="topMargin" style="display:inline-block; ">
         <div style=" margin:50px;" class="topMargin">
-            <img src="../images/logo.png" width="50%" alt="Study With Us">
+            <img src="../images/logo.png" width="300px" alt="Study With Us">
         </div>
         <div class="topMargin" style="width: 300px;display: inline-block">
             <input type="text" id="id" class="form-control"
                    placeholder="ID" style="margin-top: 10px;">
             <input type="password" id="pw" class="form-control"
                    placeholder="PW" style="margin-top: 10px;">
-            <font id="check" size="2"> </font>
+
             <input type="text" id="txt" class="form-control topMargin" placeholder="아래 이미지에 적힌 문자를 입력해주세요."
                    style="font-size: 14px"/>
             <img alt="자동입력방지" id="img" width="300" style="margin-top: 10px">
@@ -86,7 +85,7 @@
             type: "POST",
             success: function (data) {
                 key = data.key
-                $('#img').attr('src', '/teamImage/' + data.img);
+                $('#img').attr('src', '/captcha/' + data.img);
                 // console.log(data.img)
             }
         })
@@ -102,8 +101,6 @@
             },
             success: function (data) {
                 if (data == "아이디 또는 비밀번호가 일치하지 않습니다.") {
-                    // $("#check").html(data);
-                    // $("#check").attr('color', 'red');
                     history.go(0);
                 } else {
                     $.ajax({
