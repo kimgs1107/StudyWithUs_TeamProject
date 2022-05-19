@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Study With Us</title>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../css/style.css"/>
-    <!--아이콘-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" href="../css/style.css"/>
+</head>
 </head>
 <body>
 <div class="header">
@@ -24,27 +26,25 @@
             </a>
         </div>
         <div class="row">
-            <form id="form">
-                <ul>
-                    <li>
-                        <a href="/createStudy"><h4>스터디 생성하기</h4></a>
-                    </li>
-                    <li>
-                        <a href="/boardSearch"><h4>자유게시판</h4></a>
-                    </li>
-                    <li>
-                        <a href="/login"><h4>로그인</h4></a>
-                    </li>
-                    <li>
-                        <a href="/logout" id="logoutbtn"><h4>로그아웃</h4></a>
-                    </li>
-                    <li>
-                        <button type="button" onclick='location.href="/myPage"'>
-                            마이페이지
-                        </button>
-                    </li>
-                </ul>
-            </form>
+            <ul>
+                <li>
+                    <h6><a href="/createStudy">스터디 생성하기</a></h6>
+                </li>
+                <li>
+                    <a href="/boardSearch"><h6>자유게시판</h6></a>
+                </li>
+                <li>
+                    <a href="/login"><h6>로그인</h6></a>
+                </li>
+                <li>
+                    <a href="/logout" id="logoutbtn"><h6>로그아웃</h6></a>
+                </li>
+                <li>
+                    <button type="button" onclick='location.href="/myPage"'>
+                        마이페이지
+                    </button>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
@@ -57,27 +57,17 @@
 
         <div class="mb-3" style="margin-top: 30px;">
             <label for=title class="form-label">제목</label>
-            <input type="text" class="form-control" id="title" placeholder="제목을 입력해주세요." />
+            <input type="text" class="form-control" id="title" placeholder="제목을 입력해주세요."/>
         </div>
         <div class="mb-3" style="margin-top: 15px;">
             <label for="content" class="form-label">내용</label>
-            <textarea class="form-control" id="content" rows="3" placeholder="내용을 입력해주세요" style="height: 600px;"></textarea>
+            <textarea class="form-control" id="content" rows="3" placeholder="내용을 입력해주세요"
+                      style="height: 600px;"></textarea>
         </div>
 
         <div style="text-align: center">
-            <button class="btn btn-outline-secondary" id="writeComplete">게시물 작성</button>
+            <button class="btn btn-outline-dark" id="writeComplete" style="border-color: #00000060;">게시물 작성</button>
         </div>
-
-        <!--        <div class="row">-->
-        <!--            <div style="text-align: center; margin-top: 40px">-->
-        <!--                <div style="text-align: center">-->
-        <!--                    <input type="text" id="title"-->
-        <!--                           placeholder="제목을 입력해주세요" style="width: 500px; margin-bottom: 10px;">-->
-        <!--                </div>-->
-        <!--                <div style="text-align: center">-->
-        <!--                    <textarea id="content" placeholder="내용을 입력해주세요" style="width: 500px; height: 600px;"></textarea>-->
-        <!--                </div>-->
-        <!--            </div>-->
     </div>
 </div>
 
