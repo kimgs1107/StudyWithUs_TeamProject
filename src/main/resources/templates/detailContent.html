@@ -6,18 +6,30 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Study With Us</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <link rel="stylesheet" href="../css/style.css"/>
 </head>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-<link rel="stylesheet" href="../css/style.css"/>
-<!--    아이콘-->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
 
+<style>
+    .h-divider {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        height: 1px;
+        width: 100%;
+        border-top: 1px solid gray;
+    }
+</style>
+</head>
 
 <body>
 <div class="header">
@@ -28,33 +40,30 @@
             </a>
         </div>
         <div class="row">
-            <form id="form">
-                <ul>
-                    <li>
-                        <a href="/createStudy"><h4>스터디 생성하기</h4></a>
-                    </li>
-                    <li>
-                        <a href="/boardSearch"><h4>자유게시판</h4></a>
-                    </li>
-                    <li>
-                        <a href="/login"><h4>로그인</h4></a>
-                    </li>
-                    <li>
-                        <a href="/logout" id="logoutbtn"><h4>로그아웃</h4></a>
-                    </li>
-                    <li>
-                        <button type="button" onclick='location.href="/myPage"'>
-                            마이페이지
-                        </button>
-                    </li>
-                </ul>
-            </form>
+            <ul>
+                <li>
+                    <h6><a href="/createStudy">스터디 생성하기</a></h6>
+                </li>
+                <li>
+                    <a href="/boardSearch"><h6>자유게시판</h6></a>
+                </li>
+                <li>
+                    <a href="/login"><h6>로그인</h6></a>
+                </li>
+                <li>
+                    <a href="/logout" id="logoutbtn"><h6>로그아웃</h6></a>
+                </li>
+                <li>
+                    <button type="button" onclick='location.href="/myPage"'>
+                        마이페이지
+                    </button>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
 
 <div class="container" style="width: 1000px;">
-
     <div class="row" style="margin-top: 20px;">
         <div class="col-xs-4">
             <h2 style="font-weight: bold;">자유게시판</h2>
@@ -62,18 +71,22 @@
     </div>
 
     <div class="col-xs-1" style="float: right; margin-top: 10px; margin-bottom: 20px;">
-        <button type="submit" class="btn btn-light" onclick="location.href='/boardSearch'">
+        <button type="submit" class="btn btn-outline-dark" onclick="location.href='/boardSearch'"
+                style="border-color: #00000060; margin-left: 10px;">
             목록
         </button>
     </div>
 
     <table class="table table-bordered" style="margin-top: 50px;">
+        <thead>
         <tr><!-- 첫번째 줄 시작 -->
             <td>번호</td>
             <td id="bID"></td>
             <td>작성일</td>
             <td id="date"></td>
         </tr><!-- 첫번째 줄 끝 -->
+        </thead>
+        <tbody>
         <tr><!-- 두번째 줄 시작 -->
             <td>작성자</td>
             <td id="name"></td>
@@ -87,41 +100,44 @@
             <td>내용</td>
             <td id="content" colspan="3"></td>
         </tr><!-- 두번째 줄 끝 -->
+        <tbody>
     </table>
 
 
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-light" id="deleteBtn"></button>
-        <button class="btn btn-light" id="updateBtn"></button>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding: 0px; border: 0px;">
+        <div id="deleteBtn" style="border-radius: 0.5rem; height: 10px;"></div>
+        <div id="updateBtn" style="border-radius: 0.5rem; height: 10px;"></div>
     </div>
 
-<!--    <div style="text-align: center;">-->
-<!--        <div id="deleteBtn" style="float: right;"></div>-->
-<!--        <div id="updateBtn" style="float: right;"></div>-->
-<!--    </div>-->
-
-    <div class="row" style="margin-top: 50px;">
-        <hr>
-        <div class="col-xs-4">
-            <h4>comment</h4>
-        </div>
-
-        <div class="mb-3" >
+    <!--    <div style="text-align: center;">-->
+    <!--        <div id="deleteBtn" style="float: right;"></div>-->
+    <!--        <div id="updateBtn" style="float: right;"></div>-->
+    <!--    </div>-->
+    <form>
+        <div class="form-group" style="margin-top: 50px;">
+            <hr class="h-divider">
+            <div class="col-xs-4">
+                <h4>comment</h4>
+            </div>
             <label for="comment" class="form-label"></label>
-            <textarea class="form-control" id="comment" rows="3" placeholder="내용을 입력해주세요"></textarea>
-            <button type="button" class="btn btn-light" id="btn" style="float: right; width: auto; margin-top: 15px;">
+            <textarea class="form-group" rows="2" id="comment" placeholder="내용을 입력해주세요"
+                      style="width: 900px; margin-top: 15px;"></textarea>
+            <button type="button" class="btn btn-outline-dark" id="btn"
+                    style=" width: auto; margin-top: 20px; border-color: #00000060; float: right;">
                 등록
             </button>
         </div>
-        <hr>
-    </div>
+    </form>
 
-    <div class="row" style="margin-top: 30px;">
-        <div class="col-xs-4">
+    <hr class="h-divider">
+
+    <form>
+        <div class="row" style="margin-top: 30px; margin-left:10px;">
             <div id="commentList">
             </div>
         </div>
-    </div>
+    </form>
+
 </div>
 
 
@@ -192,6 +208,7 @@
                     //삭제 버튼 생겨
                     let deletebtn = document.getElementById("deleteBtn");
                     let del = document.createElement('button');
+                    del.setAttribute('class', 'btn btn-outline-dark')
                     del.innerHTML = "게시물 삭제";
                     deletebtn.appendChild(del);
 
@@ -205,11 +222,11 @@
                             },
                             success: function (data) {
                                 alert("게시글이 삭제되었습니다.")
-                                window.location.href = "/board";
+                                window.location.href = "/boardSearch";
 
                             }, error: function () {
                                 alert("에러");
-                                window.location.replace('/board');
+                                window.location.replace('/boardSearch');
                             }
                         });
                     });
@@ -293,6 +310,8 @@
                             //글 작성자만 수정 버튼 생겨
                             let updatebtn1 = document.getElementById("updateBtn");
                             let update1 = document.createElement('button');
+                            update1.setAttribute('class', 'btn btn-outline-dark')
+                            update1.setAttribute('style', 'margin-left: 10px;')
                             update1.innerHTML = "게시물 수정";
                             updatebtn1.appendChild(update1);
                             update1.addEventListener("click", () => {
@@ -304,19 +323,23 @@
                                 let editTitle = document.createElement('input')
                                 editTitle.setAttribute('type', 'text');
                                 editTitle.setAttribute('id', 'ti');
+                                editTitle.setAttribute('style', 'width: 800px;');
                                 editTitle.setAttribute('value', data.title);
                                 title3.appendChild(editTitle);
                                 let content3 = document.getElementById('content');
                                 let editContent = document.createElement('input')
                                 editContent.setAttribute('type', 'text');
                                 editContent.setAttribute('id', 'co');
+                                editContent.setAttribute('style', 'width: 800px;,');
                                 editContent.setAttribute('value', data.content);
                                 content3.appendChild(editContent);
 
                                 let updatebtn2 = document.getElementById("updateBtn");
                                 let update2 = document.createElement('button');
+                                update2.setAttribute('class', 'btn btn-outline-dark');
                                 update2.setAttribute('id', 'update2')
-                                update2.innerHTML = "게시글 수정 완료";
+                                update2.setAttribute('style', 'border-color: #00000060;, margin-left: 30px;');
+                                update2.innerHTML = "수정 완료";
                                 updatebtn2.appendChild(update2);
                                 $("#update2").on('click', function () {
                                     saveUpdateContent();
@@ -337,7 +360,7 @@
                                                 window.location.replace('/detailContent/' + bId);
                                             }
                                         }, error: function () {
-                                            alert("에러");
+                                            alert("게시글 업데이트 에러");
                                             window.location.replace('/board');
                                         }
                                     });
@@ -365,18 +388,32 @@
             success: function (data) {
                 let commentList = document.getElementById('commentList');
                 data.forEach(function (comment) {
-                    let div1 = document.createElement('div');
-                    div1.setAttribute('class', 'row');
-                    div1.setAttribute('style', 'width: 700px; text-align:center; ');
+                    let div1 = document.createElement('form');
+                    div1.setAttribute('class', 'row g-3');
+                    div1.setAttribute('style', 'margin-bottom: 40px;');
+                    let div2 = document.createElement('div')
+                    div2.setAttribute('class', 'col-auto');
+                    div2.setAttribute('style', 'margin-top: 30px;, margin-right: 30px;, font-weight: bold');
+                    let input = document.createElement('input');
+                    input.setAttribute('class', 'form-control');
                     let name = document.createElement('div');
-                    name.setAttribute('class', 'col-xs-2')
+                    name.setAttribute('class', 'col-auto')
+                    name.setAttribute('style', 'font-weight: bold, margin-right: 30px;');
                     name.innerHTML = comment.writerName;
                     let content = document.createElement('div');
                     content.setAttribute('id', comment.cmID);
-                    content.setAttribute('class', 'col-xs-7')
+                    content.setAttribute('class', 'col-auto');
                     content.innerHTML = comment.commentContent;
                     div1.appendChild(name);
                     div1.appendChild(content);
+
+                    // <div className="col-auto">
+                    //     <label htmlFor="inputPassword2" className="visually-hidden">Password</label>
+                    //     <input type="password" className="form-control" id="inputPassword2" placeholder="Password">
+                    // </div>
+                    // <div className="col-auto">
+                    //     <button type="submit" className="btn btn-primary mb-3">Confirm identity</button>
+                    // </div>
 
                     $.ajax({
                         url: "/deleteCommentCheck",
@@ -389,6 +426,9 @@
                             if (data == true) {
                                 //댓글 삭제 버튼 생겨
                                 let delComment = document.createElement('button');
+                                delComment.setAttribute('type', 'button');
+                                delComment.setAttribute('class', 'btn btn-outline-dark');
+                                delComment.setAttribute('style', 'width: 60px;, height:5px;, margin-left: 50px; ,margin-right: 50px;');
                                 delComment.innerHTML = "삭제";
 
                                 div1.appendChild(delComment);
@@ -406,14 +446,14 @@
                                                 window.location.replace('/detailContent/' + bId);
                                             }
                                         }, error: function () {
-                                            alert("에러");
-                                            window.location.replace('/board');
+                                            alert("댓글 삭제 에러");
+                                            window.location.replace('/boardSearch');
                                         }
                                     });
                                 });
                             }
                         }, error: function () {
-                            alert("error");
+                            alert("댓글 삭제 버튼 생성 에러");
                         }
                     });
 
@@ -427,6 +467,9 @@
                             if (data == true) {
                                 //댓글 수정 버튼 생겨
                                 let updateComment = document.createElement('button');
+                                updateComment.setAttribute('type', 'button');
+                                updateComment.setAttribute('class', 'btn btn-outline-dark');
+                                updateComment.setAttribute('style', 'width: 60px;, height:10px; ,margin-left: 50px; ,margin-right: 50px;');
 
                                 updateComment.innerHTML = "수정";
                                 div1.appendChild(updateComment);
@@ -445,19 +488,36 @@
                                                 // let con = $('name').val();
                                                 // $(name).empty(); //name만
 
-                                                let div2 = document.createElement('div');
-                                                div2.setAttribute('class', 'col-xs-4');
+                                                // let div1 = document.createElement('form');
+                                                // div1.setAttribute('class', 'row g-3');
+                                                // let div2 = document.createElement('div')
+                                                // div2.setAttribute('class', 'col-auto');
+                                                // let input = document.createElement('input');
+                                                // input.setAttribute('class', 'form-control');
+                                                // let name = document.createElement('div');
+                                                // name.setAttribute('class', 'col-auto')
+                                                // name.innerHTML = comment.writerName;
+
+                                                let div2 = document.createElement('form');
+                                                div2.setAttribute('class', 'row-g-3');
+                                                let content = document.createElement('div');
+                                                content.setAttribute('class', 'col-auto');
                                                 let content1 = document.createElement('input');
+                                                content1.setAttribute('class', 'form-control');
                                                 content1.setAttribute('id', "editComment");
                                                 content1.setAttribute('type', 'text');
+                                                content1.setAttribute('style', 'margin-left: 30px')
                                                 content1.setAttribute('value', comment.commentContent)
                                                 /*         content.setAttribute('id', comment.cmID+'n');*/
                                                 div2.appendChild(content1);
                                                 div1.appendChild(div2);
 
                                                 let div3 = document.createElement('div');
-                                                div3.setAttribute('class', 'col-xs-2');
+                                                div3.setAttribute('class', 'col-auto');
                                                 let upbtn = document.createElement('button');
+                                                upbtn.setAttribute('type', 'button');
+                                                upbtn.setAttribute('class', 'btn btn-outline-dark');
+                                                upbtn.setAttribute('style', 'border-color: #00000060;, width: 50px; margin-left: 35px;');
                                                 upbtn.innerHTML = "수정";
                                                 div3.appendChild(upbtn);
                                                 div1.appendChild(div3);
@@ -474,24 +534,25 @@
                                                         success: function (data) {
                                                             if (data == true) {
                                                                 window.location.replace('/detailContent/' + bId);
+
                                                             }
                                                         }, error: function () {
-                                                            alert("에러");
-                                                            window.location.replace('/board');
+                                                            alert("댓글 수정 에러");
+                                                            window.location.replace('/boardSearch');
                                                         }
                                                     });
                                                 });
                                                 // window.location.replace('/detailContent/'+bId) ;
                                             }
                                         }, error: function () {
-                                            alert("에러");
-                                            window.location.replace('/board');
+                                            alert("댓글 수정 에러");
+                                            window.location.replace('/boardSearch');
                                         }
                                     });
                                 });
                             }
                         }, error: function () {
-                            alert("error");
+                            alert("댓글 수정 버튼 생성 에러");
                         }
                     });
                     commentList.appendChild(div1);
@@ -502,5 +563,7 @@
         });
     }
 </script>
+
+
 </body>
 </html>
