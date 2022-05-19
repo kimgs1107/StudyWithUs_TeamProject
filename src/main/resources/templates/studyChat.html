@@ -1,149 +1,59 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <title>StudyWithUs</title>
 
-    <link rel="stylesheet" href="../css/style.css" />
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="/webjars/jquery/dist/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <style>
-        .chat_wrap {
-            border: 1px solid #999;
-            width: 450px;
-            padding: 5px;
-            font-size: 13px;
-            color: #333;
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-        }
-
-        .chat_wrap .inner {
-            background-color: #acc2d2;
-            border-radius: 5px;
-            padding: 10px;
-            overflow-y: scroll;
-            height: 400px;
-        }
-
-        #container{
-            width: 900px;
-            margin: 20px auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 50px repeat(2, minmax(250px, auto)) 50px;
-        }
-        #startBox{
-            grid-row: 1/2;
-            grid-column: 1/3;
-        }
-        #camBox{
-            grid-column: 1/2;
-            grid-row: 2/3;
-            border: 1px solid gray;
-            border-radius: 5px;
-        }
-        #startStopBox{
-            grid-column: 1/2;
-            grid-row: 3/4;
-        }
-        #members{
-            grid-column: 2/3;
-            grid-row: 2/3;
-            border: 1px solid gray;
-            border-radius: 5px;
-        }
-        #chatBox{
-            grid-column: 2/3;
-            grid-row: 3/4;
-            border: 1px solid gray;
-            border-radius: 5px;
-        }
-        #closeBox{
-            grid-row: 4/5;
-        }
-
-        #start{
-            width: 80px;
-            margin: 0 auto;
-        }
-        #stop{
-            width: 80px;
-            margin: 0 auto;
-        }
-        #restart{
-            width: 80px;
-            margin: 0 auto;
-        }
-        #webcam-container{
-            text-align: center;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/study.css"/>
 </head>
 <body>
-
-<div class="header">
-    <div class="container flex" style="margin-top: 10px">
-        <div class="logo">
-            <a href="/">
-                <img src="../images/logo.png" />
-            </a>
-        </div>
-        <div class="row">
-            <form id="form">
-                <ul>
-                    <li>
-                        <a href="/createStudy"><h4>스터디 생성하기</h4></a>
-                    </li>
-                    <li>
-                        <a href="/board"><h4>자유게시판</h4></a>
-                    </li>
-                    <li>
-                        <a href="/login"><h4>로그인</h4></a>
-                    </li>
-                    <li>
-                        <a href="/logout" id="logoutbtn"><h4>로그아웃</h4></a>
-                    </li>
-                    <li>
-                        <button type="button" onclick='location.href="/myPage"'>
-                            마이페이지
-                        </button>
-                    </li>
-                </ul>
-            </form>
-        </div>
+<div id="header">
+    <div id="logoBox">
+        <button style="all:unset" onclick="home()"><img src="/images/logo.png"/></button>
     </div>
 </div>
 <div id="container">
-    <div id="startBox">
-        <button onclick="home()">로고</button>
-        <span id="title"></span>
-        <button type="button" onclick="init()" id="start">시작</button>
+    <div id="topBox">
+        <div id="title"></div>
     </div>
 
     <div id="camBox">
         <div id="webcam-container">
-            <canvas width="200" height="200" hidden></canvas>
-            <img src="/adminImage/noseat.png" id="img" style="width: 200px; height: 200px" hidden/>
+            <canvas width="300" height="300" hidden></canvas>
+            <img src="/adminImage/noseat.png" id="img" style="width: 300px; height: 300px" hidden/>
             <div id="time">00:00:00</div>
         </div>
     </div>
 
-    <div id="startStopBox">
-        <button type="button" onclick="stop()" id="stop">중단</button>
-        <button type="button" onclick="restart()" id="restart">재시작</button>
-    </div>
-
-    <div id="members">
+    <div id="buttonBox">
+        <div id="startBox">
+            <button type="button" onclick="init()" id="start">시작</button>
+        </div>
+        <div id="stopBox">
+            <button type="button" onclick="stop()" id="stop">중단</button>
+        </div>
+        <div id="restartBox">
+            <button type="button" onclick="restart()" id="restart">재시작</button>
+        </div>
     </div>
 
     <div id="chatBox">
-        <h1 id="title"></h1>
         <div class="content" data-room-id="{{room.id}}" data-member="{{member}}">
             <div class="chat_wrap">
                 <div class="inner">
@@ -156,8 +66,53 @@
 
         </div>
     </div>
+
+    <div id="members">
+        <h3 style="text-align: center">스터디원</h3>
+    </div>
+
     <div id="closeBox">
         <button class="exit" id="exit">나가기</button>
+    </div>
+</div>
+
+<div class="footer">
+    <div class="container grid2">
+        <div id="box1">
+            <img src="https://see.fontimg.com/api/renderfont4/Ea2l9/eyJyIjoiZnMiLCJoIjoxNTIsInciOjIwMDAsImZzIjo3NiwiZmdjIjoiIzAwMDAwMCIsImJnYyI6IiNGRkZGRkYifQ/U1RVRFkgV0lUSCBVUw/valentine.png"
+                 alt="logo"
+            />
+            <p>온라인 스터디 공간입니다.</p>
+            <div class="socialIcon">
+                <i class="fab fa-facebook-f "></i>
+                <i class="fab fa-instagram "></i>
+                <i class="fab fa-twitter "></i>
+                <i class="fab fa-youtube "></i>
+            </div>
+        </div>
+
+        <div id="box2">
+            <h2>Contact Us</h2>
+
+            <div class="icon">
+                <i class="fa fa-location-dot"></i>
+                <label htmlFor="">Location: 서울시 서초구 서초동 1307</label>
+            </div>
+            <div class="icon">
+                <i class="fa fa-phone"></i>
+                <label htmlFor="">Phone: +82 2 6666 6666</label>
+            </div>
+            <div class="icon">
+                <i class="fa fa-envelope"></i>
+                <label htmlFor="">Email: support@gmail.com</label>
+            </div>
+        </div>
+    </div>
+    <div class="legal container">
+        <p>Copyright @2022. All rights reserved.</p>
+        <p htmlFor="">
+            Design & Developed by <span>6조머지?</span>
+        </p>
     </div>
 </div>
 
