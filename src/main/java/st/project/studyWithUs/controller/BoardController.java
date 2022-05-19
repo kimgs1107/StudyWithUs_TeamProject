@@ -29,10 +29,10 @@ public class BoardController {
 
     private final BoardService boardservice;
 
-    @GetMapping("/board") //게시물 목록 조회
-    public String board() {
-        return "board";
-    }
+//    @GetMapping("/board") //게시물 목록 조회
+//    public String board() {
+//        return "board";
+//    }
 
 
     @GetMapping("/write") //게시물 작성하는 페이지
