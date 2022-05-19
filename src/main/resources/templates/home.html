@@ -27,7 +27,7 @@
                         <a href="/createStudy"><h4>스터디 생성하기</h4></a>
                     </li>
                     <li>
-                        <a href="/board"><h4>자유게시판</h4></a>
+                        <a href="/boardSearch"><h4>자유게시판</h4></a>
                     </li>
                     <li>
                         <a href="/login"><h4>로그인</h4></a>
@@ -252,8 +252,8 @@
                     let currentCount = document.createElement('div');
                     currentCount.innerHTML = "현재 참여 인원 : " + team.currentCount+'/'+team.headCount;
 
-                        let date = document.createElement('div');
-                        date.innerHTML= team.startDate + " ~ " +team.endDate;
+                    let date = document.createElement('div');
+                    date.innerHTML= team.startDate + " ~ " +team.endDate;
 
                     let teamButton1 = document.createElement('button');
                     teamButton1.innerText = "대화하기";
