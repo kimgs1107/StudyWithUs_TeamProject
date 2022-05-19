@@ -56,7 +56,7 @@ public class KakaoServiceImpl implements KakaoService {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id=4d6bfc510b9480c47be3a30e3ae11deb"); // TODO REST_API_KEY 입력
+            sb.append("&client_id=6c8a1661d27760e45954ff61c779e9e4"); // TODO REST_API_KEY 입력
             sb.append("&redirect_uri=http://localhost:8080/kakaoLogin"); // TODO 인가코드 받은 redirect_uri 입력
             sb.append("&code=" + code);
             bw.write(sb.toString());
