@@ -135,9 +135,9 @@ public class BoardController {
         model.addAttribute("end",all.getTotalPages());
 
 
-        int totalPage=all.getTotalPages();
         int size = all.getSize();
-        int idx = Math.max(((totalPage-currentPage)*size+1),1);
+        int totalCount = (int)all.getTotalElements();
+        int idx = Math.max((totalCount-(size*(currentPage-1))),1);
 
         for (Board li : all) {
             BoardVO vo = new BoardVO();
