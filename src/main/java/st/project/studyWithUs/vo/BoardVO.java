@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class BoardVO {
 
-    private Long bbID;  // bID로 할 경우 데이터 안넘어옴.
+    private Long bbID;  // bID로 할 경우 데이터 안넘어옴. 게시글 번호 아이디
     private String content;
     private String title;
     private String uploadTime;
