@@ -175,7 +175,7 @@ async function init() {
     model = await tmImage.load(modelURL, metadataURL);
     maxPredictions = model.getTotalClasses();
     flip = true; // whether to flip the webcam . 반전처리
-    webcam = new tmImage.Webcam(200,200,flip); // width, height, flip
+    webcam = new tmImage.Webcam(300,300,flip); // width, height, flip
 
     await webcam.setup(); // request access to the webcam
     await webcam.play();
@@ -202,7 +202,7 @@ async function loop() {
             }
         });
         document.querySelector('canvas').setAttribute("hidden","true");
-        document.querySelector('img').removeAttribute("hidden");
+        document.querySelector('#img').removeAttribute("hidden");
         return;
     }
     webcam.update(); // update the webcam frame
@@ -240,7 +240,7 @@ async function predict() { //프레임한번
                 }
             });
             document.querySelector('canvas').setAttribute("hidden","true");
-            document.querySelector('img').removeAttribute("hidden");
+            document.querySelector('#img').removeAttribute("hidden");
         }
 
         if(prediction[1].probability.toFixed(2) > 0.8){ // 자리있음
@@ -273,7 +273,7 @@ async function predict() { //프레임한번
             })
 
 
-            document.querySelector('img').setAttribute("hidden","true");
+            document.querySelector('#img').setAttribute("hidden","true");
             document.querySelector('canvas').removeAttribute("hidden");
             // 타이머 이어서
             if (active == false) {
@@ -299,7 +299,7 @@ async function predict() { //프레임한번
                         (second < 10 ? "0" + second : second);
                 }, 1000);
             }
-            document.querySelector('img').setAttribute("hidden","true");
+            document.querySelector('#img').setAttribute("hidden","true");
             document.querySelector('canvas').removeAttribute("hidden");
         }
 
@@ -402,7 +402,7 @@ function start(){
                 chatBox.append('<h4 style="color: blue">'+ content.message +'</h4>')
             }
             else if(content.writer==name){ //본인일 때
-                chatBox.append('<h4 style="color: orange">'+ content.writer+ ' : ' + content.message +'</h4>')
+                chatBox.append('<h4 style="color: black">'+ content.writer+ ' : ' + content.message +'</h4>')
             }
             else if(content.writer==""){
                 chatBox.append('<h4 style="color: red">'+ content.message +'</h4>')

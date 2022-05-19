@@ -170,12 +170,15 @@
         //시작일은 오늘 이후부터 선택가능
         $('input[name="startDate"]').change(function (){
             let ymd = new Date();
-            let year = ymd.getFullYear();
-            let month = ymd.getMonth();
-            let date = ymd.getDate();
-            let today = new Date(year, month, date);
-            let choose = new Date($('input[name="startDate"]').val());
-            if(today > choose){
+            let today = new Date(ymd.getFullYear(), ymd.getMonth(), ymd.getDate());
+            let start = new Date($('input[name="startDate"]').val());
+            if(today > start){
+                $('input[name="startDate"]').val("");
+                $('input[name="startDate"]').focus();
+            }
+
+            let end = new Date($('input[name="endDate"]').val());
+            if(start > end){
                 $('input[name="startDate"]').val("");
                 $('input[name="startDate"]').focus();
             }
