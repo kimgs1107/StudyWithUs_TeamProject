@@ -1,103 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Study With Us</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <link rel="stylesheet" href="../css/style.css"/>
-</head>
-
-<style>
-
-    #writerCheck {
-        display: block;
-        box-sizing: border-box;
-        margin: auto;
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-        font-weight: bold;
-
-    }
-
-    h2 {
-        font-weight: bold;
-    }
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
 
 
-</style>
-<script>
-    jQuery(document).ready(function () {
-        // writerCheck();
-
-        $("#writerCheck").click(function () {
-            writerCheck();
-            console.log("글쓰기 클릭");
-        })
-
-
-        function writerCheck() {
-            $.ajax({
-                url: "/checkUser",
-                type: "POST",
-                success: function (data) {
-                    console.log('성공')
-                    console.log(data)
-                    if (data == 0) {
-                        alert("게시글은 회원만 작성할 수 있습니다.")
-                    } else {
-                        location.href = '/write';
-                    }
-                }, error: function (error) {
-                    console.log(error);
-                }
-            });
-        }
-
-    });
-</script>
 </head>
 <body>
-<div class="header">
-    <div class="container flex" style="margin-top: 10px">
-        <div class="logo">
-            <a href="/">
-                <img src="../images/logo.png"/>
-            </a>
-        </div>
-        <div class="row">
-            <ul>
-                <li>
-                    <h6><a href="/createStudy">스터디 생성하기</a></h6>
-                </li>
-                <li>
-                    <a href="/boardSearch"><h6>자유게시판</h6></a>
-                </li>
-                <li>
-                    <a href="/login"><h6>로그인</h6></a>
-                </li>
-                <li>
-                    <a href="/logout" id="logoutbtn"><h6>로그아웃</h6></a>
-                </li>
-                <li>
-                    <button type="button" onclick='location.href="/myPage"'>
-                        마이페이지
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
 <div class="container" style="width: 1500px;">
     <div class="row" style="margin-top: 20px;">
         <div class="col-xs-4">
@@ -178,44 +86,56 @@
     </div>
 </div>
 
-<div class="footer">
-    <div class="container grid2">
-        <div class="box">
-            <img src="https://see.fontimg.com/api/renderfont4/Ea2l9/eyJyIjoiZnMiLCJoIjoxNTIsInciOjIwMDAsImZzIjo3NiwiZmdjIjoiIzAwMDAwMCIsImJnYyI6IiNGRkZGRkYifQ/U1RVRFkgV0lUSCBVUw/valentine.png"
-                 alt="logo"
-            />
-            <p>온라인 스터디 공간입니다.</p>
-            <div class="socialIcon">
-                <i class="fab fa-facebook-f "></i>
-                <i class="fab fa-instagram "></i>
-                <i class="fab fa-twitter "></i>
-                <i class="fab fa-youtube "></i>
-            </div>
-        </div>
+<div th:replace="fragments/footer :: footer"></div>
 
-        <div class="box">
-            <h2>Contact Us</h2>
+<style>
 
-            <div class="icon">
-                <i class="fa fa-location-dot"></i>
-                <label htmlFor="">Location: 서울시 서초구 서초동 1307</label>
-            </div>
-            <div class="icon">
-                <i class="fa fa-phone"></i>
-                <label htmlFor="">Phone: +82 2 6666 6666</label>
-            </div>
-            <div class="icon">
-                <i class="fa fa-envelope"></i>
-                <label htmlFor="">Email: support@gmail.com</label>
-            </div>
-        </div>
-    </div>
-    <div class="legal container">
-        <p>Copyright @2022. All rights reserved.</p>
-        <label htmlFor="">
-            Design & Developed by <span>6조머지?</span>
-        </label>
-    </div>
-</div>
+    #writerCheck {
+        display: block;
+        box-sizing: border-box;
+        margin: auto;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        font-weight: bold;
+
+    }
+
+    h2 {
+        font-weight: bold;
+    }
+
+
+</style>
+<script>
+    jQuery(document).ready(function () {
+        // writerCheck();
+
+        $("#writerCheck").click(function () {
+            writerCheck();
+            console.log("글쓰기 클릭");
+        })
+
+
+        function writerCheck() {
+            $.ajax({
+                url: "/checkUser",
+                type: "POST",
+                success: function (data) {
+                    console.log('성공')
+                    console.log(data)
+                    if (data == 0) {
+                        alert("게시글은 회원만 작성할 수 있습니다.")
+                    } else {
+                        location.href = '/write';
+                    }
+                }, error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+    });
+</script>
+
 </body>
 </html>
