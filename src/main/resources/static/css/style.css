@@ -107,7 +107,9 @@ button{
     grid-gap: 20px;
 }
 .footer img {
-    height: 20px;
+    height: 30px;
+    background-color: white;
+    padding: 3px;
 }
 .footer p {
     color: #fff;
