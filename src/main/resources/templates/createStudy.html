@@ -3,7 +3,8 @@
 <head th:replace="fragments/header :: header">
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<div class="topMargin">
+<div class="container" style="text-align: center; width:850px;">
+<div class="topMargin" style="display:inline-block;">
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
@@ -19,9 +20,8 @@
         </div>
         <div class="col-2"></div>
     </div>
-    <div class="row">
-        <div class="col-3"></div>
-        <div class="col-5" style="margin: 10px auto">
+    <div class="row" style="text-align: left">
+        <div style="margin: 10px auto">
             <form class="form-horizontal needs-1validation" id="CreateForm" novalidate>
                 <div class="mb-3 row">
                 </div>
@@ -76,15 +76,203 @@
                 </div>
 
                 <div class="mb-3 row topMargin">
-                    <div class="d-grid gap-2 col-6 mx-auto">
+                    <div class="d-grid gap-2 mx-auto">
                         <button type="submit" class="btn btn-lg" id="submit">그룹 생성</button>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="col-3"></div>
     </div>
 </div>
+</div>
 <div th:replace="fragments/footer :: footer"></div>
+<style>
+    #View,#file{
+        width: 300px;
+    }
+    #file {
+        margin: 0 auto;
+    }
+    #submit{
+        color: #33333380;
+        background-color: white;
+        border: 1px solid #33333330;
+        font-weight: bold;
+    }
+    #submit:hover{
+        background-color: #33333310;
+    }
+</style>
+<script type="text/javascript">
+    $(function() {
+        $("#file").on('change', function(){
+            readURL(this);
+        });
+    });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#View').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }else{
+            $('#View').attr('src', "/adminImage/temp.png");
+        }
+    }
+</script>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        let isIdValid=false;
+
+        // 그룹아이디 유효성 체크
+        $('#teamName').focusout(function (evt){
+            let teamName = document.querySelector('#teamName')
+            sendData = $('#teamName').val();
+            $.ajax({
+                type: "POST",
+                url : "validateStudy",
+                data : {sendData:sendData},
+                success: function(data) {
+                    if (data == 0) {
+                        isIdValid=true;
+                    }else if(data==-1){
+                        teamName.setAttribute('placeholder','스터디명을 입력해주세요')
+                        isIdValid=false;
+                    }else{
+                        $('#teamName').val("")
+                        $('#teamName').focus()
+                        teamName.setAttribute('placeholder','중복되는 스터디명입니다.')
+                        isIdValid=false;
+                    }
+                    if(isIdValid){
+                        teamName.classList.remove("is-invalid");
+                        teamName.classList.add("is-valid");
+                    }else{
+                        teamName.classList.remove("is-valid");
+                        teamName.classList.add("is-invalid");
+                    }
+                }
+            })
+        })
+
+        //private일 때 비밀번호 입력창 보이게
+        $('input:radio[name=scope]').change(function (){
+            if($('input:radio[name=scope]:checked').val() === 'public'){
+                $('input[name=password]').val("");
+                document.getElementById('passwordBox').setAttribute('hidden', 'true');
+            }
+            if($('input:radio[name=scope]:checked').val() === 'private'){
+                document.getElementById('passwordBox').removeAttribute('hidden');
+            }
+        });
+
+        //시작일은 오늘 이후부터 선택가능
+        $('input[name="startDate"]').change(function (){
+            let ymd = new Date();
+            let year = ymd.getFullYear();
+            let month = ymd.getMonth();
+            let date = ymd.getDate();
+            let today = new Date(year, month, date);
+            let choose = new Date($('input[name="startDate"]').val());
+            if(today > choose){
+                $('input[name="startDate"]').val("");
+                $('input[name="startDate"]').focus();
+            }
+        });
+
+        $('input[name="endDate"]').change(function (){
+            let start = new Date($('input[name="startDate"]').val());
+            let end = new Date($('input[name="endDate"]').val());
+            if(start > end){
+                $('input[name="endDate"]').val("");
+                $('input[name="endDate"]').focus();
+            }
+        });
+
+        // 서버로 데이터 전송
+        $('#submit').click(function (evt) {
+            evt.preventDefault();
+            let teamName = document.querySelector('input[name="teamName"]');
+            if (!teamName.value) {
+                teamName.focus();
+                evt.preventDefault();
+                return;
+            }
+            let teamDesc = document.querySelector('textarea');
+            if(!teamDesc.value){
+                teamDesc.focus();
+                evt.preventDefault();
+                return;
+            }
+            let startDate = document.querySelector('input[name="startDate"]');
+            if(!startDate.value){
+                startDate.focus();
+                evt.preventDefault();
+                return;
+            }
+            let endDate = document.querySelector('input[name="endDate"]');
+            if(!endDate.value){
+                endDate.focus();
+                evt.preventDefault();
+                return;
+            }
+            let headCount = document.querySelector('input[name="headCount"]');
+            if(!headCount.value){
+                headCount.focus();
+                evt.preventDefault();
+                return;
+            }
+            let depositPoint = document.querySelector('input[name="depositPoint"]');
+            if(!depositPoint.value){
+                depositPoint.focus();
+                evt.preventDefault();
+                return;
+            }
+            let targetTime = document.querySelector('input[name="targetTime"]');
+            if(!targetTime.value){
+                targetTime.focus();
+                evt.preventDefault();
+                return;
+            }
+            if($('input:radio[name=scope]:checked').val() === 'private' && $('input[name=password]').val()==="") {
+                $('input[name=password]').focus();
+                evt.preventDefault();
+                return;
+            }
+            let res = confirm("스터디를 생성하시겠습니까?");
+            if (res == true) {
+                let qs = $('#CreateForm').serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "createStudy",
+                    data: qs,
+                    success: function (data) {
+                        alert('생성이 완료되었습니다.');
+                        $('#hidden').val(teamName.value);
+                        $('#imgf').submit();
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+                });
+            }
+        })
+    })
+    function fileTypeCheck(obj) {
+        pathpoint = obj.value.lastIndexOf('.');
+        filepoint = obj.value.substring(pathpoint+1,obj.length);
+        filetype = filepoint.toLowerCase();
+        if(filetype=='jpg' || filetype=='gif' || filetype=='png' || filetype=='jpeg' || filetype=='bmp' || filetype=='svg' || filetype=='tiff' || filetype=='jfif' || filetype=='tif') {
+            // 정상적인 이미지 확장자 파일인 경우
+            readURL(this)
+        } else {
+            alert('이미지 파일만 업로드 가능합니다.');
+            $('#View').attr('src', "/AdminImage/temp.png");
+            $('#file').val("")
+            return false;
+        }
+    }
+</script>
 </body>
 </html>
