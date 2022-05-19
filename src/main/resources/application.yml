@@ -20,6 +20,8 @@ spring:
   devtools:
     livereload:
       enabled: true
+    restart:
+      enabled: true
 
   jpa:
     # show-sql:

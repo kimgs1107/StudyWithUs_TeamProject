@@ -243,7 +243,7 @@
                     let teamButton1 = document.createElement('button');
                     teamButton1.innerText = "대화하기";
                     teamButton1.setAttribute("id", team.tId);
-                    teamButton1.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
+                    teamButton1.setAttribute("style", "margin-bottom:20px; margin-top:3px; margin-right:3px;");
                     teamButton1.addEventListener("click", ()=>{
 
                         $.ajax({
@@ -262,7 +262,7 @@
                     let teamButton2 = document.createElement('button');
                     teamButton2.innerText = "화상채팅";
                     teamButton2.setAttribute("id", team.tId);
-                    teamButton2.setAttribute("style", "margin-bottom:20px; margin-top:3px;");
+                    teamButton2.setAttribute("style", "margin-bottom:20px; margin-top:3px; margin-right: 3px");
                     teamButton2.addEventListener("click", ()=>{
                         let ymd = new Date();
                         let today = new Date(ymd.getFullYear(), ymd.getMonth(), ymd.getDate(), 9);

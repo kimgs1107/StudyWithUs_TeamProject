@@ -4,39 +4,32 @@
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-
+  
 <div class="container topMargin" style="margin-top: 100px">
-    <div class="row">
-        <h4 style="text-align: center; color: #386ad1; margin-bottom: 10px;">MY STUDY</h4>
-        <h3 style="text-align: center" class="bottomMargin">내 스터디 목록</h3>
-        <hr />
-        <div id="myTeams" class="flexevenly topMargin"></div>
-    </div>
+    <h4 style="text-align: center; color: #386ad1; margin-bottom: 10px;">MY STUDY</h4>
+    <h3 style="text-align: center" class="bottomMargin">내 스터디 목록</h3>
+    <hr />
+    <div id="myTeams" class="flexevenly topMargin"></div>
+    <hr class="topMargin"/>
 </div>
-<div class="container topMargin">
-    <div class="row">
-        <hr />
-        <div class="col-xs-4 topMargin" style="margin: 20px; text-align: center">
-            <h3>나에게 맞는 스터디 검색하기</h3>
-        </div>
+
+<div class="container topMargin" style="margin-top: 80px">
+    <h4 style="text-align: center; color: #386ad1; margin-bottom: 10px;">SEARCH STUDY</h4>
+    <h3 style="text-align: center">나에게 맞는 스터디 검색하기</h3>
+    <div style="margin: 20px; text-align: center">
+        <input
+                type="text"
+                id="teamName"
+                placeholder="찾고자 하는 스터디를 입력해주세요."
+                style="width: 250px; padding: 8px;"
+        />
+        <button type="button" id="search">검색</button>
+        <button type="reset" id="reset">취소</button>
+        <button type="button" id="voice">음성검색</button>
     </div>
-    <div class="row">
-        <div class="col-xs-4" style="margin: 20px; text-align: center">
-            <input
-                    type="text"
-                    id="teamName"
-                    placeholder="찾고자 하는 스터디를 입력해주세요."
-                    style="width: 250px; padding: 8px;"
-            />
-            <button type="button" id="search">검색</button>
-            <button type="reset" id="reset">취소</button>
-            <button type="button" id="voice">음성검색</button>
-        </div>
-    </div>
-    <div class="row">
-        <div id="Teams" class="flexevenly" style="margin-top: 30px"></div>
-    </div>
+    <div id="Teams" class="flexevenly" style="margin-top: 30px"></div>
 </div>
+
 <div th:replace="fragments/footer :: footer"></div>
 
 <script>
