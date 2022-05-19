@@ -1,0 +1,32 @@
+<div th:fragment="bodyHeader">
+    <div class="header">
+        <div class="container flex" style="margin-top: 10px">
+            <div class="logo">
+                <a href="/">
+                    <img src="../images/logo.png" />
+                </a>
+            </div>
+            <div class="row">
+                <ul>
+                    <li>
+                        <h6><a href="/createStudy">스터디 생성하기</a></h6>
+                    </li>
+                    <li>
+                        <a href="/boardSearch"><h6>자유게시판</h6></a>
+                    </li>
+                    <li>
+                        <a href="/login"><h6>로그인</h6></a>
+                    </li>
+                    <li>
+                        <a href="/logout" id="logoutbtn"><h6>로그아웃</h6></a>
+                    </li>
+                    <li>
+                        <button type="button" onclick='location.href="/myPage"'>
+                            마이페이지
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
