@@ -208,7 +208,7 @@ public class LoginController {
         }
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         //세션 값을 담아온다.
         log.info("로그아웃");

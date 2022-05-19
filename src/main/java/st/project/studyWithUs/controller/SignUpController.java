@@ -43,7 +43,7 @@ public class SignUpController {
 
         userService.save(user);
 
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     @ResponseBody
