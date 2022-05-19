@@ -14,5 +14,22 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
     <link rel="stylesheet" href="../css/style.css" />
+    <script>
+        $.ajax({
+            url: "/checkUser",
+            type: "POST",
+            success: function (data) {
+                console.log('성공')
+                console.log(data)
+                if (data == 0) {
+                    $('#logoutbtn').attr("hidden",true);
+                } else {
+                    $('#loginbtn').attr("hidden",true);
+                }
+            }, error: function (error) {
+                console.log(error);
+            }
+        });
+    </script>
 
 
