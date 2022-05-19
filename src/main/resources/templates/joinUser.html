@@ -179,6 +179,38 @@
 </script>
 
 <body>
+<div class="header">
+    <div class="container flex" style="margin-top: 10px">
+        <div class="logo">
+            <a href="/">
+                <img src="../images/logo.png" />
+            </a>
+        </div>
+        <div class="row">
+            <form id="form">
+                <ul>
+                    <li>
+                        <a href="/createStudy"><h4>스터디 생성하기</h4></a>
+                    </li>
+                    <li>
+                        <a href="/boardSearch"><h4>자유게시판</h4></a>
+                    </li>
+                    <li>
+                        <a href="/login"><h4>로그인</h4></a>
+                    </li>
+                    <li>
+                        <a href="/logout" id="logoutbtn"><h4>로그아웃</h4></a>
+                    </li>
+                    <li>
+                        <button type="button" onclick='location.href="/myPage"'>
+                            마이페이지
+                        </button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="signup_form" style="margin-top: 150px;">
         <fieldset>
