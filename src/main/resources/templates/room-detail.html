@@ -52,6 +52,14 @@
 
 </head>
     <style>
+
+        .wrapper{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
         .chat_wrap {
             border: 1px solid #999;
             width: 500px;
@@ -68,14 +76,65 @@
             overflow-y: scroll;
             height: 600px;
         }
+
+        h3 {
+            display: block;
+            font-size: 1.17em;
+            margin-top: 0em;
+            margin-bottom: 0em;
+            margin-left: -2.5em;
+            margin-right: 0;
+            font-weight: bold;
+            /*background:#fff; border-radius:10px; padding:8px; text-align:left*/
+            /*content:""; position:absolute; left:-8px; top:9px; border-top:0px solid transparent; border-bottom:8px solid transparent;border-right:8px solid #fff;*/
+        }
+
+        body {
+            padding: 100px;
+            background: whitesmoke;
+            display: table-cell;
+        }
+
+
+        input {
+            width: 80%;
+            padding: 10px 20px;
+            margin: 5px 0;
+            box-sizing: border-box;
+
+            border:1px solid #999999;
+
+            border-radius: 5px;
+
+            outline: none;
+
+            background-color: rgb(233, 233, 233);
+        }
+
+
+        button{
+            position: relative;
+            border: none;
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-family: "paybooc-Light", sans-serif;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.25s;
+        }
     </style>
 <body>
+
+
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<h1 id="title"></h1>
+<div class="wrapper">
+<!--<h1 id="title"></h1> -->
 <div class="content" data-room-id="{{room.id}}" data-member="{{member}}">
     <div class="chat_wrap">
         <div class="inner">
-            <ul class="chat_box" style="text-align: left;">
+            <ul class="chat_box" >
             </ul>
 
         </div>
@@ -83,14 +142,16 @@
     <input name="message" id="alpreah_input">
     <button class="send">보내기</button>
     <button class="exit">나가기</button>
+
+<!--<button class="exit">나가기</button>-->
 </div>
-<button class="exit">나가기</button>
+</div>
 <script>
 
     let curURL = window.location.href;
     let urlArr = curURL.split("/");
     let tId = urlArr[urlArr.length-1];
-    let name="hihi";
+    let name="test";
     $(document).ready(function () {
 
         findStudyUser();
@@ -146,6 +207,7 @@
                 var content = JSON.parse(chat.body);
                 // chatBox.append('<li>' + content.message + '(' + content.writer + ')</li>')
                 if(content.message==content.writer+"님이 입장하셨습니다."){
+
                     chatBox.append('<h3 style="color: blue">'+ content.message +'</h3>')
                 }
                 else if(content.writer==name){ //본인일 때
