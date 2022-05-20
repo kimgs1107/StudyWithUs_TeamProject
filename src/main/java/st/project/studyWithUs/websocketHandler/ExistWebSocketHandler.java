@@ -62,13 +62,16 @@ public class ExistWebSocketHandler extends TextWebSocketHandler {
         List<WebSocketSession> sess = teamSessionList.get(tID);
 
         TextMessage message = new TextMessage("leave "+uID);
-        for(WebSocketSession s : sess) {
-            try{
-                synchronized (s) {
-                    s.sendMessage(message);
+        if(sess != null) {
+            for (WebSocketSession s : sess) {
+                try {
+                    synchronized (s) {
+                        s.sendMessage(message);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e){
-                e.printStackTrace();
+
             }
         }
     }
