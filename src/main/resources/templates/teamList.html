@@ -1,44 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <!--    아이콘-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <link rel="stylesheet" href="../css/style.css" />
+<head th:replace="fragments/header :: header">
 </head>
-
 <body>
-<div class="header">
-    <div class="container flex" style="margin-top: 10px">
-        <div class="logo">
-            <a href="/">
-                <img src="../images/logo.png" />
-            </a>
-        </div>
-        <div class="row">
-            <ul>
-                <li>
-                    <a href="/login"><h6>로그인</h6></a>
-                </li>
-                <li>
-                    <a href="/logout" id="logoutbtn"><h6>로그아웃</h6></a>
-                </li>
-                <li>
-                    <button type="button" onclick='location.href="/myPage"'>
-                        마이페이지
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+
 
 <div class="container admin">
     <h4 style="text-align: center; color: #386ad1; margin: 50px auto 5px auto;">ADMIN PAGE</h4>
@@ -54,92 +20,104 @@
 
     <div style="text-align: right; margin-right: 10px; margin-top: 30px; ">
         <input type="text" id="teamName" placeholder="팀 이름을 입력하세요" style="width: 200px; padding: 10px">
-        <button id ="search">검색</button>
-        <button id ="reset" type="reset">취소</button>
+        <button id="search">검색</button>
+        <button id="reset" type="reset">취소</button>
     </div>
 
-    <div class="row flex" style="margin: auto; margin-top: 30px; margin-bottom: 10px; text-align: center; width: 80%">
-        <div class="col-xs-2"><h4>번호</h4></div>
-        <div class="col-xs-2"><h4>팀 이름</h4></div>
-        <div class="col-xs-2"><h4>현재원</h4></div>
-        <div class="col-xs-2"><h4>총원</h4></div>
-        <div class="col-xs-2"><h4>누적 참가비</h4></div>
-        <div class="col-xs-2"><h4>삭제여부</h4></div>
-    </div>
-    <hr>
-    <div class="row" >
-
-        <div id="teams">
-
-        </div>
-    </div>
-
+    <table class="table table-hover" style="margin-top: 30px; text-align: center;">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">번호</th>
+            <th scope="col">팀 이름</th>
+            <th scope="col">현재인원</th>
+            <th scope="col">총원</th>
+            <th scope="col">누적참가비</th>
+            <th scope="col">삭제여부</th>
+        </tr>
+        </thead>
+        <tbody id="teams"></tbody>
+    </table>
 
 </div>
+<div th:replace="fragments/footer :: footer"></div>
+
 
 <script>
+    $.ajax({
+        url: "/checkUser",
+        type: "POST",
+        success: function (data) {
+            console.log('성공')
+            console.log(data)
+            if (data == 0) {
+                $('#logoutbtn').attr("hidden", true);
+            } else {
+                $('#loginbtn').attr("hidden", true);
+            }
+        }, error: function (error) {
+            console.log(error);
+        }
+    });
     getTeamInfo();
-    function getTeamInfo(){
-        let check1 =0;
+
+    function getTeamInfo() {
+        let check1 = 0;
         let teamName1 = "";
-        $("#search").on('click', function() {
+        $("#search").on('click', function () {
             check1 = 1;
             teamName1 = $("#teamName").val();
             $('#teams').empty();
             getTeam();
         })
-        $("#reset").on('click', function() {
+        $("#reset").on('click', function () {
             check1 = 0;
-            teamName1 ="";
+            teamName1 = "";
             $('#teams').empty();
             getTeam();
         })
-        if(check1==0)getTeam();
-        function getTeam(){
+        if (check1 == 0) getTeam();
+
+        function getTeam() {
             $.ajax({
-                type:"get",
-                url:"/teamListInfo",
+                type: "get",
+                url: "/teamListInfo",
                 data: {
-                    check : check1,
+                    check: check1,
                     teamName: teamName1
                 },
-                success: function(data){
+                success: function (data) {
                     let teams = document.getElementById('teams');
-                    data.forEach(function(team){
+                    data.forEach(function (team) {
 
-                        let tid = document.createElement('h4');
-                        tid.setAttribute("class", "col-xs-2");
+                        let tid = document.createElement('td');
+                        tid.setAttribute("scope", "row");
                         tid.innerHTML = team.ttID;
 
-                        let teamName = document.createElement('h4');
-                        teamName.setAttribute("class", "col-xs-2");
+                        let teamName = document.createElement('td');
                         teamName.innerHTML = team.teamName;
 
-                        let currentCount = document.createElement('h4');
-                        currentCount.setAttribute("class", "col-xs-2");
+                        let currentCount = document.createElement('td');
                         currentCount.innerHTML = team.currentCount;
 
-                        let headCount = document.createElement('h4');
-                        headCount.setAttribute("class", "col-xs-2");
+                        let headCount = document.createElement('td');
                         headCount.innerHTML = team.headCount;
 
 
-                        let totalDepositPoint = document.createElement('h4');
-                        totalDepositPoint.setAttribute("class", "col-xs-2");
+                        let totalDepositPoint = document.createElement('td');
                         totalDepositPoint.innerHTML = team.totalDepositPoint
 
 
-                        let check = document.createElement('div');
-                        check.setAttribute("class", "col-xs-2");
+                        let check = document.createElement('td');
                         let deleteButton = document.createElement('button');
 
                         deleteButton.innerText = "팀 삭제";
-                        deleteButton.setAttribute("style", "height:30pt; color:white; background-color: red; ")
+                        deleteButton.setAttribute("type", "button")
+                        deleteButton.setAttribute("class", "btn btn-danger btn-sm")
 
                         check.appendChild(deleteButton);
 
-                        let eachAccount = document.createElement('div');
-                        eachAccount.setAttribute("style", "text-align:center; margin-top:10px;  ")
+                        let eachAccount = document.createElement('tr');
+                        eachAccount.setAttribute("style", "text-align: center;")
                         eachAccount.append(tid);
                         eachAccount.append(teamName);
                         eachAccount.append(currentCount)
@@ -148,27 +126,27 @@
                         eachAccount.append(check);
 
                         teams.appendChild(eachAccount);
-                        deleteButton.addEventListener("click", ()=>{
+                        deleteButton.addEventListener("click", () => {
                             $.ajax({
                                 url: "/deleteTeam",
                                 type: "GET",
-                                dataType:"json",
+                                dataType: "json",
                                 data: {
-                                    tID : team.ttID
+                                    tID: team.ttID
                                 },
-                                success: function (data){
+                                success: function (data) {
                                     alert("팀이 삭제되었습니다.")
                                     window.location.replace('/teamList');
 
-                                }, error:function(){
+                                }, error: function () {
                                     alert("관리자가 아닙니다.");
-                                    window.location.replace('/teamList') ;
+                                    window.location.replace('/teamList');
                                 }
                             });
                         });
 
                     });
-                }, error:function(){
+                }, error: function () {
                     alert("error");
                 }
             })
@@ -176,7 +154,6 @@
 
     }
 </script>
-
 
 
 </body>
