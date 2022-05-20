@@ -4,19 +4,19 @@
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<div class="container" style="width: 1500px;">
-    <div class="row" style="margin: 30px 0 0 10px">
-        <div class="col-xs-4" >
-            <h2>자유게시판</h2>
-        </div>
-    </div>
+<div class="container" style="width: 1500px;margin-top: 80px">
+    <h4 style="display: inline-block; color: #386ad1; margin-bottom: 10px; margin-left: 5px">Board</h4>
+    <div style="display: inline-block; float: right; margin-bottom: 10px;">
+        <button type="submit" class="btn btn-outline-dark" onclick="location.href='/boardSearch'" id="backList"
+                                               style="border-color: #00000030; color:#386ad1; font-size: 15px; width:150px;">
+        목록으로 돌아가기
+    </button></div>
 
-    <div class="col-xs-1" style="float: right; margin-bottom: 20px;">
-        <button type="submit" class="btn btn-outline-dark" onclick="location.href='/boardSearch'"
-                style="border-color: #00000030; font-size: 15px; width:200px;">
-            목록으로 돌아가기
-        </button>
-    </div>
+<!--    <h3 style="text-align: center" class="bottomMargin">자유게시판</h3>-->
+
+   <!-- <div class="col-xs-1" style="float: right; margin-bottom: 20px;">
+
+    </div>-->
 
     <table class="table table-md">
         <thead>
@@ -80,6 +80,9 @@
 
 <style>
 
+    #backList:hover{
+        background-color: #00000010;
+    }
 </style>
 
 <script>
