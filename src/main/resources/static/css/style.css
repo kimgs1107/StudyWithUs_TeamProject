@@ -211,8 +211,6 @@ textarea{
 }
 .adminflex {
     display: flex;
-    width: 20%;
-    margin: 30px 0 auto auto;
 }
 .admin .second {
     width: auto;
