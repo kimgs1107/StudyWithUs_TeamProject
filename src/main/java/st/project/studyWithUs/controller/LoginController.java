@@ -103,7 +103,7 @@ public class LoginController {
             log.info("role : {}",loginUser.getRole());
             String s= loginUser.getRole();
             if (s.equals("admin")) {
-                return "/adminPage";
+                return "redirect:/adminPage";
             }
 
             else return "/";
@@ -162,7 +162,7 @@ public class LoginController {
             session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
             if (loginUser.getRole().equals("admin")) {
-                return "/adminPage";
+                return "redirect:/adminPage";
             }
             return "redirect:/";
         }

@@ -37,10 +37,11 @@
             type:"GET",
             success: function(data){
                 if(data.role =='admin'){
+                    $('#adminPageLogo').attr("href","/adminPage")
                     $('#createStudy').attr("hidden",true);
                     $('#boardSearch').attr("hidden",true);
-                    $('#logoutbtn').attr("hidden",true);
-                    $('#myPage').attr("hidden",true);
+                    // $('#logoutbtn').attr("hidden",true);
+                    $('#myPagebtn').attr("hidden",true);
                     $('#adminPage').attr("hidden",false);
                 }
             }
