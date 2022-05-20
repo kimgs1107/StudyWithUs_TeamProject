@@ -193,6 +193,45 @@
                     commentList.appendChild(div1);
 
                     $("#comment").val("");
+
+                    // 댓글 삭제
+                    delComment.addEventListener("click", () => {
+                        $.ajax({
+                            url: "/deleteComment",
+                            type: "GET",
+                            dataType: "json",
+                            data: {
+                                cmID: data.cmID,
+                            },
+                            success: function (res) {
+                                if (res == true) {
+                                    $('#' + data.cmID + 'div').remove()
+                                }
+                            }, error: function () {
+                                alert("댓글 삭제 에러");
+                                window.location.replace('/boardSearch');
+                            }
+                        });
+                    });
+                    // 댓글 수정
+                    updateComment.addEventListener("click", () => {
+                        let comments = document.getElementById(data.cmID)
+
+                        $.ajax({
+                            url: "/updateCommentSave", //댓글 수정하기 버튼 누르고 나오는 수정하기 버튼
+                            type: "GET",
+                            dataType: "json",
+                            data: {
+                                cmID: data.cmID,
+                                commentContent: comments.value
+                            },
+                            success: function (data) {
+                                if (data == true) {
+                                    // window.location.replace('/detailContent/' + idx);
+                                }
+                            }
+                        });
+                    })
                     // window.location.href = "/detailContent/" + idx;
                 }
             });
