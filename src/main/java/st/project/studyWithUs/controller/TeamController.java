@@ -60,7 +60,7 @@ public class TeamController {
             // 업로드된 파일의 파일명을 변경 ( 중복 파일명이 될 수 있으므로, 중복되지 않을 문자로 변경해준다. )
             String fileName = renameFiles(file);
             // 실제 업로드 될 파일의 경로를 지정해준다.
-            String fullPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"TeamImage"+File.separator+ fileName;
+            String fullPath = new File("").getAbsolutePath()+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"static"+File.separator+"teamImage"+File.separator+ fileName;
             // 해당 경로에 파일을 업로드 한다.
             file.transferTo(new File(fullPath));
 

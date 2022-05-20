@@ -65,7 +65,12 @@
                     data.forEach(function(team){
 
                         let image = document.createElement('img');
-                        image.setAttribute("src", "../images/study2.jpg");
+                        if(team.teamImage == null) {
+                            image.setAttribute("src", "../images/study2.jpg");
+                        }
+                        else{
+                            image.setAttribute("src", team.teamImage);
+                        }
                         image.setAttribute("style", "height:200px; width:200px");
 
                         let teamName = document.createElement('h3');
@@ -192,7 +197,12 @@
                     // <img src="12" onError=this.src="../images/study.jpg" style="height: 30px; width: 30px">
 
                     let image = document.createElement('img');
-                    image.setAttribute("src", "../images/study.jpg");
+                    if(team.teamImage == null){
+                        image.setAttribute("src", "../images/study.jpg");
+                    }
+                    else{
+                        image.setAttribute("src", team.teamImage);
+                    }
                     image.setAttribute("style", "height:200px; width:200px");
 
 

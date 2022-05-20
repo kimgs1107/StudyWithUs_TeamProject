@@ -29,10 +29,10 @@ public class BoardController {
 
     private final BoardService boardservice;
 
-    @GetMapping("/board") //게시물 목록 조회
-    public String board() {
-        return "board";
-    }
+//    @GetMapping("/board") //게시물 목록 조회
+//    public String board() {
+//        return "board";
+//    }
 
 
     @GetMapping("/write") //게시물 작성하는 페이지
@@ -135,9 +135,9 @@ public class BoardController {
         model.addAttribute("end",all.getTotalPages());
 
 
-        int totalPage=all.getTotalPages();
         int size = all.getSize();
-        int idx = Math.max(((totalPage-currentPage)*size+1),1);
+        int totalCount = (int)all.getTotalElements();
+        int idx = Math.max((totalCount-(size*(currentPage-1))),1);
 
         for (Board li : all) {
             BoardVO vo = new BoardVO();
