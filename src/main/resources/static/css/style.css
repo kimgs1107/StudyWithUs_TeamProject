@@ -24,6 +24,10 @@ h1 {
     margin: auto;
 }
 
+.col-xs-4 h2 {
+    font-weight: bold;
+}
+
 .flex {
     display: flex;
     justify-content: space-between;
@@ -92,6 +96,16 @@ button{
 }
 /* ———————header————————— */
 /* ---------------main------------------- */
+
+#content{
+    height: 400px;
+    padding: 30px;
+}
+
+textarea{
+    border: 1px solid #00000030;
+    padding: 10px;
+}
 
 /* ---------------main------------------- */
 /* ---------------footer------------------- */
