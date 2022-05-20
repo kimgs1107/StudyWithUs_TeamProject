@@ -28,7 +28,7 @@
                    placeholder="환급 받으실 포인트 금액" style="margin-top: 10px;"><br>
             <span id="pointCheck" size="2"> </span>
             <div>
-                <button id="refunds_btn" type="submit" class="topMargin">환급받기</button>
+                <button id="refunds_btn" type="submit" class="topMargin" onClick="location.href='/refunds'" >환급받기</button>
             </div>
         </div>
 
@@ -39,14 +39,27 @@
             <h1 style="text-align: center; display:inline-block;" class="topMargin">환급 신청 현황</h1>
         </div>
 
-        <div class="row flexevenly refund" style="margin-top: 30px; margin-bottom: 10px; text-align: center;">
-            <div class="col-xs-2"><h5>요청 날짜</h5></div>
-            <div class="col-xs-2"><h5>포인트</h5></div>
-            <div class="col-xs-2"><h5>진행상황</h5></div>
-        </div>
-        <div class="row">
-            <div id="info"></div>
-        </div>
+<!--        <div class="row flexevenly refund" style="margin-top: 30px; margin-bottom: 10px; text-align: center;">-->
+<!--            <div class="col-xs-2"><h5>요청 날짜</h5></div>-->
+<!--            <div class="col-xs-2"><h5>포인트</h5></div>-->
+<!--            <div class="col-xs-2"><h5>진행상황</h5></div>-->
+<!--        </div>-->
+
+        <table class="table" style="margin-top: 30px; text-align: center;">
+            <thead  class="thead-dark">
+            <tr>
+                <th scope="col">요청날짜</th>
+                <th scope="col">포인트</th>
+                <th scope="col">진행상황</th>
+            </tr>
+            </thead>
+            <tbody id="info">
+            </tbody>
+        </table>
+
+<!--        <div class="row flexevenly" style="margin-top: 30px; text-align: center;">-->
+<!--            <div id="info"></div>-->
+<!--        </div>-->
     </div>
 </div>
 
@@ -71,16 +84,13 @@
                 let info = document.getElementById('info')
 
                 data.forEach(function (list) {
-                    let date = document.createElement('div');
-                    date.setAttribute('class', 'col-xs-4');
+                    let date = document.createElement('td');
                     date.innerHTML = list.requestDate;
 
-                    let point = document.createElement('div')
-                    point.setAttribute('class', 'col-xs-4')
+                    let point = document.createElement('td');
                     point.innerHTML = list.point;
 
-                    let check = document.createElement('div');
-                    check.setAttribute('class', 'col-xs-4');
+                    let check = document.createElement('td');
 
                     if (list.flag == true) {
                         check.innerText = "환급완료";
@@ -90,13 +100,10 @@
                         check.setAttribute("readonly", "true");
                     }
 
-                    let eachAccount = document.createElement('div');
-                    eachAccount.setAttribute("style", "text-align:center; margin-top:10px;  ")
+                    let eachAccount = document.createElement('tr');
                     eachAccount.append(date)
                     eachAccount.append(point);
                     eachAccount.append(check);
-
-
                     info.appendChild(eachAccount);
                 })
             },
