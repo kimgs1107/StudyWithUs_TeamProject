@@ -164,7 +164,7 @@ public class LoginController {
             if (loginUser.getRole().equals("admin")) {
                 return "/adminPage";
             }
-            return "home";
+            return "redirect:/";
         }
     }
 
@@ -210,7 +210,7 @@ public class LoginController {
             if (loginUser.getRole().equals("admin")) {
                 return "/adminPage";
             }
-            return "home";
+            return "redirect:/";
         }
     }
 

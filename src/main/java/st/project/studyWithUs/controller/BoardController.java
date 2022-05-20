@@ -71,13 +71,13 @@ public class BoardController {
     static BoardVO contentvo=new BoardVO();
 
     @PostMapping("/detailContent/{idx}") //게시물 상세보기
-    public String bb(@PathVariable("idx") String idx,String bID) {
+    public String detailContentPost(@PathVariable("idx") String idx,String bID) {
         contentvo.setBbID(Long.parseLong(bID));
         return "detailContent";
     }
 
-    @GetMapping("/detailContent/{idx}") //게시물 상세보기
-    public String bb2() {
+    @GetMapping("/detailContent/{idx}") // 게시글 수정 후 redirect시 필요.
+    public String detailContentGet(@PathVariable("idx") String idx) {
         return "detailContent";
     }
 
