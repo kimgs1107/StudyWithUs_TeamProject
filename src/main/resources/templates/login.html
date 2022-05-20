@@ -114,7 +114,18 @@
                             console.log(data)
                             if (data == "true") {
                                 // console.log("맞음")
-                                window.location.href = "/";
+                                $.ajax({
+                                    url:"/getUserInfo",
+                                    type:"GET",
+                                    success: function(data){
+                                        if(data.role =='admin'){
+                                            window.location.href = "/adminPage";
+                                        }else{
+                                            window.location.href = "/";
+                                        }
+                                    }
+                                })
+
                             } else {
                                 // console.log("다름")
                                 $('#txt').attr("placeholder", "자동입력 방지문자가 틀립니다.")
