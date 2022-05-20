@@ -69,58 +69,64 @@
             $('#id').focusout(function () {
                 let id = $('#id').val();
                 let idfield = document.querySelector('input[id="id"]')
-                $.ajax({
-                    type: "POST",
-                    url: "validateMem",
-                    data: {sendData: id},
-                    success: function (data) {
-                        console.log(data)
-                        if (data == "") {
-                            isIdValid = true;
-                            console.log(isIdValid)
-                        } else {
-                            $('#id').val("")
-                            $('#id').focus()
-                            $('#id').attr('placeholder', '이미 존재하는 아이디입니다.')
-                            isIdValid = false;
+
+                if(id!="") {
+                    $.ajax({
+                        type: "POST",
+                        url: "validateMem",
+                        data: {sendData: id},
+                        success: function (data) {
+                            console.log(data)
+                            if (data == "") {
+                                isIdValid = true;
+                                console.log(isIdValid)
+                            } else {
+                                $('#id').val("")
+                                $('#id').focus()
+                                $('#id').attr('placeholder', '이미 존재하는 아이디입니다.')
+                                $('#id').attr('style', 'font-size:70%; padding-top:20px')
+                                isIdValid = false;
+                            }
+                            if (isIdValid) {
+                                idfield.classList.remove("is-invalid");
+                                idfield.classList.add("is-valid");
+                            } else {
+                                idfield.classList.remove("is-valid");
+                                idfield.classList.add("is-invalid");
+                            }
                         }
-                        if (isIdValid) {
-                            idfield.classList.remove("is-invalid");
-                            idfield.classList.add("is-valid");
-                        } else {
-                            idfield.classList.remove("is-valid");
-                            idfield.classList.add("is-invalid");
-                        }
-                    }
-                })
+                    })
+                }
             })
             $('#email').focusout(function () {
                 let email = $('#email').val();
                 let emailfield = document.querySelector('input[id="email"]')
-                $.ajax({
-                    type: "POST",
-                    url: "validateEmail",
-                    data: {sendData: email},
-                    success: function (data) {
-                        console.log(data)
-                        if (data == -1) {
-                        } else if (data > 0) {
-                            $('#email').val("")
-                            $('#email').focus()
-                            $('#email').attr('placeholder', '이미 존재하는 이메일입니다.')
-                            isIdValid = false;
-                        } else if (data == 0) {
-                            isIdValid = true;
+                if(email!="") {
+                    $.ajax({
+                        type: "POST",
+                        url: "validateEmail",
+                        data: {sendData: email},
+                        success: function (data) {
+                            console.log(data)
+                            if (data == -1) {
+                            } else if (data > 0) {
+                                $('#email').val("")
+                                $('#email').focus()
+                                $('#email').attr('placeholder', '이미 존재하는 이메일입니다.')
+                                isIdValid = false;
+                            } else if (data == 0) {
+                                isIdValid = true;
+                            }
+                            if (isIdValid) {
+                                emailfield.classList.remove("is-invalid");
+                                emailfield.classList.add("is-valid");
+                            } else {
+                                emailfield.classList.remove("is-valid");
+                                emailfield.classList.add("is-invalid");
+                            }
                         }
-                        if (isIdValid) {
-                            emailfield.classList.remove("is-invalid");
-                            emailfield.classList.add("is-valid");
-                        } else {
-                            emailfield.classList.remove("is-valid");
-                            emailfield.classList.add("is-invalid");
-                        }
-                    }
-                })
+                    })
+                }
             })
 
             $('#signUp').click(function (evt) {

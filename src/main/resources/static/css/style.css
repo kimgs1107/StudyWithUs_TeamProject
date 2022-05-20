@@ -24,6 +24,10 @@ h1 {
     margin: auto;
 }
 
+.col-xs-4 h2 {
+    font-weight: bold;
+}
+
 .flex {
     display: flex;
     justify-content: space-between;
@@ -54,6 +58,11 @@ button{
 .flexevenly {
     display: flex;
     justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 90%;
+    margin: auto;
+    margin-top: 10px;
 }
 /* ---------------header------------------- */
 .header {
@@ -92,6 +101,16 @@ button{
 }
 /* ———————header————————— */
 /* ---------------main------------------- */
+
+#content{
+    height: 400px;
+    padding: 30px;
+}
+
+textarea{
+    border: 1px solid #00000030;
+    padding: 10px;
+}
 
 /* ---------------main------------------- */
 /* ---------------footer------------------- */
@@ -192,10 +211,9 @@ button{
 }
 .adminflex {
     display: flex;
-    width: 20%;
-    margin: 30px 0 auto auto;
 }
 .admin .second {
-    width: 30px;
+    width: auto;
+    margin-left: 10px;
 }
 /* ---------------admin------------------- */

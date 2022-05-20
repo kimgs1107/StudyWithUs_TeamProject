@@ -100,9 +100,13 @@ public class LoginController {
                 session.removeAttribute("userId");
             }
 
-            if (loginUser.getRole().equals("admin")) {
-                return "/adminPage";
-            } else return "/";
+            log.info("role : {}",loginUser.getRole());
+            String s= loginUser.getRole();
+            if (s.equals("admin")) {
+                return "redirect:/adminPage";
+            }
+
+            else return "/";
 
         }
     }
@@ -158,9 +162,9 @@ public class LoginController {
             session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
             if (loginUser.getRole().equals("admin")) {
-                return "/adminPage";
+                return "redirect:/adminPage";
             }
-            return "home";
+            return "redirect:/";
         }
     }
 
@@ -169,6 +173,7 @@ public class LoginController {
 
         log.info("코드 : {}", code);
         String access_Token = kakaoService.getKaKaoAccessToken(code);
+        log.info("코드 : {}", code);
         HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token);
 
         HttpSession session = request.getSession();
@@ -181,6 +186,7 @@ public class LoginController {
         log.info("name : {}", userInfo.get("nickname"));
         log.info("email : {}", userInfo.get("email"));
         log.info("access_token : {}", access_Token);
+
 
         Object s1 = userInfo.get("nickname");
         Object s2 = userInfo.get("email");
@@ -202,9 +208,9 @@ public class LoginController {
             session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
             if (loginUser.getRole().equals("admin")) {
-                return "/adminPage";
+                return "redirect:/adminPage";
             }
-            return "home";
+            return "redirect:/";
         }
     }
 

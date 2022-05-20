@@ -21,7 +21,7 @@
                 type="text"
                 id="teamName"
                 placeholder="찾고자 하는 스터디를 입력해주세요."
-                style="width: 250px; padding: 8px;"
+                style="width: 250px; padding: 8px; font-size: 11pt"
         />
         <button type="button" id="search">검색</button>
         <button type="reset" id="reset">취소</button>
@@ -172,8 +172,8 @@
                         eachTeam.append(teamDeposit);
                         eachTeam.append(date);
                         eachTeam.append(teamButton);
-                        eachTeam.setAttribute("class", "col-xs-4");
-                        eachTeam.setAttribute("style", "text-align: center; margin-top: 20px");
+                        eachTeam.setAttribute("class", "col-xs-4 topMargin");
+                        eachTeam.setAttribute("style", "text-align: center; margin-top: 30px; width: 250px;");
                         teams.appendChild(eachTeam);
                     });
                 }, error:function(){
@@ -201,7 +201,7 @@
                         image.setAttribute("src", "../images/study.jpg");
                     }
                     else{
-                        image.setAttribute("src", team.teamImage);
+                        image.setAttribute("src", ".."+team.teamImage);
                     }
                     image.setAttribute("style", "height:200px; width:200px");
 
@@ -290,7 +290,7 @@
                     eachTeam.append(teamButton2);
                     eachTeam.append(teamButton3);
                     eachTeam.setAttribute("class", "col-xs-4");
-                    eachTeam.setAttribute("style", "text-align: center; margin-top:20px");
+                    eachTeam.setAttribute("style", "text-align: center; margin-top:20px;");
                     teams.appendChild(eachTeam);
 
                 });
