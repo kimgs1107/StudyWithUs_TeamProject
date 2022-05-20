@@ -26,6 +26,8 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Slf4j
@@ -177,4 +179,19 @@ public class UserController {
         uservo.setPoint(user.getPoint());
         return uservo;
     }
+
+    @ResponseBody
+    @PostMapping("/getPgInfo")
+    public List<String> getPgInfo(@Login User loginUser){
+
+        List <String> data = new ArrayList<>();
+        data.add(loginUser.getUserName());
+        data.add(loginUser.getEmail());
+        data.add(loginUser.getPhoneNumber());
+        return data;
+
+
+    }
+
+
 }
