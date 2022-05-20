@@ -33,7 +33,7 @@ public interface UserService {
 
     List<UserVO> searchUserInfo(String userID);
 
-    void saveEditUser(Long uid, String photo, String name, String id, String pw, String email);
+    void saveEditUser(Long uid, String name, String id, String pw, String email);
 
     User findByuID(Long uid);
 
