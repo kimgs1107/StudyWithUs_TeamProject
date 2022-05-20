@@ -89,33 +89,72 @@
 
 <div id="header">
     <div id="logoBox">
-        <button style="all:unset" onclick="home()"><img src="/images/logo.png"/></button>
+        <button style="all:unset" id="home"><img src="/images/logo.png"/></button>
     </div>
 </div>
 <h1 id="title"></h1>
 <div class="wrapper">
 
-<div class="content" data-room-id="{{room.id}}" data-member="{{member}}">
-    <div class="chat_wrap">
-        <div class="inner">
-            <ul class="chat_box" >
-            </ul>
+    <div class="content" data-room-id="{{room.id}}" data-member="{{member}}">
+        <div class="chat_wrap">
+            <div class="inner">
+                <ul class="chat_box" >
+                </ul>
 
+            </div>
         </div>
+        <input name="message" id="chat_input">
+        <button class="chatsend">보내기</button>
+        <br>
+        <br>
+
+
+
+    <!--<button class="exit">나가기</button>-->
     </div>
-    <input name="message" id="chat_input">
-    <button class="chatsend">보내기</button>
-    <br>
-    <br>
-
-
-
-<!--<button class="exit">나가기</button>-->
-</div>
 
 </div>
 <div class = "chat_exit" style=" text-align: center;">
     <button class="exit" style=" display: inline-block;">채팅나가기</button>
+</div>
+<div class="footer">
+    <div class="container grid2">
+        <div id="box1">
+            <img src="https://see.fontimg.com/api/renderfont4/Ea2l9/eyJyIjoiZnMiLCJoIjoxNTIsInciOjIwMDAsImZzIjo3NiwiZmdjIjoiIzAwMDAwMCIsImJnYyI6IiNGRkZGRkYifQ/U1RVRFkgV0lUSCBVUw/valentine.png"
+                 alt="logo"
+            />
+            <p>온라인 스터디 공간입니다.</p>
+            <div class="socialIcon">
+                <i class="fab fa-facebook-f "></i>
+                <i class="fab fa-instagram "></i>
+                <i class="fab fa-twitter "></i>
+                <i class="fab fa-youtube "></i>
+            </div>
+        </div>
+
+        <div id="box2">
+            <h2>Contact Us</h2>
+
+            <div class="icon">
+                <i class="fa fa-location-dot"></i>
+                <label htmlFor="">Location: 서울시 서초구 서초동 1307</label>
+            </div>
+            <div class="icon">
+                <i class="fa fa-phone"></i>
+                <label htmlFor="">Phone: +82 2 6666 6666</label>
+            </div>
+            <div class="icon">
+                <i class="fa fa-envelope"></i>
+                <label htmlFor="">Email: support@gmail.com</label>
+            </div>
+        </div>
+    </div>
+    <div class="legal container">
+        <p>Copyright @2022. All rights reserved.</p>
+        <p htmlFor="">
+            Design & Developed by <span>6조머지?</span>
+        </p>
+    </div>
 </div>
 <script>
 
@@ -160,6 +199,7 @@
         var messageInput = $('input[name="message"]');
         var sendBtn = $('.chatsend');
         var exitBtn = $('.exit');
+        var homeBtn = $('#home');
         var roomId = $('.content').data('room-id');
         var member = name;
         //var member = $('.content').data('member');
@@ -220,6 +260,16 @@
             window.location.href = "/myPage";
         });
 
+        homeBtn.click(function(){
+            client.send('/publish/chat/message', {}, JSON.stringify({
+                chatRoomId: tId,
+                type: 'CHAT',
+                message: member+"님이 채팅방을 나갔습니다.",
+                writer: ""
+            }));
+            messageInput.val('');
+            window.location.href = "/";
+        });
 
         $(document).ready(function() {
             $("#chat_input").keydown(function(key) {
@@ -241,44 +291,5 @@
 
     }
 </script>
-<div class="footer">
-    <div class="container grid2">
-        <div id="box1">
-            <img src="https://see.fontimg.com/api/renderfont4/Ea2l9/eyJyIjoiZnMiLCJoIjoxNTIsInciOjIwMDAsImZzIjo3NiwiZmdjIjoiIzAwMDAwMCIsImJnYyI6IiNGRkZGRkYifQ/U1RVRFkgV0lUSCBVUw/valentine.png"
-                 alt="logo"
-            />
-            <p>온라인 스터디 공간입니다.</p>
-            <div class="socialIcon">
-                <i class="fab fa-facebook-f "></i>
-                <i class="fab fa-instagram "></i>
-                <i class="fab fa-twitter "></i>
-                <i class="fab fa-youtube "></i>
-            </div>
-        </div>
-
-        <div id="box2">
-            <h2>Contact Us</h2>
-
-            <div class="icon">
-                <i class="fa fa-location-dot"></i>
-                <label htmlFor="">Location: 서울시 서초구 서초동 1307</label>
-            </div>
-            <div class="icon">
-                <i class="fa fa-phone"></i>
-                <label htmlFor="">Phone: +82 2 6666 6666</label>
-            </div>
-            <div class="icon">
-                <i class="fa fa-envelope"></i>
-                <label htmlFor="">Email: support@gmail.com</label>
-            </div>
-        </div>
-    </div>
-    <div class="legal container">
-        <p>Copyright @2022. All rights reserved.</p>
-        <p htmlFor="">
-            Design & Developed by <span>6조머지?</span>
-        </p>
-    </div>
-</div>
 </body>
 </html>
