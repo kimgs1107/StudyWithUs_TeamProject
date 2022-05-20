@@ -62,17 +62,23 @@
 
 
 <div class="container topMargin">
+
     <hr class="topMargin">
+    <h3 style="text-align: center; color: #386ad1; margin-bottom: 10px;">MY STUDY</h3>
+
     <div class="row">
-        <h2 style="text-align: center; margin-top: 20px;">마이 스터디</h2>
-        <div id="myTeams" class="flexevenly topMargin">
+       <div id="myTeams" class="flexevenly topMargin">
         </div>
+    </div>
+
+    <div style="text-align: right;">
+
+        <a href="javascript:void kakaoChatStart()" class="kakaoChatPc">
+            <p id="kakao-talk-channel-chat-button"></p>
+        </a>
     </div>
 </div>
 
-<a href="javascript:void kakaoChatStart()" class="kakaoChatPc hidden-md hidden-sm hidden-xs">
-    <p id="kakao-talk-channel-chat-button"></p>
-</a>
 
 <div th:replace="fragments/footer :: footer"></div>
 
@@ -294,8 +300,6 @@
     }
 </script>
 <script type="text/javascript">
-
-
 
 
     function chat() {
