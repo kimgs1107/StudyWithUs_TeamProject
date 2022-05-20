@@ -12,29 +12,23 @@
         목록으로 돌아가기
     </button></div>
 
-<!--    <h3 style="text-align: center" class="bottomMargin">자유게시판</h3>-->
-
-   <!-- <div class="col-xs-1" style="float: right; margin-bottom: 20px;">
-
-    </div>-->
-
     <table class="table table-md">
         <thead>
         <tr>
-            <td style="width: 100px">글 번호</td>
-            <td style="width: 2fr" id="bID"></td>
-            <td style="width: 100px">작성일</td>
-            <td style="width: 1fr" id="date"></td>
+            <td style="width: 100px; background-color: #000000; color:#ffffff">글 번호</td>
+            <td id="bID"></td>
+            <td style="width: 100px; background-color: #000000; color:#ffffff">작성일</td>
+            <td id="date"></td>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>작성자</td>
+            <td style="width: 100px; background-color: #000000; color:#ffffff">작성자</td>
             <td id="name"></td>
             <td colspan="2"></td>
         </tr>
         <tr>
-            <td>제목</td>
+            <td style="width: 100px; background-color: #000000; color:#ffffff">제목</td>
             <td id="title" colspan="3"></td>
         </tr>
         <tr>
@@ -415,8 +409,8 @@
                             cmID: comment.cmID
                         },
                         success: function (data) {
-                            console.log("갔다오긴하니?")
                             if (data == false) {
+                                content.setAttribute('style', 'border:none')
                                 updateComment.setAttribute('hidden', 'true')
                                 content.setAttribute('readOnly', 'true')
                             }
