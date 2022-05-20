@@ -12,9 +12,9 @@ import java.util.List;
 public interface CommentService {
     List<CommentVO> findComment(Long bID);
 
-    void save(Comment comment1);
+    Long save(Comment comment1);
 
-    Long findBycmID(Long cmID);
+    Comment findBycmID(Long cmID);
 
     void delete(Long cmID);
 
