@@ -111,23 +111,25 @@
                     let deletebtn = document.getElementById("deleteBtn");
                     let del = document.createElement('button');
                     del.setAttribute('class', 'btn btn-outline-dark')
+                    del.setAttribute('id', 'delbtn')
                     del.setAttribute('style', 'border-color: #00000030; font-size: 15px;')
                     del.innerHTML = "게시물 삭제";
                     deletebtn.appendChild(del);
 
                     del.addEventListener("click", () => {
-                        $.ajax({
-                            url: "/deleteBoard",
-                            type: "GET",
-                            success: function (data) {
-                                alert("게시글이 삭제되었습니다.")
-                                window.location.href = "/boardSearch";
+                        let ans = confirm("게시글을 삭제하시겠습니까?")
+                        if(ans){
+                            $.ajax({
+                                url: "/deleteBoard",
+                                type: "GET",
+                                success: function (data) {
+                                    alert("게시글이 삭제되었습니다.")
+                                    window.location.href = "/boardSearch";
 
-                            }, error: function () {
-                                alert("에러");
-                                window.location.replace('/boardSearch');
-                            }
-                        });
+                                }, error: function () {
+                                }
+                            });
+                        }
                     });
                 }
             }, error: function () {
@@ -292,6 +294,7 @@
                             update1.innerHTML = "게시물 수정";
                             updatebtn1.appendChild(update1);
                             update1.addEventListener("click", () => {
+                                $('#delbtn').hide();
                                 $('#titleID').empty();
                                 $('#contentID').empty();
                                 $('#updateBtn').empty();
@@ -300,22 +303,23 @@
                                 let editTitle = document.createElement('input')
                                 editTitle.setAttribute('type', 'text');
                                 editTitle.setAttribute('id', 'ti');
-                                editTitle.setAttribute('style', 'width: 800px;');
+                                editTitle.setAttribute('style', 'width: 800px; border:1px solid #00000020; padding-left:10px');
                                 editTitle.setAttribute('value', data.title);
                                 title3.appendChild(editTitle);
                                 let content3 = document.getElementById('content');
-                                let editContent = document.createElement('input')
-                                editContent.setAttribute('type', 'text');
+                                let editContent = document.createElement('textarea')
+                                // editContent.setAttribute('type', 'textarea');
+                                editContent.setAttribute('rows', '13');
                                 editContent.setAttribute('id', 'co');
-                                editContent.setAttribute('style', 'width: 800px;,');
-                                editContent.setAttribute('value', data.content);
+                                editContent.setAttribute('style', 'width: 100%; border:1px solid #00000020; padding-left:10px');
+                                editContent.innerHTML=data.content;
                                 content3.appendChild(editContent);
 
                                 let updatebtn2 = document.getElementById("updateBtn");
                                 let update2 = document.createElement('button');
                                 update2.setAttribute('class', 'btn btn-outline-dark');
                                 update2.setAttribute('id', 'update2')
-                                update2.setAttribute('style', 'border-color: #00000060;, margin-left: 30px;');
+                                update2.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px;margin-right:10px')
                                 update2.innerHTML = "수정 완료";
                                 updatebtn2.appendChild(update2);
                                 $("#update2").on('click', function () {
