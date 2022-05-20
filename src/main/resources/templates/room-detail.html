@@ -4,52 +4,24 @@
 <!--<head th:replace="fragments/header :: header">-->
 <head>
     <meta charset="UTF-8">
-    <title>Study With Us</title>
-<!--    <link rel="stylesheet" href="../css/style.css" />-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <title>StudyWithUs</title>
 
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="/webjars/jquery/dist/jquery.min.js"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-
     <!-- 합쳐지고 최소화된 최신 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
     <!-- 부가적인 테마 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-<!--    &lt;!&ndash; 합쳐지고 최소화된 최신 자바스크립트 &ndash;&gt;-->
-<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>-->
-<!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">-->
-<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"-->
-<!--          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"-->
-<!--            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"-->
-<!--            crossorigin="anonymous"></script>-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"-->
-<!--            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"-->
-<!--            crossorigin="anonymous"></script>-->
-<!--    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>-->
-<!--    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>-->
-<!--    <link rel="stylesheet" href="../css/style.css"/>-->
-<!--        아이콘-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
-
+    <link rel="stylesheet" href="/css/study.css"/>
 </head>
     <style>
 
@@ -57,16 +29,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
         }
 
         .chat_wrap {
-            border: 1px solid #999;
+            border: 1px solid #b1b1b1;
             width: 500px;
             padding: 10px;
             font-size: 15px;
             color: #333;
-
+            border-radius: 5px;
         }
 
         .chat_wrap .inner {
@@ -81,56 +52,49 @@
             display: block;
             font-size: 1.17em;
             margin-top: 0em;
-            margin-bottom: 0em;
+            margin-bottom: 0.5em;
             margin-left: -2.5em;
             margin-right: 0;
-            font-weight: bold;
-            /*background:#fff; border-radius:10px; padding:8px; text-align:left*/
-            /*content:""; position:absolute; left:-8px; top:9px; border-top:0px solid transparent; border-bottom:8px solid transparent;border-right:8px solid #fff;*/
-        }
-
-        body {
-            padding: 100px;
-            background: whitesmoke;
-            display: table-cell;
+            font-weight: lighter;
         }
 
 
         input {
-            width: 80%;
+            width: 86%;
             padding: 10px 20px;
             margin: 5px 0;
             box-sizing: border-box;
-
             border:1px solid #999999;
-
             border-radius: 5px;
-
             outline: none;
 
-            background-color: rgb(233, 233, 233);
         }
 
-
         button{
-            position: relative;
-            border: none;
-            display: inline-block;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-family: "paybooc-Light", sans-serif;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.25s;
+            background-color: black;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: 0.5px solid black;
+            cursor: pointer;
+        }
+        chat_exit {
+            text-align: center;
+            grid-column: 1/3;
+            grid-row: 4/5;
+            display:block;
         }
     </style>
 <body>
 
-
-<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div id="header">
+    <div id="logoBox">
+        <button style="all:unset" onclick="home()"><img src="/images/logo.png"/></button>
+    </div>
+</div>
+<h1 id="title"></h1>
 <div class="wrapper">
-<!--<h1 id="title"></h1> -->
+
 <div class="content" data-room-id="{{room.id}}" data-member="{{member}}">
     <div class="chat_wrap">
         <div class="inner">
@@ -139,12 +103,19 @@
 
         </div>
     </div>
-    <input name="message" id="alpreah_input">
-    <button class="send">보내기</button>
-    <button class="exit">나가기</button>
+    <input name="message" id="chat_input">
+    <button class="chatsend">보내기</button>
+    <br>
+    <br>
+
+
 
 <!--<button class="exit">나가기</button>-->
 </div>
+
+</div>
+<div class = "chat_exit" style=" text-align: center;">
+    <button class="exit" style=" display: inline-block;">채팅나가기</button>
 </div>
 <script>
 
@@ -187,7 +158,7 @@
     function start(){
         var chatBox = $('.chat_box');
         var messageInput = $('input[name="message"]');
-        var sendBtn = $('.send');
+        var sendBtn = $('.chatsend');
         var exitBtn = $('.exit');
         var roomId = $('.content').data('room-id');
         var member = name;
@@ -251,7 +222,7 @@
 
 
         $(document).ready(function() {
-            $("#alpreah_input").keydown(function(key) {
+            $("#chat_input").keydown(function(key) {
                 if (key.keyCode == 13) {
                     // alert("엔터키를 눌렀습니다.");
                     if(messageInput.val()!="") {
@@ -272,7 +243,7 @@
 </script>
 <div class="footer">
     <div class="container grid2">
-        <div class="box">
+        <div id="box1">
             <img src="https://see.fontimg.com/api/renderfont4/Ea2l9/eyJyIjoiZnMiLCJoIjoxNTIsInciOjIwMDAsImZzIjo3NiwiZmdjIjoiIzAwMDAwMCIsImJnYyI6IiNGRkZGRkYifQ/U1RVRFkgV0lUSCBVUw/valentine.png"
                  alt="logo"
             />
@@ -285,7 +256,7 @@
             </div>
         </div>
 
-        <div class="box">
+        <div id="box2">
             <h2>Contact Us</h2>
 
             <div class="icon">
@@ -304,9 +275,9 @@
     </div>
     <div class="legal container">
         <p>Copyright @2022. All rights reserved.</p>
-        <label htmlFor="">
+        <p htmlFor="">
             Design & Developed by <span>6조머지?</span>
-        </label>
+        </p>
     </div>
 </div>
 </body>
