@@ -11,9 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import st.project.studyWithUs.argumentresolver.Login;
 import st.project.studyWithUs.domain.Board;
+import st.project.studyWithUs.domain.Comment;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.service.boardService.BoardService;
+import st.project.studyWithUs.service.commentService.CommentService;
 import st.project.studyWithUs.vo.BoardVO;
+import st.project.studyWithUs.vo.CommentVO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,12 +31,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardservice;
-
-//    @GetMapping("/board") //게시물 목록 조회
-//    public String board() {
-//        return "board";
-//    }
-
+    private final CommentService commentService;
 
     @GetMapping("/write") //게시물 작성하는 페이지
     public String write() {
@@ -70,25 +68,35 @@ public class BoardController {
     }
 
 
-    @GetMapping("/detailContent/{bID}") //게시물 상세보기
-    public String detailContent(@PathVariable("bID") Long bID) {
+    static BoardVO contentvo=new BoardVO();
 
+    @PostMapping("/detailContent/{idx}") //게시물 상세보기
+    public String bb(@PathVariable("idx") String idx,String bID) {
+        contentvo.setBbID(Long.parseLong(bID));
+        return "detailContent";
+    }
+
+    @GetMapping("/detailContent/{idx}") //게시물 상세보기
+    public String bb2() {
         return "detailContent";
     }
 
     @ResponseBody
     @GetMapping("/detailContent")
-    public BoardVO detailContent2(@RequestParam Long bID) {
-
-        return boardservice.findBybID(bID);
+    public BoardVO detailContent2(@RequestParam String idx) {
+        contentvo.setIdx(Integer.parseInt(idx));
+        BoardVO vo = boardservice.findBybID(contentvo.getBbID());
+        vo.setIdx(Integer.parseInt(idx));
+        return vo;
     }
 
     @ResponseBody
     @GetMapping("/deleteContent")
-    public boolean deleteContent(@RequestParam Long bID, @Login User loginUser) {
-
+    public boolean deleteContent(@Login User loginUser) {
+        System.out.println("============================");
+        System.out.println(contentvo.getBbID());
         if (loginUser != null) {
-            if (boardservice.findBybID2(bID).getUser().getUID() == loginUser.getUID()) return true;
+            if (boardservice.findBybID2(contentvo.getBbID()).getUser().getUID() == loginUser.getUID()) return true;
 
             else return false;
         }
@@ -97,19 +105,20 @@ public class BoardController {
 
     @ResponseBody
     @GetMapping("/deleteBoard")
-    public boolean deleteBoard(@RequestParam Long bID) {
+    public boolean deleteBoard() {
 
-        boardservice.delete(bID);
+
+        boardservice.delete(contentvo.getBbID());
         return true;
     }
 
     @ResponseBody
     @GetMapping("/updateContent") //게시글 수정 후 상세보기 페이지에 다시 뿌려주기
-    public boolean updateContent(@RequestParam Long bID,@RequestParam String ti, @RequestParam String co) {
+    public boolean updateContent(@RequestParam String ti, @RequestParam String co) {
 
         log.info("ti co {}, {}", ti, co);
 
-        boardservice.update(bID, ti, co);
+        boardservice.update(contentvo.getBbID(), ti, co);
 
         return true;
     }
@@ -118,8 +127,6 @@ public class BoardController {
 
     @GetMapping(value = "/boardSearch") //게시물 목록 조회페이지
     public String search(Model model, @Login User loginUser, @PageableDefault(page=0,size = 10,sort = "uploadTime", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam(required = false, defaultValue = "", name = "keyword") String keyword) {
-
-        System.out.println("키워드" + keyword);
 
         List<BoardVO> list = new ArrayList<>();
 
@@ -166,6 +173,85 @@ public class BoardController {
         } else {
             return 0;
         }
+    }
+
+    @ResponseBody
+    @GetMapping("/findComment")
+    public List<CommentVO> board(){
+
+        return commentService.findComment(contentvo.getBbID());
+
+    }
+
+
+    @ResponseBody
+    @GetMapping("/saveComment")
+    public CommentVO saveComment(@Login User loginUser, @RequestParam String comment){
+
+        Comment comment1 = new Comment();
+        comment1.setCommentContent(comment);
+        comment1.setWriterUID(loginUser.getUID());
+        comment1.setBoard(boardservice.findBybID2(contentvo.getBbID()));
+        Long cmID = commentService.save(comment1);
+        Comment resComment = commentService.findBycmID(cmID);
+
+        CommentVO vo = new CommentVO();
+        vo.setCmID(cmID);
+        vo.setWriterName(loginUser.getUserName());
+        vo.setCommentContent(comment);
+
+        return vo;
+    }
+
+
+    @ResponseBody
+    @GetMapping("/deleteCommentCheck")
+    public boolean deleteCommentCheck(@RequestParam Long cmID,@Login User loginUser){
+        if(loginUser == null){
+            return false;
+        }
+        //댓글 주인이거나, 그 글의 글쓴이거나 둘 중 하나 .
+        else if(loginUser.getUID()==commentService.findBycmID(cmID).getWriterUID()||boardservice.findBybID2(contentvo.getBbID()).getUser().getUID()==loginUser.getUID()){
+            return true;
+        }
+        else return false;
+    }
+
+
+    @ResponseBody
+    @GetMapping("/deleteComment")
+    public boolean deleteComment(@RequestParam Long cmID){
+
+        commentService.delete(cmID);
+
+        return true;
+    }
+
+    @ResponseBody
+    @GetMapping("/updateComment")
+    public boolean updateComment(@RequestParam Long cmID){
+        return true;
+    }
+
+    @ResponseBody
+    @GetMapping("/updateCommentCheck")
+    public boolean updateCommentCheck(@RequestParam Long cmID, @Login User loginUser){
+        if(loginUser==null){
+            return false;
+        }else {
+            return commentService.updateCommentCheck(cmID, loginUser.getUID());
+        }
+    }
+
+
+    @ResponseBody
+    @GetMapping("/updateCommentSave")
+    public boolean updateCommentSave(@RequestParam Long cmID, @RequestParam String commentContent){
+
+        log.info("--------------{}, {}3", cmID, commentContent);
+
+        commentService.updateCommentSave(cmID, commentContent);
+        return true;
     }
 
 }

@@ -38,13 +38,16 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public void save(Comment comment1) {
-        commentRepository.save(comment1);
+    public Long save(Comment comment1) {
+        Comment save = commentRepository.save(comment1);
+
+        return save.getCmID();
+
     }
 
     @Override
-    public Long findBycmID(Long cmID) {
-        return commentRepository.findBycmID(cmID).getWriterUID();
+    public Comment findBycmID(Long cmID) {
+        return commentRepository.findBycmID(cmID);
     }
 
     @Override
