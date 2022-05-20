@@ -25,8 +25,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/findID","/findPW" , "/kakaoLogin" ,"/logout", "/images/*.jpg","/images/*.png",
                          "/loginCheck", "/explain", "/validateMem", "/loginUser", "/findAllTeams",
                         "../images/*.jpg","/updateUserTeam","/validateEmail", "/board", "/findComment", "/deleteContent", "/boardSearch", "/detailContent",
-                        "/detailContent/*", "/checkUser", "/pageable", "/saveContent", "/write","/getInfo","/naverLogin",
-                        "/getimg","/getCheck","/teamImage/*","/adminImage/*"
+                        "/detailContent/**", "/checkUser", "/pageable", "/saveContent", "/write","/getInfo","/naverLogin",
+                        "/getimg","/getCheck","/teamImage/*","/adminImage/*","/css/*","/updateCommentCheck","/deleteCommentCheck"
                         ); // url 에는 인터셉트 먹이지마.
 
         registry.addInterceptor(new AdminInterceptor())

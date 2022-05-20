@@ -1,49 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header">
-
-
 </head>
-
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<div class="container" style="width: 1000px;">
-    <div class="row" style="margin-top: 20px;">
-        <div class="col-xs-4">
-            <h2 style="font-weight: bold;">자유게시판</h2>
-        </div>
-    </div>
+<div class="container" style="width: 1500px;margin-top: 80px">
+    <h4 style="display: inline-block; color: #386ad1; margin-bottom: 10px; margin-left: 5px">Board</h4>
+    <div style="display: inline-block; float: right; margin-bottom: 10px;">
+        <button type="submit" class="btn btn-outline-dark" onclick="location.href='/boardSearch'" id="backList"
+                                               style="border-color: #00000030; color:#386ad1; font-size: 15px; width:150px;">
+        목록으로 돌아가기
+    </button></div>
 
-    <div class="col-xs-1" style="float: right; margin-top: 10px; margin-bottom: 20px;">
-        <button type="submit" class="btn btn-outline-dark" onclick="location.href='/boardSearch'"
-                style="border-color: #00000060; margin-left: 10px;">
-            목록
-        </button>
-    </div>
+<!--    <h3 style="text-align: center" class="bottomMargin">자유게시판</h3>-->
 
-    <table class="table table-bordered" style="margin-top: 50px;">
+   <!-- <div class="col-xs-1" style="float: right; margin-bottom: 20px;">
+
+    </div>-->
+
+    <table class="table table-md">
         <thead>
-        <tr><!-- 첫번째 줄 시작 -->
-            <td>번호</td>
-            <td id="bID"></td>
-            <td>작성일</td>
-            <td id="date"></td>
-        </tr><!-- 첫번째 줄 끝 -->
+        <tr>
+            <td style="width: 100px">글 번호</td>
+            <td style="width: 2fr" id="bID"></td>
+            <td style="width: 100px">작성일</td>
+            <td style="width: 1fr" id="date"></td>
+        </tr>
         </thead>
         <tbody>
-        <tr><!-- 두번째 줄 시작 -->
+        <tr>
             <td>작성자</td>
             <td id="name"></td>
-            <td colspan="3"></td>
-        </tr><!-- 두번째 줄 끝 -->
-        <tr><!-- 두번째 줄 시작 -->
+            <td colspan="2"></td>
+        </tr>
+        <tr>
             <td>제목</td>
             <td id="title" colspan="3"></td>
-        </tr><!-- 두번째 줄 끝 -->
-        <tr><!-- 두번째 줄 시작 -->
-            <td>내용</td>
-            <td id="content" colspan="3"></td>
-        </tr><!-- 두번째 줄 끝 -->
+        </tr>
+        <tr>
+            <td id="content" colspan="4"></td>
+        </tr>
         <tbody>
     </table>
 
@@ -52,31 +48,27 @@
         <div id="deleteBtn" style="border-radius: 0.5rem; height: 10px;"></div>
         <div id="updateBtn" style="border-radius: 0.5rem; height: 10px;"></div>
     </div>
+    <hr class="h-divider" style="margin-top: 50px;">
 
-    <!--    <div style="text-align: center;">-->
-    <!--        <div id="deleteBtn" style="float: right;"></div>-->
-    <!--        <div id="updateBtn" style="float: right;"></div>-->
-    <!--    </div>-->
     <form>
-        <div class="form-group" style="margin-top: 50px;">
-            <hr class="h-divider">
-            <div class="col-xs-4">
+        <div class="form-group" style="margin: 0 20px">
+            <div class="row">
                 <h4>comment</h4>
             </div>
-            <label for="comment" class="form-label"></label>
-            <textarea class="form-group" rows="2" id="comment" placeholder="내용을 입력해주세요"
-                      style="width: 900px; margin-top: 15px;"></textarea>
-            <button type="button" class="btn btn-outline-dark" id="btn"
-                    style=" width: auto; margin-top: 20px; border-color: #00000060; float: right;">
-                등록
-            </button>
+            <div class="row">
+            <textarea class="form-group col-11" rows="2" id="comment" placeholder="내용을 입력해주세요"
+                      style="width:100%;"></textarea>
+                <button type="button" class="btn btn-outline-dark col-1" id="btn"
+                        style="border-color: #00000030; float: right; font-size: 15px; height: 70px">
+                    등록
+                </button>
+            </div>
         </div>
     </form>
 
-    <hr class="h-divider">
 
-    <form>
-        <div class="row" style="margin-top: 30px; margin-left:10px;">
+    <form style="margin-top: 60px; padding-left:20px">
+        <div>
             <div id="commentList">
             </div>
         </div>
@@ -87,19 +79,17 @@
 <div th:replace="fragments/footer :: footer"></div>
 
 <style>
-    .h-divider {
-        margin-top: 5px;
-        margin-bottom: 5px;
-        height: 1px;
-        width: 100%;
-        border-top: 1px solid gray;
+
+    #backList:hover{
+        background-color: #00000010;
     }
 </style>
 
 <script>
     let curURL = window.location.href;
     let urlArr = curURL.split("/");
-    let bId = urlArr[urlArr.length - 1];
+    // let bId = urlArr[urlArr.length - 2];
+    let idx = urlArr[urlArr.length - 1];
 
     $(document).ready(function () {
         findContent();
@@ -115,15 +105,13 @@
         $.ajax({
             url: "/deleteContent",
             type: "GET",
-            data: {
-                bID: bId
-            },
             success: function (data) {
                 if (data == true) {
                     //삭제 버튼 생겨
                     let deletebtn = document.getElementById("deleteBtn");
                     let del = document.createElement('button');
                     del.setAttribute('class', 'btn btn-outline-dark')
+                    del.setAttribute('style', 'border-color: #00000030; font-size: 15px;')
                     del.innerHTML = "게시물 삭제";
                     deletebtn.appendChild(del);
 
@@ -131,10 +119,6 @@
                         $.ajax({
                             url: "/deleteBoard",
                             type: "GET",
-                            dataType: "json",
-                            data: {
-                                bID: bId
-                            },
                             success: function (data) {
                                 alert("게시글이 삭제되었습니다.")
                                 window.location.href = "/boardSearch";
@@ -153,25 +137,66 @@
     }
 
     function saveComment() {
-        $.ajax({
-            url: "/saveComment",
-            type: "GET",
-            data: {
-                comment: $("#comment").val(),
-                bID: bId
-            },
-            success: function (data) {
+        if ($('#comment').val() == "") {
+            $("#comment").attr('placeholder', '최소 한글자 이상을 입력하세요.');
+        } else {
+            $.ajax({
+                url: "/saveComment",
+                type: "GET",
+                data: {
+                    comment: $("#comment").val(),
+                },
+                success: function (data) {
+                    let commentList = document.getElementById('commentList');
 
-                if (data == true) {
-                    window.location.href = "/detailContent/" + bId;
-                } else {
-                    $("#check").html("최소 한글자 이상을 입력하세요. ");
-                    $("#check").attr('color', 'red');
+                    let div1 = document.createElement('form');
+                    div1.setAttribute('class', 'row');
+                    div1.setAttribute('id', data.cmID + 'div');
+                    div1.setAttribute('style', 'margin-bottom: 40px;');
+                    let div2 = document.createElement('div')
+                    div2.setAttribute('class', 'col-auto');
+                    div2.setAttribute('style', 'margin-top: 30px;, margin-right: 30px;, font-weight: bold');
+                    let input = document.createElement('input');
+                    input.setAttribute('class', 'form-control');
+                    let name = document.createElement('div');
+                    name.setAttribute('class', 'col-2')
+                    name.setAttribute('style', 'margin-right: 30px;');
+                    name.innerHTML = "🙂 " + data.writerName + "님의 댓글  ";
+                    let content = document.createElement('input');
+                    content.setAttribute('type', 'text');
+                    content.setAttribute('value', data.commentContent);
+                    content.setAttribute('id', data.cmID);
+                    content.setAttribute('name', 'comments');
+                    content.setAttribute('class', 'col-8');
+                    content.setAttribute('style', 'border:1px solid #00000020')
+
+                    div1.appendChild(name);
+                    div1.appendChild(content);
+
+                    // 수정버튼 생성
+                    let updateComment = document.createElement('button');
+                    updateComment.setAttribute('type', 'button');
+                    updateComment.setAttribute('class', 'btn btn-outline-dark');
+                    updateComment.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px')
+
+                    updateComment.innerHTML = "수정";
+                    div1.appendChild(updateComment);
+
+                    // 삭제버튼 생성
+                    let delComment = document.createElement('button');
+                    delComment.setAttribute('type', 'button');
+                    delComment.setAttribute('class', 'btn btn-outline-dark');
+                    delComment.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px')
+
+                    delComment.innerHTML = "삭제";
+                    div1.appendChild(delComment);
+                    commentList.appendChild(div1);
+
+                    $("#comment").val("");
+                    // window.location.href = "/detailContent/" + idx;
                 }
-            }, error: function () {
-                alert("error");
-            }
-        });
+            });
+        }
     }
 
     $.ajax({
@@ -192,11 +217,12 @@
             url: "/detailContent", //게시물 상세조회
             type: "GET",
             data: {
-                bID: bId
+                idx: idx
             },
             success: function (data) {
+                console.log(data)
                 let bID = document.getElementById('bID');
-                bID.innerHTML = data.bbID
+                bID.innerHTML = data.idx
                 let date = document.getElementById('date');
                 date.innerHTML = data.uploadTime
                 let name = document.getElementById('name');
@@ -217,16 +243,13 @@
                 $.ajax({
                     url: "/deleteContent",
                     type: "GET",
-                    data: {
-                        bID: bId
-                    },
                     success: function (flag) {
                         if (flag == true) {
                             //글 작성자만 수정 버튼 생겨
                             let updatebtn1 = document.getElementById("updateBtn");
                             let update1 = document.createElement('button');
                             update1.setAttribute('class', 'btn btn-outline-dark')
-                            update1.setAttribute('style', 'margin-left: 10px;')
+                            update1.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px')
                             update1.innerHTML = "게시물 수정";
                             updatebtn1.appendChild(update1);
                             update1.addEventListener("click", () => {
@@ -266,13 +289,12 @@
                                         type: "GET",
                                         dataType: "json",
                                         data: {
-                                            bID: bId,
                                             ti: $("#ti").val(),
                                             co: $("#co").val(),
                                         },
                                         success: function (data) {
                                             if (data == true) {
-                                                window.location.replace('/detailContent/' + bId);
+                                                window.location.replace('/detailContent/' + idx);
                                             }
                                         }, error: function () {
                                             alert("게시글 업데이트 에러");
@@ -297,14 +319,12 @@
         $.ajax({
             url: "/findComment",
             type: "GET",
-            data: {
-                bID: bId
-            },
             success: function (data) {
                 let commentList = document.getElementById('commentList');
                 data.forEach(function (comment) {
                     let div1 = document.createElement('form');
-                    div1.setAttribute('class', 'row g-3');
+                    div1.setAttribute('class', 'row');
+                    div1.setAttribute('id', comment.cmID + 'div');
                     div1.setAttribute('style', 'margin-bottom: 40px;');
                     let div2 = document.createElement('div')
                     div2.setAttribute('class', 'col-auto');
@@ -312,66 +332,39 @@
                     let input = document.createElement('input');
                     input.setAttribute('class', 'form-control');
                     let name = document.createElement('div');
-                    name.setAttribute('class', 'col-auto')
-                    name.setAttribute('style', 'font-weight: bold, margin-right: 30px;');
-                    name.innerHTML = comment.writerName;
-                    let content = document.createElement('div');
+                    name.setAttribute('class', 'col-2')
+                    name.setAttribute('style', 'margin-right: 30px;');
+                    name.innerHTML = "🙂 " + comment.writerName + "님의 댓글  ";
+                    let content = document.createElement('input');
+                    content.setAttribute('type', 'text');
+                    content.setAttribute('value', comment.commentContent);
                     content.setAttribute('id', comment.cmID);
-                    content.setAttribute('class', 'col-auto');
-                    content.innerHTML = comment.commentContent;
+                    content.setAttribute('name', 'comments');
+                    content.setAttribute('class', 'col-8');
+                    content.setAttribute('style', 'border:1px solid #00000020')
                     div1.appendChild(name);
                     div1.appendChild(content);
 
-                    // <div className="col-auto">
-                    //     <label htmlFor="inputPassword2" className="visually-hidden">Password</label>
-                    //     <input type="password" className="form-control" id="inputPassword2" placeholder="Password">
-                    // </div>
-                    // <div className="col-auto">
-                    //     <button type="submit" className="btn btn-primary mb-3">Confirm identity</button>
-                    // </div>
+                    // 수정버튼 생성
+                    let updateComment = document.createElement('button');
+                    updateComment.setAttribute('type', 'button');
+                    updateComment.setAttribute('class', 'btn btn-outline-dark');
+                    updateComment.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px')
 
-                    $.ajax({
-                        url: "/deleteCommentCheck",
-                        type: "GET",
-                        data: {
-                            bID: bId,
-                            cmID: comment.cmID
-                        },
-                        success: function (data) {
-                            if (data == true) {
-                                //댓글 삭제 버튼 생겨
-                                let delComment = document.createElement('button');
-                                delComment.setAttribute('type', 'button');
-                                delComment.setAttribute('class', 'btn btn-outline-dark');
-                                delComment.setAttribute('style', 'width: 60px;, height:5px;, margin-left: 50px; ,margin-right: 50px;');
-                                delComment.innerHTML = "삭제";
+                    updateComment.innerHTML = "수정";
+                    div1.appendChild(updateComment);
 
-                                div1.appendChild(delComment);
-                                delComment.addEventListener("click", () => {
-                                    $.ajax({
-                                        url: "/deleteComment",
-                                        type: "GET",
-                                        dataType: "json",
-                                        data: {
-                                            cmID: comment.cmID,
-                                            bID: bId
-                                        },
-                                        success: function (data) {
-                                            if (data == true) {
-                                                window.location.replace('/detailContent/' + bId);
-                                            }
-                                        }, error: function () {
-                                            alert("댓글 삭제 에러");
-                                            window.location.replace('/boardSearch');
-                                        }
-                                    });
-                                });
-                            }
-                        }, error: function () {
-                            alert("댓글 삭제 버튼 생성 에러");
-                        }
-                    });
+                    // 삭제버튼 생성
+                    let delComment = document.createElement('button');
+                    delComment.setAttribute('type', 'button');
+                    delComment.setAttribute('class', 'btn btn-outline-dark');
+                    delComment.setAttribute('style', 'border-color: #00000030; font-size: 15px; margin-left:1px')
 
+                    delComment.innerHTML = "삭제";
+                    div1.appendChild(delComment);
+
+
+                    // 작성자가 아니면 숨기기
                     $.ajax({
                         url: "/updateCommentCheck",
                         type: "GET",
@@ -379,104 +372,70 @@
                             cmID: comment.cmID
                         },
                         success: function (data) {
-                            if (data == true) {
-                                //댓글 수정 버튼 생겨
-                                let updateComment = document.createElement('button');
-                                updateComment.setAttribute('type', 'button');
-                                updateComment.setAttribute('class', 'btn btn-outline-dark');
-                                updateComment.setAttribute('style', 'width: 60px;, height:10px; ,margin-left: 50px; ,margin-right: 50px;');
-
-                                updateComment.innerHTML = "수정";
-                                div1.appendChild(updateComment);
-                                updateComment.addEventListener("click", () => {
-
-                                    if(document.querySelector('#editComment')==null){
-                                        $.ajax({
-                                            url: "/updateComment",
-                                            type: "GET",
-                                            dataType: "json",
-                                            data: {
-                                                cmID: comment.cmID
-                                            },
-                                            success: function (data) {
-                                                if (data == true) {
-                                                    // const name = '#'+ comment.cmID;
-                                                    // const name2 = comment.cmID;
-                                                    // let con = $('name').val();
-                                                    // $(name).empty(); //name만
-
-                                                    // let div1 = document.createElement('form');
-                                                    // div1.setAttribute('class', 'row g-3');
-                                                    // let div2 = document.createElement('div')
-                                                    // div2.setAttribute('class', 'col-auto');
-                                                    // let input = document.createElement('input');
-                                                    // input.setAttribute('class', 'form-control');
-                                                    // let name = document.createElement('div');
-                                                    // name.setAttribute('class', 'col-auto')
-                                                    // name.innerHTML = comment.writerName;
-
-                                                    let div2 = document.createElement('form');
-                                                    div2.setAttribute('class', 'row-g-3');
-                                                    let content = document.createElement('div');
-                                                    content.setAttribute('class', 'col-auto');
-                                                    let content1 = document.createElement('input');
-                                                    content1.setAttribute('class', 'form-control');
-                                                    content1.setAttribute('id', "editComment");
-                                                    content1.setAttribute('type', 'text');
-                                                    content1.setAttribute('style', 'margin-left: 30px')
-                                                    content1.setAttribute('value', comment.commentContent)
-                                                    /*         content.setAttribute('id', comment.cmID+'n');*/
-                                                    div2.appendChild(content1);
-                                                    div1.appendChild(div2);
-
-                                                    let div3 = document.createElement('div');
-                                                    div3.setAttribute('class', 'col-auto');
-                                                    let upbtn = document.createElement('button');
-                                                    upbtn.setAttribute('type', 'button');
-                                                    upbtn.setAttribute('class', 'btn btn-outline-dark');
-                                                    upbtn.setAttribute('style', 'border-color: #00000060;, width: 50px; margin-left: 35px;');
-                                                    upbtn.innerHTML = "수정";
-                                                    div3.appendChild(upbtn);
-                                                    div1.appendChild(div3);
-
-                                                    upbtn.addEventListener("click", () => {
-                                                        $.ajax({
-                                                            url: "/updateCommentSave", //댓글 수정하기 버튼 누르고 나오는 수정하기 버튼
-                                                            type: "GET",
-                                                            dataType: "json",
-                                                            data: {
-                                                                cmID: comment.cmID,
-                                                                commentContent: $("#editComment").val()
-                                                            },
-                                                            success: function (data) {
-                                                                if (data == true) {
-                                                                    window.location.replace('/detailContent/' + bId);
-                                                                }
-                                                            }, error: function () {
-                                                                alert("댓글 수정 에러");
-                                                                window.location.replace('/boardSearch');
-                                                            }
-                                                        });
-                                                    });
-                                                    // window.location.replace('/detailContent/'+bId) ;
-                                                }
-                                            }, error: function () {
-                                                alert("댓글 수정 에러");
-                                                window.location.replace('/boardSearch');
-                                            }
-                                        });
-                                    }
-
-                                });
+                            console.log("갔다오긴하니?")
+                            if (data == false) {
+                                updateComment.setAttribute('hidden', 'true')
+                                content.setAttribute('readOnly', 'true')
                             }
-                        }, error: function () {
-                            alert("댓글 수정 버튼 생성 에러");
                         }
                     });
+                    // 로그인 유저 및 작성자가 아니면 숨기기
+                    $.ajax({
+                        url: "/deleteCommentCheck",
+                        type: "GET",
+                        data: {
+                            cmID: comment.cmID
+                        },
+                        success: function (data) {
+                            if (data == false) {
+                                delComment.setAttribute('hidden', 'true')
+                                content.setAttribute('readOnly', 'true')
+
+                            }
+                        }
+                    });
+
+                    // 댓글 삭제
+                    delComment.addEventListener("click", () => {
+                        $.ajax({
+                            url: "/deleteComment",
+                            type: "GET",
+                            dataType: "json",
+                            data: {
+                                cmID: comment.cmID,
+                            },
+                            success: function (data) {
+                                if (data == true) {
+                                    $('#' + comment.cmID + 'div').remove()
+                                }
+                            }, error: function () {
+                                alert("댓글 삭제 에러");
+                                window.location.replace('/boardSearch');
+                            }
+                        });
+                    });
+                    // 댓글 수정
+                    updateComment.addEventListener("click", () => {
+                        let comments = document.getElementById(comment.cmID)
+
+                        $.ajax({
+                            url: "/updateCommentSave", //댓글 수정하기 버튼 누르고 나오는 수정하기 버튼
+                            type: "GET",
+                            dataType: "json",
+                            data: {
+                                cmID: comment.cmID,
+                                commentContent: comments.value
+                            },
+                            success: function (data) {
+                                if (data == true) {
+                                    // window.location.replace('/detailContent/' + idx);
+                                }
+                            }
+                        });
+                    })
+
                     commentList.appendChild(div1);
                 });
-            }, error: function () {
-                alert("댓글 조회 에러");
             }
         });
     }
