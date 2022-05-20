@@ -4,14 +4,12 @@
 </head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<div class="container" style="width: 1500px;">
-    <div class="row" style="margin: 30px 0 0 10px">
-        <div class="col-xs-4" >
-            <h2>자유게시판</h2>
-        </div>
-    </div>
+<div class="container" style="width: 1500px;margin-top: 80px">
+    <h4 style="text-align: center; color: #386ad1; margin-bottom: 10px;">Board</h4>
+    <h3 style="text-align: center" class="bottomMargin">자유게시판</h3>
 
-    <form class="row mb-3" style="float: right;" th:action="@{/boardSearch}">
+
+    <form class="row mb-3" style="float: right; margin-right: 10px" th:action="@{/boardSearch}">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <input class="form-control" type="text" name="keyword" th:value="${param.keyword}"
                    placeholder="게시글을 검색하세요"/>
