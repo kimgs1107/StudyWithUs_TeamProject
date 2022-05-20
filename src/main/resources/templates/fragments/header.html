@@ -23,8 +23,12 @@
                 console.log(data)
                 if (data == 0) {
                     $('#logoutbtn').attr("hidden",true);
-                } else {
+                    $('#myPagebtn').attr("hidden",true);
+                    $('#loginStudy').attr("href", "/login");
+                }
+                else {
                     $('#loginbtn').attr("hidden",true);
+                    $('#loginStudy').attr("href", "/createStudy");
                 }
             }
         });

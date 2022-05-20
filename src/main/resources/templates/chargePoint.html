@@ -1,28 +1,34 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header">
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
-<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script>
+<!--<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>-->
+</head>
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
-<div style="text-align: center; margin-top: 100px;">
+<div style="text-align: center; margin-top: 140px;">
 
     <h4 style="text-align: center; color: #386ad1; margin-bottom: 10px;">MY STUDY</h4>
 
     <h2 style="margin-bottom: 30px;">포인트 충전</h2>
 
-    <button id="100_Point" style="margin-right: 10px;">100 포인트 충전</button>
+    <h5 style="margin-bottom: 10px;">스터디 포인트 충전을 원하시면 하단의 버튼을 눌러주세요.</h5>
 
-    <button id="300_Point" style="margin-right: 10px;">300 포인트 충전</button>
+    <h5 style="margin-bottom: 30px;">포인트는 5000, 10000, 50000포인트 단위로 충전하실 수 있습니다.</h5>
 
-    <button id="500_Point" style="margin-right: 10px;">500 포인트 충전</button>
+    <button id="5000_Point" style="margin-right: 10px;">5000 포인트 충전</button>
+
+    <button id="10000_Point" style="margin-right: 10px;">10000 포인트 충전</button>
+
+    <button id="50000_Point" style="margin-right: 10px; margin-bottom: 100px;">50000 포인트 충전</button>
 
 </div>
 
 <div th:replace="fragments/footer :: footer"></div>
+
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script>
 <script>
 
-    $("#100_Point").click(function () {
+    $("#5000_Point").click(function () {
         var IMP = window.IMP; // 생략가능
         IMP.init('imp31932657');
         // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
@@ -32,8 +38,8 @@
             pg: 'inicis', // version 1.1.0부터 지원.
             pay_method: 'card',
             merchant_uid: 'merchant_' + new Date().getTime(),
-            name: '스터디 참가비 100원',
-            amount: 100,
+            name: '스터디 참가비 5000원',
+            amount: 5000,
             buyer_email: 'bae1004kin@naver.com',
             buyer_name: '배정현',
             buyer_tel: '01096403007',
@@ -59,7 +65,7 @@
                     type: "GET",
                     dataType:"json",
                     data: {
-                        "point" : 100
+                        "point" : 5000
                     }
                 });
                 $.ajax({
@@ -67,7 +73,7 @@
                     type: "GET",
                     dataType:"json",
                     data: {
-                        "point" : 100
+                        "point" : 5000
                     }
                 });
 
@@ -86,7 +92,7 @@
     });
 
 
-    $("#300_Point").click(function () {
+    $("#10000_Point").click(function () {
         var IMP = window.IMP; // 생략가능
         IMP.init('imp31932657');
         // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
@@ -96,8 +102,8 @@
             pg: 'inicis', // version 1.1.0부터 지원.
             pay_method: 'card',
             merchant_uid: 'merchant_' + new Date().getTime(),
-            name: '스터디 참가비 300원',
-            amount: 300,
+            name: '스터디 참가비 10000원',
+            amount: 10000,
             buyer_email: 'bae1004kin@naver.com',
             buyer_name: '배정현',
             buyer_tel: '01096403007',
@@ -123,7 +129,7 @@
                     type: "GET",
                     dataType:"json",
                     data: {
-                        "point" : 300
+                        "point" : 10000
                     }
 
                 });
@@ -133,7 +139,7 @@
                     type: "GET",
                     dataType:"json",
                     data: {
-                        "point" : 300
+                        "point" : 10000
                     }
                 });
 
@@ -149,7 +155,7 @@
     });
 
 
-    $("#500_Point").click(function () {
+    $("#50000_Point").click(function () {
         var IMP = window.IMP; // 생략가능
         IMP.init('imp31932657');
         // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
@@ -159,8 +165,8 @@
             pg: 'inicis', // version 1.1.0부터 지원.
             pay_method: 'card',
             merchant_uid: 'merchant_' + new Date().getTime(),
-            name: '스터디 참가비 500원',
-            amount: 500,
+            name: '스터디 참가비 50000원',
+            amount: 50000,
             buyer_email: 'bae1004kin@naver.com',
             buyer_name: '배정현',
             buyer_tel: '01096403007',
@@ -186,7 +192,7 @@
                     type: "GET",
                     dataType:"json",
                     data: {
-                        "point" : 500
+                        "point" : 50000
                     }
                 });
 
@@ -195,7 +201,7 @@
                     type: "GET",
                     dataType:"json",
                     data: {
-                        "point" : 500
+                        "point" : 50000
                     }
                 });
 
@@ -209,7 +215,6 @@
             }
         });
     });
-
 </script>
 
 </body>
