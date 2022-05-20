@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header">
 
-
     <style>
         .kakaoChatPc {
             position: fixed;
@@ -11,7 +10,6 @@
             bottom: 20px; /* 화면 아래쪽으로부터의 거리, 숫자만 입력 */
         }
     </style>
-
 
 </head>
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
@@ -33,30 +31,30 @@
     </div>
 
     <div class="btn topMargin">
-        <button  onclick="location.href='/'"  >
+        <button class="btn btn-outline-dark" onclick="location.href='/'"  >
             홈
         </button>
 
-        <button  onclick="location.href='/chargePoint'"  >
+        <button class="btn btn-outline-dark" onclick="location.href='/chargePoint'"  >
             포인트 충전
         </button>
 
-        <button  onclick="location.href='/refunds'"  >
+        <button class="btn btn-outline-dark" onclick="location.href='/refunds'"  >
             포인트 환급
         </button>
 
-        <button onclick="location.href='/editUser'">
+        <button class="btn btn-outline-dark" onclick="location.href='/editUser'">
             개인정보 수정
         </button>
     </div>
     <hr class="topMargin">
 </div>
 
-<div id="completeBox" style="display: grid; grid-template-columns: 1fr 1fr;" class="topMargin">
-    <div id="completeMembers" style="grid-column: 1/2;">
+<div id="completeBox" class="topMargin">
+    <div id="completeMembers">
     </div>
 
-    <div id="myStudyTime" style="grid-column: 2/3;">
+    <div id="myStudyTime">
     </div>
 </div>
 
@@ -110,7 +108,7 @@
         compMemberBox.setAttribute("style", "text-align:center;");
         let title = document.createElement("h3");
         title.innerHTML = "오늘의 목표를 달성한 사람들  ";
-        title.setAttribute("style", "text-align: center;");
+        title.setAttribute("style", "text-align: center; color: #386ad1");
         compMemberBox.append(title);
         $.ajax({
             type: "get",
@@ -119,7 +117,8 @@
             success: function (teams) {
                 teams.forEach(function(team){
                     let teamBox = document.createElement("div");
-                    let teamLabel = document.createElement("h4");
+                    teamBox.setAttribute("margin-top", "5px");
+                    let teamLabel = document.createElement("h5");
                     teamLabel.innerText = team.teamName;
                     teamBox.append(teamLabel);
                     $.ajax({
@@ -161,7 +160,7 @@
         studyTimeBox.setAttribute("style", "text-align:center;");
         let title = document.createElement("h3");
         title.innerHTML = "스터디별 목표 달성률";
-        title.setAttribute("style", "text-align: center;");
+        title.setAttribute("style", "text-align: center; color: #386ad1");
         studyTimeBox.append(title);
         $.ajax({
             type: "get",
@@ -173,17 +172,22 @@
                     let teamName = document.createElement("div");
                     teamName.innerHTML = team.teamName+" : ";
                     teamName.setAttribute("style", "display:inline-block; font-size: 14pt; margin-right: 3px;");
-                    let time = document.createElement("div");
-                    if(team.totalTime/(team.targetTime*team.period*60) >=1){
-                        time.innerHTML = "100%";
-                    }
-                    else {
-                        time.innerHTML = Math.round(team.totalTime/(team.targetTime*team.period*60)*100)+"%";
-                    }
-                    time.setAttribute("style", "display:inline-block; font-size: 14pt");
+                    let pbar = document.createElement("progress");
+                    pbar.setAttribute("class", "progressBar");
+                    pbar.setAttribute("min", "0");
+                    pbar.setAttribute("max", "100");
+                    pbar.setAttribute("value", Math.round(team.totalTime/(team.targetTime*team.period*60)*100));
+                    // let time = document.createElement("div");
+                    // if(team.totalTime/(team.targetTime*team.period*60) >=1){
+                    //     time.innerHTML = "100%";
+                    // }
+                    // else {
+                    //     time.innerHTML = Math.round(team.totalTime/(team.targetTime*team.period*60)*100)+"%";
+                    // }
+                    // time.setAttribute("style", "display:inline-block; font-size: 14pt");
 
                     timeBox.append(teamName);
-                    timeBox.append(time);
+                    timeBox.append(pbar);
                     studyTimeBox.append(timeBox);
                 });
             },
@@ -290,7 +294,7 @@
                     eachTeam.append(teamButton2);
                     eachTeam.append(teamButton3);
                     eachTeam.setAttribute("class", "col-xs-4");
-                    eachTeam.setAttribute("style", "text-align:center; margin-top:10px;")
+                    eachTeam.setAttribute("style", "text-align:center; margin:10px;")
                     teams.appendChild(eachTeam);
                 });
             }, error:function(error){

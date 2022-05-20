@@ -43,7 +43,7 @@ async function init() {
                 let box = document.createElement("div");
                 box.setAttribute("id", "box"+message[1]);
                 box.setAttribute("width", "100px")
-                box.setAttribute("style", "display:inline-block; margin-top:5px");
+                box.setAttribute("style", "display:inline-block; margin: 5px;");
 
                 let userBox = document.createElement("div");
 
@@ -119,7 +119,7 @@ async function init() {
         }
     }); // 하루공부시간 셋팅 (이전시간 ++)
 
-    var members = document.querySelector("#members");
+    var members = document.querySelector("#memberBox");
     $.ajax({
         type: "POST",
         url: "/members",
@@ -130,7 +130,7 @@ async function init() {
                 let box = document.createElement("div");
                 box.setAttribute("id", "box"+user.uuID);
                 box.setAttribute("width", "100px")
-                box.setAttribute("style", "display:inline-block; margin-top:5px");
+                box.setAttribute("style", "display:inline-block; margin:5px");
 
                 let userBox = document.createElement("div");
 
