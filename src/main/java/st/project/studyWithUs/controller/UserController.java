@@ -144,6 +144,7 @@ public class UserController {
         userVO.setPw(loginUser.getPassword());
         userVO.setEmail(loginUser.getEmail());
         userVO.setUserImage(loginUser.getUserImage());
+        userVO.setRole(loginUser.getRole());
         return userVO;
     }
 

@@ -27,10 +27,22 @@
                 } else {
                     $('#loginbtn').attr("hidden",true);
                 }
-            }, error: function (error) {
-                console.log(error);
             }
         });
+        $.ajax({
+            url:"/getUserInfo",
+            type:"GET",
+            success: function(data){
+                if(data.role =='admin'){
+                    $('#createStudy').attr("hidden",true);
+                    $('#boardSearch').attr("hidden",true);
+                    $('#myPage').attr("hidden",true);
+                    $('#adminPage').attr("hidden",false);
+                }
+            }
+        })
+
+
     </script>
 </head>
 
