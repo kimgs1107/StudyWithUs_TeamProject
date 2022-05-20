@@ -208,7 +208,7 @@ public class LoginController {
             session.setAttribute(SessionConst.LOGIN_USER, loginUser);
 
             if (loginUser.getRole().equals("admin")) {
-                return "/adminPage";
+                return "redirect:/adminPage";
             }
             return "redirect:/";
         }
