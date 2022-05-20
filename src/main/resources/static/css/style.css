@@ -54,6 +54,11 @@ button{
 .flexevenly {
     display: flex;
     justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 90%;
+    margin: auto;
+    margin-top: 10px;
 }
 /* ---------------header------------------- */
 .header {
@@ -196,6 +201,12 @@ button{
     margin: 30px 0 auto auto;
 }
 .admin .second {
-    width: 30px;
+    width: auto;
+    margin-left: 10px;
+}
+.admindata {
+    /*background-color: black;*/
+    /*justify-content: space-evenly;*/
+    /*width: 80%;*/
 }
 /* ---------------admin------------------- */
