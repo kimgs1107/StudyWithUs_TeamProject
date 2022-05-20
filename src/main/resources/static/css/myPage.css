@@ -1,0 +1,39 @@
+#completeBox{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+#completeMembers{
+    grid-column: 1/2;
+    height: 300px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+}
+#myStudyTime{
+    grid-column: 2/3;
+    height: 300px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+}
+#completeMembers::-webkit-scrollbar{
+    display: none;
+}
+#myStudyTime::-webkit-scrollbar{
+    display: none;
+}
+
+.progressBar{
+    appearance: none;
+    margin: 7px;
+}
+.progressBar::-webkit-progress-bar{
+    background: #dee2e6;
+    border-radius: 10px;
+    height: 23px;
+}
+.progressBar::-webkit-progress-value{
+    border-radius: 10px;
+    background: #386ad1;
+    background: -webkit-linear-gradient(to right, #50bcdf, #386ad1);
+    background: linear-gradient(to right, #50bcdf, #386ad1);
+    height: 25px;
+}
