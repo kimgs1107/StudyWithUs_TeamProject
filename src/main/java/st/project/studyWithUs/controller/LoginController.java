@@ -101,8 +101,8 @@ public class LoginController {
             }
 
             log.info("role : {}",loginUser.getRole());
-            String s= loginUser.getRole();
-            if (s.equals("admin")) {
+            String role= loginUser.getRole();
+            if (role.equals("admin")) {
                 return "redirect:/adminPage";
             }
 
@@ -188,11 +188,8 @@ public class LoginController {
         log.info("access_token : {}", access_Token);
 
 
-        Object s1 = userInfo.get("nickname");
-        Object s2 = userInfo.get("email");
-
-        String nickname = s1.toString();
-        String email = s2.toString();
+        String nickname = userInfo.get("nickname").toString();
+        String email = userInfo.get("email").toString();
 
         User loginUser = userService.getNameEmail(nickname, email);
 

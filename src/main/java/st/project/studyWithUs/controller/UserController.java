@@ -94,9 +94,8 @@ public class UserController {
 
     }
     @PostMapping("/uploadUserImage")
-    public String saveFile(@Login User user, @RequestParam MultipartFile file, Model model
+    public String saveFile(@Login User loginUser, @RequestParam MultipartFile file, Model model
     ) throws IOException {
-        System.out.println("왔니????");
         if(!file.isEmpty()){
             // ========================== 파일 업로드 ========================== //
             // 업로드된 파일의 파일명을 변경 ( 중복 파일명이 될 수 있으므로, 중복되지 않을 문자로 변경해준다. )
@@ -106,7 +105,7 @@ public class UserController {
             // 해당 경로에 파일을 업로드 한다.
             file.transferTo(new File(fullPath));
 
-            User userInfo = userService.find(user.getUID());
+            User userInfo = userService.find(loginUser.getUID());
             // DB에 올릴 경로를 짧게 잡아준다. ( static/example.jpg )
             fullPath = File.separator + "userImage" + File.separator + fileName;
 
@@ -140,14 +139,14 @@ public class UserController {
     @ResponseBody
     @GetMapping("/getUserInfo")
     public UserVO getUserInfo(@Login User loginUser){
-        UserVO userVO = new UserVO();
-        userVO.setUserID(loginUser.getUserID());
-        userVO.setUserName(loginUser.getUserName());
-        userVO.setPw(loginUser.getPassword());
-        userVO.setEmail(loginUser.getEmail());
-        userVO.setUserImage(loginUser.getUserImage());
-        userVO.setRole(loginUser.getRole());
-        return userVO;
+        UserVO uservo = new UserVO();
+        uservo.setUserID(loginUser.getUserID());
+        uservo.setUserName(loginUser.getUserName());
+        uservo.setPw(loginUser.getPassword());
+        uservo.setEmail(loginUser.getEmail());
+        uservo.setUserImage(loginUser.getUserImage());
+        uservo.setRole(loginUser.getRole());
+        return uservo;
     }
 
     //포인트 충전 로직
