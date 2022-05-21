@@ -85,9 +85,6 @@ async function init() {
                 }
             }
         }
-
-        console.log("In onmessage");
-        console.log(event.data);
     }
 
     $.ajax({
@@ -96,7 +93,6 @@ async function init() {
         contentType: 'application/json',
         data: JSON.stringify({tID: curTID}),
         success: function (data) {
-            console.log("total" + data)
             totalTime+=0
             totalTime=data*100;
         },
@@ -110,7 +106,6 @@ async function init() {
         contentType: 'application/json',
         data: JSON.stringify({tID: curTID}),
         success: function (data) {
-            console.log("realTime" + data)
             realTime+=0
             realTime=data*100;
         },
@@ -387,7 +382,6 @@ function start(){
     var exitBtn = $('.exit');
     var roomId = $('.content').data('room-id');
     var member = name;
-    //var member = $('.content').data('member');
     var sock = new SockJS("/stomp-chat");
     var client = Stomp.over(sock);
     client.debug = function (e) {

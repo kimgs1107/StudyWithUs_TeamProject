@@ -42,7 +42,6 @@ public class UserTeamController {
     @GetMapping("/findMyTeams")
     public List<TeamVO> findMyTeams (@Login User loginUser){
 
-
         List <Team> teams = userTeamService.findMyTeams(loginUser.getUID());
         List <TeamVO> tvo = new ArrayList<>();
 
