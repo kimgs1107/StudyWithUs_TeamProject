@@ -30,9 +30,6 @@ public class ExistWebSocketHandler extends TextWebSocketHandler {
 
     public void noticeExist(UserTeam userTeam) throws Exception{
 
-        System.out.println("In SocketHandler "+userTeam.getTeam().getTID());
-        System.out.println(userTeam.getUser().getUID());
-
         List<WebSocketSession> sess = teamSessionList.get(userTeam.getTeam().getTID());
 
         TextMessage message = null;
@@ -91,7 +88,6 @@ public class ExistWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception{
-        //System.out.println("소켓 연결!!"+session.getId());
     }
 
     @Override
@@ -108,8 +104,8 @@ public class ExistWebSocketHandler extends TextWebSocketHandler {
         }
         TextMessage message = new TextMessage("OFF "+uID+" "+userImage+" "+user.getUserName());
 
-        List<WebSocketSession> list = teamSessionList.get(tID);
-        for(WebSocketSession s : list) {
+        List<WebSocketSession> sessionList = teamSessionList.get(tID);
+        for(WebSocketSession s : sessionList) {
             if(s.getId() != session.getId()) {
                 try {
                     synchronized (s) {
@@ -121,18 +117,13 @@ public class ExistWebSocketHandler extends TextWebSocketHandler {
             }
         }
 
-//        List<WebSocketSession> list = teamSessionList.get(tID);
-        for(WebSocketSession s : list){
+        for(WebSocketSession s : sessionList){
             if(s.getId() == session.getId()){
-                list.remove(s);
-                teamSessionList.put(tID, list);
+                sessionList.remove(s);
+                teamSessionList.put(tID, sessionList);
                 break;
             }
         }
         teamSession.remove(session);
-    }
-
-    @Override
-    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
     }
 }
