@@ -1,4 +1,4 @@
-package st.project.studyWithUs.chatroom.model;
+package st.project.studyWithUs.model;
 
 public enum MessageType {
     JOIN, QUIT , CHAT

@@ -1,21 +1,19 @@
-package st.project.studyWithUs.chatroom.nostomp;
+package st.project.studyWithUs.nostomp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import st.project.studyWithUs.chatroom.model.ChatMessage;
-import st.project.studyWithUs.chatroom.model.ChatRoom;
-import st.project.studyWithUs.chatroom.repository.ChatRoomRepository;
+import st.project.studyWithUs.model.ChatMessage;
+import st.project.studyWithUs.model.ChatRoom;
+import st.project.studyWithUs.repository.ChatRoomRepository;
 
 @Slf4j
-@Profile("!stomp")
 @Component
 public class ChatHandler extends TextWebSocketHandler {
 

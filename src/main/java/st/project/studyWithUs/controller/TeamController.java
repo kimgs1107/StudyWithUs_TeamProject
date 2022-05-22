@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import st.project.studyWithUs.argumentresolver.Login;
-import st.project.studyWithUs.chatroom.repository.ChatRoomRepository;
+import st.project.studyWithUs.repository.ChatRoomRepository;
 import st.project.studyWithUs.domain.Team;
 import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.domain.UserTeam;

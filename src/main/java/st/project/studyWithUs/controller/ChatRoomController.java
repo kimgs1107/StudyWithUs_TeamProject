@@ -1,4 +1,4 @@
-package st.project.studyWithUs.chatroom;
+package st.project.studyWithUs.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -8,12 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import st.project.studyWithUs.argumentresolver.Login;
-import st.project.studyWithUs.chatroom.model.ChatRoom;
-import st.project.studyWithUs.chatroom.repository.ChatRoomRepository;
+import st.project.studyWithUs.model.ChatRoom;
+import st.project.studyWithUs.repository.ChatRoomRepository;
 import st.project.studyWithUs.domain.User;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j

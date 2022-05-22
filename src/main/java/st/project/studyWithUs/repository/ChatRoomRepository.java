@@ -1,20 +1,14 @@
-package st.project.studyWithUs.chatroom.repository;
+package st.project.studyWithUs.repository;
 
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.socket.WebSocketSession;
-import st.project.studyWithUs.chatroom.model.ChatRoom;
+import st.project.studyWithUs.model.ChatRoom;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Repository

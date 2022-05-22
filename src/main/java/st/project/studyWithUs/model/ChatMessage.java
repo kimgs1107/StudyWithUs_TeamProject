@@ -1,4 +1,4 @@
-package st.project.studyWithUs.chatroom.model;
+package st.project.studyWithUs.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

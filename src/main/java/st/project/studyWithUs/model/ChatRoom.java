@@ -1,19 +1,15 @@
-package st.project.studyWithUs.chatroom.model;
+package st.project.studyWithUs.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import st.project.studyWithUs.argumentresolver.Login;
-import st.project.studyWithUs.chatroom.nostomp.utils.MessageSendUtils;
-import st.project.studyWithUs.domain.User;
+import st.project.studyWithUs.nostomp.MessageSendUtils;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
