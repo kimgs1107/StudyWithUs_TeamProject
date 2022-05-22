@@ -46,16 +46,19 @@ public class FindController {
     public String findPw2(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("id") String id) {
 
         User user = userService.findByNameAndEmail(name,email);
+        if(user.getUserID() == id) {
+            List<User> userInfo = userService.findByUserEmail(email);
+            if (userInfo.size() != 0) {
+                userInfo.get(0).getPassword();
+                String tempPW = userService.getTempPW();
+                user.setPassword(tempPW);
+                userService.save(user); // 임시번호 DB변경
 
-        List<User> userInfo = userService.findByUserEmail(email);
-        if(userInfo.size() !=0){
-            userInfo.get(0).getPassword();
-            String tempPW = userService.getTempPW();
-            user.setPassword(tempPW);
-            userService.save(user); // 임시번호 DB변경
-
-            userService.mailToPW(name, email, tempPW); // 메일발송
-            return tempPW;
+                userService.mailToPW(name, email, tempPW); // 메일발송
+                return tempPW;
+            } else {
+                return "no";
+            }
         }else{
             return "no";
         }
