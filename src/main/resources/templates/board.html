@@ -30,7 +30,6 @@
         <tr th:each="list : ${VOlist}">
             <th th:text="${list.idx}"></th>
             <td><form id="titleForm" method="post" th:action="@{'/detailContent/'+${list.idx}}"><span th:text="${list.title}" id="title"></span><input type="hidden" name="bID" th:value="${list.bbID} "></form></td>
-<!--            <td><a th:href="@{'/detailContent/'+${list.bbID} + '/' + ${list.idx}}" th:text="${list.title}" style="color: black;"></a></td>-->
             <td th:text="${list.name}"></td>
             <td th:text="${list.uploadTime}"></td>
         </tr>

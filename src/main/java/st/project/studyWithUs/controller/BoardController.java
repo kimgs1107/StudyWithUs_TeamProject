@@ -33,6 +33,45 @@ public class BoardController {
     private final BoardService boardservice;
     private final CommentService commentService;
 
+
+    @GetMapping(value = "/boardSearch") //게시물 목록 조회페이지
+    public String search(Model model, @Login User loginUser, @PageableDefault(page = 0, size = 10, sort = "uploadTime", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam(required = false, defaultValue = "", name = "keyword") String keyword) {
+
+        List<BoardVO> list = new ArrayList<>();
+
+        Page<Board> all = boardservice.findByTitleContaining(keyword, pageable);
+        model.addAttribute("boardList", all);
+
+        int currentPage = all.getPageable().getPageNumber() + 1; // 현재 페이지 넘버 _ 인덱스는 1부터니까 +1
+        int startPage = Math.max(currentPage - 4, 1);
+        int endPage = Math.min(currentPage + 4, all.getTotalPages());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("end", all.getTotalPages());
+
+
+        int size = all.getSize();
+        int totalCount = (int) all.getTotalElements();
+        int idx = Math.max((totalCount - (size * (currentPage - 1))), 1);
+
+        for (Board li : all) {
+            BoardVO vo = new BoardVO();
+            vo.setContent(li.getContent());
+            vo.setTitle(li.getTitle());
+            vo.setName(li.getUser().getUserName());
+            vo.setUploadTime(li.getUploadTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            vo.setBbID(li.getBID());
+            vo.setIdx(idx--);
+            vo.setUID(li.getUser().getUID());
+            list.add(vo);
+        }
+
+        model.addAttribute("VOlist", list);
+
+        return "/board";
+    }
+
     @GetMapping("/write") //게시물 작성하는 페이지
     public String write() {
         return "writeContent";
@@ -43,15 +82,9 @@ public class BoardController {
     @PostMapping("/saveContent") //게시물 작성버튼 누르면
     public boolean saveContent(@RequestBody HashMap<String, String> data, @Login User loginUser) {
 
-
-        System.out.println(data.get("title"));
-        System.out.println(data.get("content"));
-
         Board board = new Board();
-        board.setTitle(data.get("title"));//""안에 들어가는게 key값
+        board.setTitle(data.get("title"));
         board.setContent(data.get("content"));
-
-
 
         board.setUser(loginUser);
         board.setUploadTime(LocalDateTime.now());
@@ -62,19 +95,20 @@ public class BoardController {
     }
 
     @ResponseBody
-    @GetMapping("/contentsListInfo") //게시물 목록 조회
+    @GetMapping("/contentsListInfo")
     public List<BoardVO> contentsListInfo() {
         return boardservice.contentsListInfo();
     }
 
+    static BoardVO contentvo = new BoardVO();
 
-    static BoardVO contentvo=new BoardVO();
 
     @PostMapping("/detailContent/{idx}") //게시물 상세보기
-    public String detailContentPost(@PathVariable("idx") String idx,String bID) {
+    public String detailContentPost(@PathVariable("idx") String idx, String bID) {
         contentvo.setBbID(Long.parseLong(bID));
         return "detailContent";
     }
+
 
     @GetMapping("/detailContent/{idx}") // 게시글 수정 후 redirect시 필요.
     public String detailContentGet(@PathVariable("idx") String idx) {
@@ -93,8 +127,7 @@ public class BoardController {
     @ResponseBody
     @GetMapping("/deleteContent")
     public boolean deleteContent(@Login User loginUser) {
-        System.out.println("============================");
-        System.out.println(contentvo.getBbID());
+
         if (loginUser != null) {
             if (boardservice.findBybID2(contentvo.getBbID()).getUser().getUID() == loginUser.getUID()) return true;
 
@@ -107,16 +140,14 @@ public class BoardController {
     @GetMapping("/deleteBoard")
     public boolean deleteBoard() {
 
-
         boardservice.delete(contentvo.getBbID());
+
         return true;
     }
 
     @ResponseBody
     @GetMapping("/updateContent") //게시글 수정 후 상세보기 페이지에 다시 뿌려주기
     public boolean updateContent(@RequestParam String ti, @RequestParam String co) {
-
-        log.info("ti co {}, {}", ti, co);
 
         boardservice.update(contentvo.getBbID(), ti, co);
 
@@ -125,50 +156,10 @@ public class BoardController {
 
 
 
-    @GetMapping(value = "/boardSearch") //게시물 목록 조회페이지
-    public String search(Model model, @Login User loginUser, @PageableDefault(page=0,size = 10,sort = "uploadTime", direction = Sort.Direction.DESC) Pageable pageable, @RequestParam(required = false, defaultValue = "", name = "keyword") String keyword) {
-
-        List<BoardVO> list = new ArrayList<>();
-
-        Page<Board> all = boardservice.findByTitleContaining(keyword,pageable);
-        model.addAttribute("boardList",all);
-
-        int currentPage=all.getPageable().getPageNumber()+1; // 현재 페이지 넘버 _ 인덱스는 1부터니까 +1
-        int startPage=Math.max(currentPage-4,1);
-        int endPage=Math.min(currentPage+4,all.getTotalPages());
-        model.addAttribute("currentPage",currentPage);
-        model.addAttribute("startPage",startPage);
-        model.addAttribute("endPage",endPage);
-        model.addAttribute("end",all.getTotalPages());
-
-
-        int size = all.getSize();
-        int totalCount = (int)all.getTotalElements();
-        int idx = Math.max((totalCount-(size*(currentPage-1))),1);
-
-        for (Board li : all) {
-            BoardVO vo = new BoardVO();
-            vo.setContent(li.getContent());
-            vo.setTitle(li.getTitle());
-            vo.setName(li.getUser().getUserName());
-            vo.setUploadTime(li.getUploadTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            vo.setBbID(li.getBID());
-            vo.setIdx(idx--);
-            vo.setUID(li.getUser().getUID());
-            list.add(vo);
-        }
-
-        model.addAttribute("VOlist",list);
-
-
-        return "/board";
-    }
-
-
     @PostMapping("/checkUser") //로그인 안한 유저 댓글 작성 못하게
     @ResponseBody
-    public int checkUser(@Login User loginUser){
-        if(loginUser != null){
+    public int checkUser(@Login User loginUser) {
+        if (loginUser != null) {
             return 1;
         } else {
             return 0;
@@ -177,7 +168,7 @@ public class BoardController {
 
     @ResponseBody
     @GetMapping("/findComment")
-    public List<CommentVO> board(){
+    public List<CommentVO> board() {
 
         return commentService.findComment(contentvo.getBbID());
 
@@ -186,7 +177,7 @@ public class BoardController {
 
     @ResponseBody
     @GetMapping("/saveComment")
-    public CommentVO saveComment(@Login User loginUser, @RequestParam String comment){
+    public CommentVO saveComment(@Login User loginUser, @RequestParam String comment) {
 
         Comment comment1 = new Comment();
         comment1.setCommentContent(comment);
@@ -206,21 +197,20 @@ public class BoardController {
 
     @ResponseBody
     @GetMapping("/deleteCommentCheck")
-    public boolean deleteCommentCheck(@RequestParam Long cmID,@Login User loginUser){
-        if(loginUser == null){
+    public boolean deleteCommentCheck(@RequestParam Long cmID, @Login User loginUser) {
+        if (loginUser == null) {
             return false;
         }
-        //댓글 주인이거나, 그 글의 글쓴이거나 둘 중 하나 .
-        else if(loginUser.getUID()==commentService.findBycmID(cmID).getWriterUID()||boardservice.findBybID2(contentvo.getBbID()).getUser().getUID()==loginUser.getUID()){
+        //댓글 주인이거나, 그 글의 글쓴이거나 둘 중 하나
+        else if (loginUser.getUID() == commentService.findBycmID(cmID).getWriterUID() || boardservice.findBybID2(contentvo.getBbID()).getUser().getUID() == loginUser.getUID()) {
             return true;
-        }
-        else return false;
+        } else return false;
     }
 
 
     @ResponseBody
     @GetMapping("/deleteComment")
-    public boolean deleteComment(@RequestParam Long cmID){
+    public boolean deleteComment(@RequestParam Long cmID) {
 
         commentService.delete(cmID);
 
@@ -229,16 +219,16 @@ public class BoardController {
 
     @ResponseBody
     @GetMapping("/updateComment")
-    public boolean updateComment(@RequestParam Long cmID){
+    public boolean updateComment(@RequestParam Long cmID) {
         return true;
     }
 
     @ResponseBody
     @GetMapping("/updateCommentCheck")
-    public boolean updateCommentCheck(@RequestParam Long cmID, @Login User loginUser){
-        if(loginUser==null){
+    public boolean updateCommentCheck(@RequestParam Long cmID, @Login User loginUser) {
+        if (loginUser == null) {
             return false;
-        }else {
+        } else {
             return commentService.updateCommentCheck(cmID, loginUser.getUID());
         }
     }
@@ -246,9 +236,7 @@ public class BoardController {
 
     @ResponseBody
     @GetMapping("/updateCommentSave")
-    public boolean updateCommentSave(@RequestParam Long cmID, @RequestParam String commentContent){
-
-        log.info("--------------{}, {}3", cmID, commentContent);
+    public boolean updateCommentSave(@RequestParam Long cmID, @RequestParam String commentContent) {
 
         commentService.updateCommentSave(cmID, commentContent);
         return true;

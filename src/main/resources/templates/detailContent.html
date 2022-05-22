@@ -8,9 +8,10 @@
     <h4 style="display: inline-block; color: #386ad1; margin-bottom: 10px; margin-left: 5px">Board</h4>
     <div style="display: inline-block; float: right; margin-bottom: 10px;">
         <button type="submit" class="btn btn-outline-dark" onclick="location.href='/boardSearch'" id="backList"
-                                               style="border-color: #00000030; color:#386ad1; font-size: 15px; width:150px;">
-        목록으로 돌아가기
-    </button></div>
+                style="border-color: #00000030; color:#386ad1; font-size: 15px; width:150px;">
+            목록으로 돌아가기
+        </button>
+    </div>
 
     <table class="table table-md">
         <thead>
@@ -74,7 +75,7 @@
 
 <style>
 
-    #backList:hover{
+    #backList:hover {
         background-color: #00000010;
     }
 </style>
@@ -82,7 +83,6 @@
 <script>
     let curURL = window.location.href;
     let urlArr = curURL.split("/");
-    // let bId = urlArr[urlArr.length - 2];
     let idx = urlArr[urlArr.length - 1];
 
     $(document).ready(function () {
@@ -101,7 +101,7 @@
             type: "GET",
             success: function (data) {
                 if (data == true) {
-                    //삭제 버튼 생겨
+                    //삭제 버튼 생성
                     let deletebtn = document.getElementById("deleteBtn");
                     let del = document.createElement('button');
                     del.setAttribute('class', 'btn btn-outline-dark')
@@ -112,7 +112,7 @@
 
                     del.addEventListener("click", () => {
                         let ans = confirm("게시글을 삭제하시겠습니까?")
-                        if(ans){
+                        if (ans) {
                             $.ajax({
                                 url: "/deleteBoard",
                                 type: "GET",
@@ -223,12 +223,10 @@
                             },
                             success: function (data) {
                                 if (data == true) {
-                                    // window.location.replace('/detailContent/' + idx);
                                 }
                             }
                         });
                     })
-                    // window.location.href = "/detailContent/" + idx;
                 }
             });
         }
@@ -306,7 +304,7 @@
                                 editContent.setAttribute('rows', '13');
                                 editContent.setAttribute('id', 'co');
                                 editContent.setAttribute('style', 'width: 100%; border:1px solid #00000020; padding-left:10px');
-                                editContent.innerHTML=data.content;
+                                editContent.innerHTML = data.content;
                                 content3.appendChild(editContent);
 
                                 let updatebtn2 = document.getElementById("updateBtn");

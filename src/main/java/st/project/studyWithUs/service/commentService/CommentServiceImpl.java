@@ -64,8 +64,6 @@ public class CommentServiceImpl implements CommentService{
     }
 
 
-
-
     @Transactional
     @Override
     public void updateCommentSave(Long cmID, String commentContent) {
