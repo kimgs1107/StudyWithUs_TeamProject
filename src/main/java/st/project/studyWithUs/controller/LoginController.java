@@ -154,7 +154,7 @@ public class LoginController {
             response.setContentType("text/html; charset=euc-kr");
             PrintWriter out = response.getWriter();
 
-            out.println("<script>alert('가입한 정보가 없습니다.\\n 네이버 아이디와 연동을 원하신다면 네이버와 연동된 E-mail과 이름으로 가입하세요.'); location.href='/signUp';</script>");
+            out.println("<script>alert('가입한 정보가 없습니다.\\n네이버 아이디와 연동을 원하신다면 네이버와 연동된 E-mail과 이름으로 가입하세요.'); location.href='/signUp';</script>");
             out.flush();
             return "redirect:/signUp";
         } else {
@@ -197,7 +197,7 @@ public class LoginController {
             response.setContentType("text/html; charset=euc-kr");
             PrintWriter out = response.getWriter();
 
-            out.println("<script>alert('가입한 정보가 없습니다.\\ n카카오 아이디와 연동을 원하신다면 카카오와 연동된 E-mail로 가입하세요.'); location.href='/signUp';</script>");
+            out.println("<script>alert('가입한 정보가 없습니다.\\n카카오 아이디와 연동을 원하신다면 카카오와 연동된 E-mail로 가입하세요.'); location.href='/signUp';</script>");
             out.flush();
             return "redirect:/signUp";
         } else {

@@ -28,7 +28,7 @@
                    placeholder="환급 받으실 포인트 금액" style="margin-top: 10px;"><br>
             <span id="pointCheck" size="2"> </span>
             <div>
-                <button id="refunds_btn" type="submit" class="topMargin" onClick="location.href='/refunds'" >환급받기</button>
+                <button id="refunds_btn" type="submit" class="topMargin" >환급받기</button>
             </div>
         </div>
 
@@ -109,13 +109,17 @@
             },
             error: function (error) {
                 console.log(error)
-                console.log("뭐고")
             }
         });
 
     });
 
     function refundsChk() {
+        if($('#point').val()<5000){
+            $("#pointCheck").html('환급은 5,000포인트 이상부터 가능합니다.');
+            $("#pointCheck").attr('style', 'color:red');
+            return;
+        }else{
         $.ajax({
             url: "/refunds",
             type: "POST",
@@ -128,13 +132,15 @@
             success: function (data) {
                 if (data == "포인트가 부족합니다.") {
                     $("#pointCheck").html(data);
-                    $("#pointCheck").attr('color', 'red');
+                    $("#pointCheck").attr('style', 'color:red');
                 } else {
                     alert(data)
                     window.location.href = "/";
                 }
             },
-        });
+            });
+        }
+
     }
 </script>
 
