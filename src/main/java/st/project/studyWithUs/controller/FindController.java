@@ -46,7 +46,7 @@ public class FindController {
     public String findPw2(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("id") String id) {
 
         User user = userService.findByNameAndEmail(name,email);
-        if(user.getUserID() == id) {
+        if(user.getUserID().equals(id)) {
             List<User> userInfo = userService.findByUserEmail(email);
             if (userInfo.size() != 0) {
                 userInfo.get(0).getPassword();
