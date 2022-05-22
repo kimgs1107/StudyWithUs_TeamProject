@@ -15,7 +15,14 @@
             <div class="col-2"></div>
             <div class="col-8">
                 <form id="imgf" action="uploadUserImage" method="post" enctype="multipart/form-data">
-                    <div class="mb-3"><img th:src="${userProfileImage}" id="View" class="rounded img-thumbnail mx-auto d-block" ></div>
+                    <div class="mb-3" th:switch="${userProfileImage}">
+                        <th:block th:if="${userProfileImage != null}">
+                            <img th:src="${userProfileImage}" id="View" class="rounded img-thumbnail mx-auto d-block" >
+                        </th:block>
+                        <th:block th:if="${userProfileImage == null}">
+                            <img src="/adminImage/userIcon.png" id="View" class="rounded img-thumbnail mx-auto d-block" >
+                        </th:block>
+                    </div>
                     <div class="mb-3">
                         <div>
                             <input class="form-control" type="file" name="file" id="file"  accept="image/*" onchange="fileTypeCheck(this)"/>
@@ -134,7 +141,7 @@
             readURL(this)
         } else {
             alert('이미지 파일만 업로드 가능합니다.');
-            $('#View').attr('src', "/AdminImage/userIcon.png");
+            $('#View').attr('src', "/adminImage/userIcon.png");
             $('#file').val("")
             return false;
         }
@@ -152,7 +159,7 @@
             }
             reader.readAsDataURL(input.files[0]);
         }else{
-            $('#View').attr('src', "/adminImage/temp.png");
+            $('#View').attr('src', "/adminImage/userIcon.png");
         }
     }
 </script>
