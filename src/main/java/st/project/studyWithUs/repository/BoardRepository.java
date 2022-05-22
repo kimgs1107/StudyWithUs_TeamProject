@@ -16,7 +16,6 @@ import java.util.List;
 @Transactional
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-
     Board findBybID(Long bID);
 
     Page<Board> findByTitleContaining(@Param("title") String title,Pageable pageable);

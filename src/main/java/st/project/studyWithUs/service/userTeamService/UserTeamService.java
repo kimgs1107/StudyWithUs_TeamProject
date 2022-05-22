@@ -19,7 +19,6 @@ public interface UserTeamService {
 
     void dropStudyTeam(Long tId, Long uId);
 
-
     List<Team> findMyTeams(Long uid);
 
     List<MemberInSameVO> completeMembers(Long tID);
