@@ -1,6 +1,8 @@
 #completeBox{
     display: grid;
     grid-template-columns: 1fr 1fr;
+    width: 900px;
+    margin: auto;
 }
 #completeMembers{
     grid-column: 1/2;

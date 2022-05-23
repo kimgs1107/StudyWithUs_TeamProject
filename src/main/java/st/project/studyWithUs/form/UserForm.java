@@ -21,4 +21,6 @@ public class UserForm {
     @NotEmpty(message = "E-mail은 필수 입니다")
     private String email;
 
+    @NotEmpty(message = "전화번호는 필수 입니다")
+    private String phone;
 }

@@ -38,6 +38,7 @@ public class SignUpController {
         user.setPassword(form.getPassWord());
         user.setUserName(form.getName());
         user.setEmail(form.getEmail());
+        user.setPhoneNumber(form.getPhone());
         user.setRole("custom");
         user.setPoint(0l);
 
