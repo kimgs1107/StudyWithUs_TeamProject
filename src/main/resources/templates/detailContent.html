@@ -236,8 +236,6 @@
         url: "/checkUser",
         type: "POST",
         success: function (data) {
-            console.log('성공')
-            console.log(data)
             if (data == 0) {
                 $('#comment').attr('readonly', 'true')
                 $('#comment').attr('placeholder', '회원만 이용할 수 있습니다.')
@@ -253,7 +251,7 @@
                 idx: idx
             },
             success: function (data) {
-                console.log(data)
+
                 let bID = document.getElementById('bID');
                 bID.innerHTML = data.idx
                 let date = document.getElementById('date');
@@ -300,7 +298,6 @@
                                 title3.appendChild(editTitle);
                                 let content3 = document.getElementById('content');
                                 let editContent = document.createElement('textarea')
-                                // editContent.setAttribute('type', 'textarea');
                                 editContent.setAttribute('rows', '13');
                                 editContent.setAttribute('id', 'co');
                                 editContent.setAttribute('style', 'width: 100%; border:1px solid #00000020; padding-left:10px');

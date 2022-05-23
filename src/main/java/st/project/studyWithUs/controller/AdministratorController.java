@@ -48,7 +48,6 @@ public class AdministratorController {
     @GetMapping("/userListInfo")
     public List<UserVO> userListInfo(@RequestParam int check, @RequestParam String userID){
         if(check==1){
-            log.info("userID : {}", userID) ;
             return userService.searchUserInfo(userID);
         }
 

@@ -24,12 +24,7 @@ public class ChatMessageController {
         template.convertAndSend("/subscribe/chat/room/" + message.getChatRoomId(), message);
     }
 
-//    @MessageMapping("/chat/quit")
-//    public void quit(ChatMessage message) {
-//        message.setMessage(message.getWriter() + "님이 퇴장하셨습니다.");
-//        template.convertAndSend("/subscribe/chat/room/" + message.getChatRoomId(), message);
-//    }
-
+    
     @MessageMapping("/chat/message")
     public void message(ChatMessage message) {
         template.convertAndSend("/subscribe/chat/room/" + message.getChatRoomId(), message);

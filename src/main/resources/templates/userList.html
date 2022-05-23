@@ -143,8 +143,7 @@
         url: "/checkUser",
         type: "POST",
         success: function (data) {
-            console.log('성공')
-            console.log(data)
+
             if (data == 0) {
                 $('#logoutbtn').attr("hidden",true);
             } else {
@@ -155,8 +154,5 @@
         }
     });
 </script>
-
-
-
 </body>
 </html>

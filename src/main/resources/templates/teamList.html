@@ -5,7 +5,6 @@
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
 
-
 <div class="container admin">
     <h4 style="text-align: center; color: #386ad1; margin: 50px auto 5px auto;">ADMIN PAGE</h4>
     <div class="flex" style="width: 35%; margin: 10px auto;">
@@ -41,14 +40,12 @@
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 
-
 <script>
     $.ajax({
         url: "/checkUser",
         type: "POST",
         success: function (data) {
-            console.log('성공')
-            console.log(data)
+
             if (data == 0) {
                 $('#logoutbtn').attr("hidden", true);
             } else {
@@ -154,7 +151,6 @@
 
     }
 </script>
-
 
 </body>
 </html>

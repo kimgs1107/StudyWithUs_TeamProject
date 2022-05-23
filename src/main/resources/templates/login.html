@@ -67,7 +67,6 @@
     getKM();
 
     $('#naver_id_login').click(function () {
-        console.log("클릭")
         $.ajax({
             url: "/getInfo",
             type: "post",
@@ -82,14 +81,12 @@
     })
 
     function getKM() {
-        console.log("뭐야")
         $.ajax({
             url: "/getimg",
             type: "POST",
             success: function (data) {
                 key = data.key
                 $('#img').attr('src', '/captcha/' + data.img);
-                // console.log(data.img)
             }
         })
     }
@@ -127,7 +124,6 @@
                                 })
 
                             } else {
-                                // console.log("다름")
                                 $('#txt').attr("placeholder", "자동입력 방지문자가 틀립니다.")
                                 $('#txt').attr("style", "border-color:red; font-size: 14px;")
                                 $('#txt').val("")
