@@ -22,11 +22,11 @@ public class UserTeam {
 
     private Long totalTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name="uID")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name="tID")
     private Team team;
 

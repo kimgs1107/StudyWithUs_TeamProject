@@ -1,4 +1,4 @@
-package st.project.studyWithUs.service.pointInfo;
+package st.project.studyWithUs.service.pointInfoService;
 
 import st.project.studyWithUs.domain.PointInfo;
 import st.project.studyWithUs.domain.RefundUserAccount;
@@ -12,4 +12,6 @@ public interface PointInfoService {
     void withDrawTest(Long pId, Long point);
 
     void changePoint(Long point);
+
+    void addPoint(Long point);
 }

@@ -140,4 +140,12 @@ public class UserServiceImpl implements UserService {
         message.setText(sendMsg);                   //메일 내용
         javaMailSender.send(message);
     }
+
+    @Transactional
+    @Override
+    public void addPoint(Long uid, Long addUserPoint) {
+        User u = userRepository.findByuID(uid);
+        u.setPoint(u.getPoint() + addUserPoint);
+        userRepository.save(u);
+    }
 }

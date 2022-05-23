@@ -112,4 +112,12 @@ public class UserTeamServiceImpl implements UserTeamService {
         ut.setExist(false);
         userTeamRepository.save(ut);
     }
+
+    @Transactional
+    @Override
+    public List<UserTeam> findByTID(Long tId) {
+
+        return userTeamRepository.findByTID(tId);
+
+    }
 }

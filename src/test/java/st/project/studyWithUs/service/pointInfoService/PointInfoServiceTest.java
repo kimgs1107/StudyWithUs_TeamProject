@@ -1,4 +1,4 @@
-package st.project.studyWithUs.service.pointInfo;
+package st.project.studyWithUs.service.pointInfoService;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

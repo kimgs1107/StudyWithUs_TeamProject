@@ -41,4 +41,5 @@ public interface UserService {
 
     void mailToPW(String name, String email, String tempPW);
 
+    void addPoint(Long uid, Long addUserPoint);
 }
