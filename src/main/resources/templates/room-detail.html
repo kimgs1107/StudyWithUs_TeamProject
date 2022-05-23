@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
 <html lang="en">
-<!--<head th:replace="fragments/header :: header">-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -100,17 +98,12 @@
             <div class="inner">
                 <ul class="chat_box" >
                 </ul>
-
             </div>
         </div>
         <input name="message" id="chat_input">
         <button class="chatsend">보내기</button>
         <br>
         <br>
-
-
-
-    <!--<button class="exit">나가기</button>-->
     </div>
 
 </div>
@@ -202,7 +195,6 @@
         var homeBtn = $('#home');
         var roomId = $('.content').data('room-id');
         var member = name;
-        //var member = $('.content').data('member');
         var sock = new SockJS("/stomp-chat");
         var client = Stomp.over(sock);
         client.debug = function (e) {
@@ -216,7 +208,7 @@
             }));
             client.subscribe('/subscribe/chat/room/' + tId, function (chat) {
                 var content = JSON.parse(chat.body);
-                // chatBox.append('<li>' + content.message + '(' + content.writer + ')</li>')
+
                 if(content.message==content.writer+"님이 입장하셨습니다."){
 
                     chatBox.append('<h3 style="color: blue">'+ content.message +'</h3>')

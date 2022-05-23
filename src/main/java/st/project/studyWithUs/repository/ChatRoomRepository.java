@@ -19,16 +19,6 @@ public class ChatRoomRepository {
 
     private final Collection<ChatRoom> chatRooms;
 
-
-   /* public ChatRoomRepository() {
-        chatRoomMap = Collections.unmodifiableMap(
-                Stream.of(ChatRoom.create("1번방"), ChatRoom.create("2번방"), ChatRoom.create("3번방"))
-                      .collect(Collectors.toMap(ChatRoom::getId, Function.identity())));
-
-        chatRooms = Collections.unmodifiableCollection(chatRoomMap.values());
-    }*/
-
-
     public void add(Long tID, String name){
 
         log.info("hih {} {}", tID, name);

@@ -117,8 +117,7 @@ public class UserController {
 
         return "home";
     }
-    // 기
-    // 능 _ 파일 업로드시 파일명 재정의하는 메서드 구현
+    // 기능 _ 파일 업로드시 파일명 재정의하는 메서드 구현
     public String renameFiles(MultipartFile multipartFile) throws IOException {
         // 업로드한 파일명
         String originalFilename = multipartFile.getOriginalFilename();

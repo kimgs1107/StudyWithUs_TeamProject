@@ -191,10 +191,7 @@
 
                 var teams = document.getElementById('myTeams');
 
-
                 data.forEach(function(team){
-
-                    // <img src="12" onError=this.src="../images/study.jpg" style="height: 30px; width: 30px">
 
                     let image = document.createElement('img');
                     if(team.teamImage == null){
@@ -311,9 +308,9 @@
             }, 4000);
         });
         speech.addEventListener("result", (event)=>{
-            console.log(event);
+
             const { transcript } = event["results"][0][0];
-            console.log(transcript);
+
             resultListView(transcript);
         });
 

@@ -77,9 +77,6 @@ public class LoginController {
         String id = request.getParameter("id");
         String pw = request.getParameter("pw");
 
-        log.info("id : {}", id);
-        log.info("pw : {}", pw);
-
         User loginUser = userService.login(id, pw);
 
         if (loginUser == null) {
@@ -127,14 +124,9 @@ public class LoginController {
 
     @GetMapping("/naverLogin")
     public String naver(String code, HttpServletRequest request, HttpServletResponse response) throws IOException{
-        log.info("코드 : {}", code);
         String access_Token = naverService.getNaverToken(code);
-        log.info("토큰 : {}", access_Token);
 
         HashMap<String, Object> userInfo = naverService.getUserInfo(access_Token);
-        log.info("name : {}", userInfo.get("name"));
-        log.info("email : {}", userInfo.get("email"));
-
 
         HttpSession session = request.getSession();
 
@@ -142,8 +134,6 @@ public class LoginController {
             session.setAttribute("userId_N", userInfo.get("email"));
             session.setAttribute("access_Token_N", access_Token);
         }
-
-        log.info("access_token : {}", access_Token);
 
         String name = userInfo.get("name").toString();
         String email = userInfo.get("email").toString();
@@ -171,9 +161,8 @@ public class LoginController {
     @GetMapping("/kakaoLogin")
     public String kakao(String code, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        log.info("코드 : {}", code);
         String access_Token = kakaoService.getKaKaoAccessToken(code);
-        log.info("코드 : {}", code);
+
         HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token);
 
         HttpSession session = request.getSession();
@@ -182,10 +171,6 @@ public class LoginController {
             session.setAttribute("userId", userInfo.get("email"));
             session.setAttribute("access_Token", access_Token);
         }
-
-        log.info("name : {}", userInfo.get("nickname"));
-        log.info("email : {}", userInfo.get("email"));
-        log.info("access_token : {}", access_Token);
 
 
         String nickname = userInfo.get("nickname").toString();
@@ -214,7 +199,6 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         //세션 값을 담아온다.
-        log.info("로그아웃");
         HttpSession session = request.getSession(false);
         String access_Token = (String)session.getAttribute("access_Token");
 

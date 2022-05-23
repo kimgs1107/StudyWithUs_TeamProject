@@ -98,13 +98,9 @@
                 $(this).submit()
             })
         }
-        // $("#title").click(function () {
-        //     $('#titleForm').submit()
-        // })
-        // writerCheck();
+
         $("#writerCheck").click(function () {
             writerCheck();
-            console.log("글쓰기 클릭");
         })
 
 
@@ -113,8 +109,7 @@
                 url: "/checkUser",
                 type: "POST",
                 success: function (data) {
-                    console.log('성공')
-                    console.log(data)
+
                     if (data == 0) {
                         alert("게시글은 회원만 작성할 수 있습니다.")
                     } else {

@@ -80,10 +80,10 @@
                         url: "validateMem",
                         data: {sendData: id},
                         success: function (data) {
-                            console.log(data)
+
                             if (data == "") {
                                 isIdValid = true;
-                                console.log(isIdValid)
+
                             } else {
                                 $('#id').val("")
                                 $('#id').focus()

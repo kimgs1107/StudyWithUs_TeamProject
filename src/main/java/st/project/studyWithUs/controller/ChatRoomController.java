@@ -47,23 +47,16 @@ public class ChatRoomController {
 
     @GetMapping("/room/enter/{id}")
     public String room2(@PathVariable String id, Model model) {
-        log.info("id값 : {}", id);
         ChatRoom room = repository.getChatRoom(id);
-        log.info("스터디방 id : {}, 스터디방 name : {}, 스터디방 session : {}", room.getId(), room.getName(), room.getSessions());
 
-//        model.addAttribute("room", room);
-//        model.addAttribute("member", "member" + seq.incrementAndGet());
         return detailViewName;
     }
 
     @GetMapping("/studyRoom/enter/{id}")
     public String room3(@PathVariable String id, Model model) {
-        log.info("id값 : {}", id);
-        ChatRoom room = repository.getChatRoom(id);
-        log.info("스터디방 id : {}, 스터디방 name : {}, 스터디방 session : {}", room.getId(), room.getName(), room.getSessions());
 
-//        model.addAttribute("room", room);
-//        model.addAttribute("member", "member" + seq.incrementAndGet());
+        ChatRoom room = repository.getChatRoom(id);
+
         return "studyChat";
     }
 
