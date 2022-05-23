@@ -10,6 +10,7 @@ import st.project.studyWithUs.domain.User;
 import st.project.studyWithUs.domain.UserTeam;
 import st.project.studyWithUs.service.messageService.MessageService;
 import st.project.studyWithUs.service.pointInfoService.PointInfoService;
+import st.project.studyWithUs.service.studyingService.StudyingService;
 import st.project.studyWithUs.service.teamService.TeamService;
 import st.project.studyWithUs.service.userService.UserService;
 import st.project.studyWithUs.service.userTeamService.UserTeamService;
@@ -29,6 +30,7 @@ public class sendMessageScheduler {
     private final TeamService teamService;
     private final UserService userService;
     private final UserTeamService userTeamService;
+    private final StudyingService studyingService;
     private final PointInfoService pointInfoService;
     String api_key = " NCSO4XDT7CHQHZVD";  //api_key 유출되면 안됩니다.
     String api_secret = "WDBIGEVM6PYAMSDV3H27YMEAVQST8RXQ";  //api_secret 유출되면 안됩니다.
@@ -116,4 +118,10 @@ public class sendMessageScheduler {
 
         }
     }
+
+    @Scheduled(cron = "0 0 0 * * *")
+    public void resetRealTime(){
+        studyingService.resetRealTime();
+    }
+
 }
