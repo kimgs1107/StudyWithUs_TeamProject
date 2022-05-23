@@ -24,6 +24,12 @@
         <div class="third"><h3>P</h3></div>
     </div>
 
+    <div class="adminflex" style="float: right; margin-right: 10px; margin-top: 30px; margin-bottom: 20px;">
+        <div class="first"><h3>순수익 :</h3></div>
+        <div class="second" id="pointProfitInfo"></div>
+        <div class="third"><h3>P</h3></div>
+    </div>
+
     <table class="table table-hover" style="margin-top: 30px; text-align: center;">
         <thead  class="thead-dark">
         <tr>
@@ -48,6 +54,7 @@
 <script>
     $(document).ready(function () {
         getPointInfo();
+        getPointProfitInfo();
         getAccounts();
         $("#deleteCompleteAccounts").on('click', function() {
             deleteCompleteAccounts();
@@ -81,6 +88,22 @@
                 let point = document.createElement('h3');
                 point.innerHTML=data;
                 pointInfo.appendChild(point);
+
+            }, error:function(){
+                alert("error");
+            }
+        })
+    }
+
+    function getPointProfitInfo(){
+        $.ajax({
+            type:"get",
+            url:"/pointProfitInfo",
+            success: function(data){
+                var pointProfitInfo = document.getElementById('pointProfitInfo');
+                let point = document.createElement('h3');
+                point.innerHTML=data;
+                pointProfitInfo.appendChild(point);
 
             }, error:function(){
                 alert("error");

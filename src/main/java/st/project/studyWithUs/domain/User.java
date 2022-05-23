@@ -41,6 +41,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserTeam> userTeams = new ArrayList<>();
 
+    
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Board> contents = new ArrayList<>();
 

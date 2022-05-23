@@ -1,4 +1,4 @@
-package st.project.studyWithUs.service.pointInfo;
+package st.project.studyWithUs.service.pointInfoService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,6 +47,14 @@ public class PointInfoServiceImpl implements PointInfoService{
     public void changePoint(Long point) {
         PointInfo pointInfo = pointInfoRepository.findBypID(1L);
         pointInfo.setBalance(pointInfo.getBalance()- point);
+        pointInfoRepository.save(pointInfo);
+    }
+
+    @Transactional
+    @Override
+    public void addPoint(Long point){
+        PointInfo pointInfo = pointInfoRepository.findBypID(1L);
+        pointInfo.setProfit(pointInfo.getProfit()+ point);
         pointInfoRepository.save(pointInfo);
     }
 

@@ -159,6 +159,21 @@ public class TeamServiceImpl implements TeamService {
         }
     }
 
+    @Override
+    public List<Team> findAllEnd(String event) {
+
+        List <Team> endTeams = new ArrayList<>();
+        List<Team> teams = teamRepository.findAll();
+        for(Team t : teams){
+            String s = t.getEndDate().toString();
+            s = s.substring(0, 10);
+            if (s.equals(event)) {
+                endTeams.add(t);
+            }
+        }
+        return endTeams;
+    }
+
     public TeamVO create(Team t, User user){
         TeamVO tVO = new TeamVO();
         tVO.setTtID(t.getTID());

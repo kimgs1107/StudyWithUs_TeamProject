@@ -28,4 +28,6 @@ public interface UserTeamService {
     UserTeam findByUIDAndTID(Long uid, Long tid);
 
     void updateExistFalse(Long uID, Long tID);
+
+    List<UserTeam> findByTID(Long tId);
 }

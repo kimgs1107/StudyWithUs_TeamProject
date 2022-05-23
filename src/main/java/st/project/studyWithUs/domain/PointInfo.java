@@ -19,6 +19,9 @@ public class PointInfo {
     @NotNull
     private Long balance;
 
+    @NotNull
+    private Long profit;
+
     @Version
     private int version;
 

@@ -12,7 +12,7 @@ import st.project.studyWithUs.domain.PointInfo;
 import st.project.studyWithUs.domain.RefundUserAccount;
 import st.project.studyWithUs.domain.Team;
 import st.project.studyWithUs.domain.User;
-import st.project.studyWithUs.service.pointInfo.PointInfoService;
+import st.project.studyWithUs.service.pointInfoService.PointInfoService;
 import st.project.studyWithUs.service.refundUserAccountService.RefundUserAccountService;
 import st.project.studyWithUs.service.teamService.TeamService;
 import st.project.studyWithUs.service.userService.UserService;
@@ -101,6 +101,13 @@ public class AdministratorController {
     public Long pointInfo(){
         PointInfo pointInfo = pointInfoService.find(1L);
         return pointInfo.getBalance();
+    }
+
+    @ResponseBody
+    @GetMapping("/pointProfitInfo")
+    public Long pointProfitInfo(){
+        PointInfo pointInfo = pointInfoService.find(1L);
+        return pointInfo.getProfit();
     }
 
     @ResponseBody

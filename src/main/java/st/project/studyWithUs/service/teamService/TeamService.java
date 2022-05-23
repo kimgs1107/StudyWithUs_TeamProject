@@ -34,4 +34,6 @@ public interface TeamService {
     Team findByTeamName(String teamName);
 
     Boolean checkTeamPassword(Long tID, String password);
+
+    List<Team> findAllEnd(String event);
 }
