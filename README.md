@@ -5,3 +5,4 @@
 # :computer: Study With Us_Project
 
 ### 온라인 스터디 모임 웹 프로젝트 ###
+https://www.youtube.com/watch?v=iyz1Dxerur8
