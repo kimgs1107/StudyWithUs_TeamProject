@@ -6,6 +6,7 @@
 
 ### 온라인 스터디 모임 웹 프로젝트 ###
 
+
 ### :books: 기술 스택 및 협업 툴
 ###### - 백엔드
 <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat-square&logo=Spring Boot&logoColor=white" align="left"/>
@@ -29,3 +30,6 @@
 <img src="https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=Figma&logoColor=white" align="left"/>
 <img src="https://img.shields.io/badge/Notion-%23000000.svg?style=flat-square&logo=notion&logoColor=white" align="left" />
 <br>
+
+https://www.youtube.com/watch?v=iyz1Dxerur8
+
