@@ -31,6 +31,6 @@
 <img src="https://img.shields.io/badge/Notion-%23000000.svg?style=flat-square&logo=notion&logoColor=white" align="left" />
 <br>
 
-### :: 시연 영상
+### :camera: 시연 영상
 https://www.youtube.com/watch?v=iyz1Dxerur8
 
