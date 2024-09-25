@@ -81,17 +81,20 @@ public class BoardController {
     @ResponseBody
     @PostMapping("/saveContent") //게시물 작성버튼 누르면
     public boolean saveContent(@RequestBody HashMap<String, String> data, @Login User loginUser) {
+        try {
+            Board board = new Board();
+            board.setTitle(data.get("title"));
+            board.setContent(data.get("content"));
+            board.setUser(loginUser);
+            board.setUploadTime(LocalDateTime.now());
 
-        Board board = new Board();
-        board.setTitle(data.get("title"));
-        board.setContent(data.get("content"));
+            boardservice.saveContent(board);
 
-        board.setUser(loginUser);
-        board.setUploadTime(LocalDateTime.now());
-
-        boardservice.saveContent(board);
-
-        return true;
+            return true;
+        } catch (Exception e) {
+            log.error("게시글 저장 중 오류 발생: ", e);
+            return false; // 실패 시 false 반환
+        }
     }
 
     @ResponseBody
