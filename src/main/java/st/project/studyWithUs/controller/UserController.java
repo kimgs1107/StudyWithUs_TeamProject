@@ -96,6 +96,11 @@ public class UserController {
     public String saveFile(@Login User loginUser, @RequestParam MultipartFile file, Model model
     ) throws IOException {
         if(!file.isEmpty()){
+            // 파일 크기 제한 및 파일 형식 체크 (이미지 파일 여부 확인)
+            if (file.getSize() > MAX_FILE_SIZE || !file.getContentType().startsWith("image/")) {
+                model.addAttribute("errorMessage", "파일 크기가 너무 크거나, 이미지 형식이 아닙니다.");
+                return "editUser";  // 파일 크기 및 형식이 맞지 않으면 "editUser" 페이지로 다시 이동
+            }
             // ========================== 파일 업로드 ========================== //
             // 업로드된 파일의 파일명을 변경 ( 중복 파일명이 될 수 있으므로, 중복되지 않을 문자로 변경해준다. )
             String fileName = renameFiles(file);
