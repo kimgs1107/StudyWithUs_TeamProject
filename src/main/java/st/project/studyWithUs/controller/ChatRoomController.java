@@ -93,3 +93,13 @@ public class ChatRoomController {
         return Integer.toString(room.getCurrent());
     }
 }
+
+@GetMapping("/findCurrent")
+public String findCurrent(@RequestParam String tID) {
+    ChatRoom room = repository.getChatRoom(tID);
+    if (room.getCurrent() >= room.getMaxCapacity()) {
+        return "Room is full";
+    }
+    room.setCurrent(room.getCurrent() + 1);
+    return Integer.toString(room.getCurrent());
+}
