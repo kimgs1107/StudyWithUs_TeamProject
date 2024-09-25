@@ -119,6 +119,10 @@ public class BoardController {
     @GetMapping("/detailContent")
     public BoardVO detailContent2(@RequestParam String idx) {
         contentvo.setIdx(Integer.parseInt(idx));
+
+        // 조회수 증가
+        boardservice.increaseViewCount(contentvo.getBbID());
+
         BoardVO vo = boardservice.findBybID(contentvo.getBbID());
         vo.setIdx(Integer.parseInt(idx));
         return vo;
